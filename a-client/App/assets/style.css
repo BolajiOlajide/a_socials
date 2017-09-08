@@ -1,0 +1,31 @@
+.no-margin {
+    margin: 0px;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.nav-menu {
+    background: #164cd2;
+}
+
+.active {
+    color: blue !important;
+}
+
+.nav-menu a {
+    color: #fff !important;
+}
+
+.j-content {
+    text-align: center;
+    padding: 50px;
+    padding-bottom: 65px;
+    text-shadow:0px 1px 0px #2E18BE;
+}
+
+.btn-join {
+    background: #547ce0;
+    color: #fff;
+}
