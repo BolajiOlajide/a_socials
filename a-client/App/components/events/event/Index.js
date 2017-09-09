@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { Link } from 'react-router-dom';
 >>>>>>> Remove content of  Main.js
+=======
+>>>>>>> fix react router issues
 import featuredImage from '../../../assets/img/img_1.jpg'
 
 class HomePage extends Component {
