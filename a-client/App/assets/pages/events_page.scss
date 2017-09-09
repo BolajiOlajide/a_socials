@@ -1,0 +1,166 @@
+.events-page {
+  margin-top: 50px;
+
+<<<<<<< HEAD
+  .click-bait {
+    width: 100%;
+    background-color: black;
+  }
+
+  .mini-header {
+    width: 100%;
+    height: 100px;
+=======
+  .header.mini {
+    width: 100%;
+    height: 200px;
+>>>>>>> Remove content of  Main.js
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    padding: 50px;
+    align-items: center;
+
+    .title {
+<<<<<<< HEAD
+      font-size: 18px;
+=======
+      font-size: 40px;
+>>>>>>> Remove content of  Main.js
+    }
+
+    small {
+      display: block;
+<<<<<<< HEAD
+      font-size: 10px;
+=======
+      font-size: 14px;
+>>>>>>> Remove content of  Main.js
+    }
+
+    a.btn {
+      width: 120px;
+    }
+  }
+
+  .header-title {
+    h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .header-meta {
+    font-size: 20px;
+    color: #aaa;
+    margin-bottom: 50px;
+  }
+
+  .main-cta {
+    display: flex;
+    margin: 50px;
+
+    .btn {
+      font-size: 30px;
+      font-weight: 100;
+      margin: 0 auto;
+      padding: 20px 50px;
+    }
+  }
+}
+
+<<<<<<< HEAD
+.banner {
+  background-size: cover;
+  height: 600px;
+}
+
+=======
+>>>>>>> Remove content of  Main.js
+.banner-image {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 1px 2px 8px #aaa;
+}
+
+.bordered {
+  border: 1px solid #ddd;
+<<<<<<< HEAD
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+table.borderless {
+=======
+  padding: 50px;
+  border-radius: 10px;
+}
+
+table.borderless {
+  font-size: 20px;
+>>>>>>> Remove content of  Main.js
+  line-height: 2;
+  font-weight: 100;
+}
+
+.event-details {
+  .description {
+    margin: 50px 0;
+  }
+<<<<<<< HEAD
+}
+
+.info-tag {
+  padding: 50px;
+  background: rgba(2, 11, 23, 0.3);
+  color: #fff;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar {
+  .heading {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 50px;
+    font-size: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 20px;
+  }
+
+  .preview-card {
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+
+  }
+
+  .content {
+    margin-top: 20px;
+  }
+}
+
+.main-content {
+  font-size: 18px;
+
+  .description {
+    font-size: 20px;
+  }
+
+  .table {
+    margin-bottom: 50px;
+  }
+
+  .member-list {
+    margin-bottom: 50px;
+  }
+=======
+>>>>>>> Remove content of  Main.js
+}

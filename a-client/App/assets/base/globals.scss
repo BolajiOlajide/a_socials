@@ -1,0 +1,26 @@
+body {
+  overflow-x: hidden;
+  @include lato-font;
+}
+
+.text-primary {
+  color: $primary !important;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.75;
+  font-weight: 300;
+  @include roboto-font;
+}
+
+.main-wrapper {
+  padding: 50px;
+  max-width: 1800px;
+}
+
+
+.btn-primary {
+  @include button-variant($white, $primary, $primary);
+  font-size: 14px;
+}
