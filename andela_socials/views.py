@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 
 from django.http import Http404
 from django.views.generic.base import TemplateView, View
@@ -14,7 +15,7 @@ from django.urls import reverse
 from django.contrib.auth import login
 
 from .utils import resolve_google_oauth
-from .models import GoogleUser, UserProxy, Category
+from .models import GoogleUser, UserProxy, Category, Interest
 from .serializers import CategorySerializer
 from .setpagination import LimitOffsetpage
 
@@ -82,4 +83,34 @@ class CategoryListView(ListAPIView):
     pagination_class = LimitOffsetpage
     filter_fields = ('name',)
     queryset = Category.objects.all()
+
+
+class JoinSocialClubView(APIView):
+    """Join a social club."""
+
+    permission_classes = (AllowAny,)
+
+
+    def post(self, request, format=None):
+        import pdb ; pdb.set_trace()
+        
+        email = request.data.get('email')
+        club_id = request.data.get('club_id')
+        user = request.user
+
+        # get the category for the club_id
+        user_category = Category.objects.get(id=club_id)
+
+        user_interest = Interest(
+            follower=user,
+            follower_category = user_category
+        )
+        user_interest.save()
+
+        body = {
+            message: 'registration successful',
+            status: 201
+        }
+
+        return Response(body)
 
