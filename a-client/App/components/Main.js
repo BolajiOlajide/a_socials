@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import HomePage from './HomePage';
+import SocialClubPage from './SocialClubPage';
 
 /**
  * Renders a component that contains all routes
@@ -9,7 +10,7 @@ import HomePage from './HomePage';
 function Main() {
   return (
     <Switch>
-      <Route path='/' component={HomePage} />
+      <Route path='/' component={SocialClubPage} />
     </Switch>
   );
 }

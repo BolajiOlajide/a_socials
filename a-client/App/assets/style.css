@@ -29,3 +29,80 @@
     background: #547ce0;
     color: #fff;
 }
+
+/* MY STYLES */
+body {
+    font-family: 'Lato', sans-serif;
+}
+.page-header {
+    width: 100vw;
+    height: 300px;
+}
+.black-cover {
+    width: 100vw;
+    height: 300px;
+    background: black;
+    opacity: 0.5;
+}
+.club-title {
+    z-index: 999;
+    position: absolute;
+    top: 31%;
+    left: 8%;
+}
+.club-title > h1 {
+    color: white;
+    font-size: 48px;
+}
+.club-title > button {
+    width: 150px;
+    height: 50px;
+    background-color: #6D9EE1;
+    color: white;
+    border: 0;
+    font-size: 20px;
+}
+.event-list {
+    margin: 30px;
+    padding: 30px;
+    border: 1px solid grey;
+    border-radius: 3%;
+}
+.event-list-header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+.event-list-header > button {
+    width: 180px;
+    height: 50px;
+    background-color: #6D9EE1;
+    color: white;
+    border: 0;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+.event {
+    border: 1px solid #6D9EE1;
+    display: flex;
+    margin-bottom: 20px;
+}
+.event-image {
+    margin-right: 20px;
+}
+.event-details {
+    padding-top: 10px;
+}
+.event-actions {
+    display: flex;
+    justify-content: space-around;
+}
+.event-actions button {
+    width: 100px;
+    height: 40px;
+    background-color: #6D9EE1;
+    color: white;
+    border: 0;
+    font-size: 14px;
+    text-transform: uppercase;
+}

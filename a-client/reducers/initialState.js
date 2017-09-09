@@ -1,7 +1,7 @@
 export default {
   // access: { loggedIn: false, user: {} },
   // socialClubs: [],
-  // socialClub: {},
+  socialClub: {},
   // events: [],
   // event: {},
   // users: [],
