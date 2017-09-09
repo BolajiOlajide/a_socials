@@ -54,14 +54,35 @@ module.exports = {
     filename: 'js/app.js'
   },
   module: {
-      loaders: [
-        { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } },
-        { test: /(\.css|scss)$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
-        { test: /\.(jpeg|png|gif|svg|jpg)$/, loader: 'url-loader' },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-        { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
-        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
-      ]
-    }
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        query: { presets: ['es2015', 'react'] }
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader'
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractAppCSS.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?sourceMap!csso-loader!sass-loader'
+        })
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractVendorCSS.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?sourceMap!csso-loader'
+        })
+      },
+      {
+        test: /\.(jpg|png|svg|gif)$/,
+        loader: 'url-loader'
+      }
+    ]
+  }
 };
