@@ -5,9 +5,7 @@
   "repository": "https://github.com/BolajiOlajide/a_socials.git",
   "scripts": {
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
-    "start": "webpack --config webpack.config.js",
-    "prebuild": "rm -rf ./static/{css,js,img}",
-    "prewatch": "yarn prebuild"
+    "start": "webpack --config webpack.config.prod.js"
   },
   "engines": {
     "node": "v7.8.0",
