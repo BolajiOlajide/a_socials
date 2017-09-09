@@ -88,11 +88,7 @@ class CategoryListView(ListAPIView):
 class JoinSocialClubView(APIView):
     """Join a social club."""
 
-    permission_classes = (AllowAny,)
-
-
     def post(self, request, format=None):
-        import pdb ; pdb.set_trace()
         
         email = request.data.get('email')
         club_id = request.data.get('club_id')
@@ -131,3 +127,11 @@ class SocialClubDetail(GenericAPIView):
         serializer = CategorySerializer(category)
         return Response(serializer.data)
 
+class AttendSocialEventView(APIView):
+    """Attend a social event."""
+    def post(self, request, format=None):
+
+        email = request.data.get('email')
+        club_id = request.data.get('club_id')
+        event_id = request.data.get('event_id')
+        pass
