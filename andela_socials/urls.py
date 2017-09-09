@@ -14,4 +14,8 @@ urlpatterns = [
         views.DashBoardView.as_view(),
         name='dashboard'
         ),
+
+    url(r'^join/$', views.JoinSocialClubView.as_view(),
+        name='join'
+        ),
 ]
