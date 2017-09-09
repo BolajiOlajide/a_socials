@@ -20,9 +20,9 @@ from django.views.generic.base import TemplateView
 from andela_socials import views
 
 urlpatterns = [
-    url(r'^$', views.HomeView.as_view(), name='homepage'),
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/', include('andela_socials.urls')),
-    url(r'^/', include('andela_socials.urls')),
-    url(r'^.*/', views.DashBoardView.as_view(template_name="index.html"), name='base')
+    url(r'^/?$', views.HomeView.as_view(), name='homepage'),
+    url(r'^admin/?', admin.site.urls),
+    url(r'^api/v1/?', include('andela_socials.urls')),
+    url(r'^/?', include('andela_socials.urls')),
+    url(r'^.*/?', views.DashBoardView.as_view(template_name="index.html"), name='base')
 ]
