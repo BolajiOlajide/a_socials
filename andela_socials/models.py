@@ -107,6 +107,11 @@ class Category(BaseInfo):
 
         ordering = ['name']
 
+    def get_count(self):
+        interest_count = Interest.objects.filter(follower_category=self)
+        result = interest_count.count()
+        return result
+
     def __unicode__(self):
         return "Category : {}" .format(self.name)
 
