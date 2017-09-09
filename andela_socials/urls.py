@@ -7,10 +7,11 @@ urlpatterns = [
     url(r'^auth/login/$', views.GoogleLoginView.as_view(),
         name='auth_login'),
 
-    url(r'^user/dashboard/$',
+    url(r'^categories/$', views.CategoryListView.as_view(),
+        name='apicategory'),
+
+    url(r'^home/$',
         views.DashBoardView.as_view(),
         name='dashboard'
         ),
-    url(r'^categories/$', views.CategoryListView.as_view(),
-        name='apicategory'),
 ]

@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import configureStore from './store/configureStore';
 import routes from './routes';
 import App from './App/app';
+import './App/assets/style.scss';
 
 const store = configureStore();
 
