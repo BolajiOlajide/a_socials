@@ -15,7 +15,11 @@ from django.urls import reverse
 from django.contrib.auth import login
 
 from .utils import resolve_google_oauth
+<<<<<<< HEAD
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
+=======
+from .models import GoogleUser, UserProxy, Category, Interest, Event
+>>>>>>> Create social club endpoint (#6)
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
 
@@ -127,6 +131,7 @@ class SocialClubDetail(GenericAPIView):
         serializer = CategorySerializer(category)
         return Response(serializer.data)
 
+<<<<<<< HEAD
 class AttendSocialEventView(APIView):
     """Attend a social event."""
     def post(self, request, format=None):
@@ -153,3 +158,5 @@ class AttendSocialEventView(APIView):
         }
 
         return Response(body)
+=======
+>>>>>>> Create social club endpoint (#6)

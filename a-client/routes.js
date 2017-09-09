@@ -1,7 +1,10 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './App/app';
+
 import EventPage from './App/components/events/event/Index';
+import HomePage from './App/components/HomePage';
+import SocialClubPage from './App/components/SocialClubPage';
 
 import EventPage from './App/components/events/event/Index';
 import HomePage from './App/components/HomePage';
