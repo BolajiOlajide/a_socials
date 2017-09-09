@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getClub, joinClub } from '../../actions/SocialClubActions';
+import { getClub, joinClub } from '../../actions/socialClubActions';
 import PageHeader from './PageHeader';
 import EventList from './EventList';
 import toastr from 'toastr';

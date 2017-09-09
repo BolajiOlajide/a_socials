@@ -9,6 +9,10 @@
     "prebuild": "rm -rf ./static/{css,js,img}",
     "prewatch": "yarn prebuild"
   },
+  "engines": {
+    "node": "v7.8.0",
+    "npm": "3.10.10"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
