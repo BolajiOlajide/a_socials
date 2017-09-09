@@ -119,13 +119,17 @@ class Category(BaseInfo):
         return "Category : {}" .format(self.name)
 
 
-class Message(BaseInfo):
+class Event(BaseInfo):
     """Message model defined."""
 
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    description = models.TextField()
+    venue = models.TextField(default='Pekas Night Club')
+    date = models.CharField(default='September 10, 2017', max_length=200)
+    time = models.CharField(default='01:00pm WAT', max_length=200)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    social_event = models.ForeignKey(Category, on_delete=models.CASCADE)
+    social_event = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
+    featured_image = models.URLField()
 
     def __unicode__(self):
         return "Message with title : {}" .format(self.title)

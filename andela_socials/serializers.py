@@ -3,7 +3,7 @@
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
-from .models import GoogleUser, Category, Message, Interest
+from .models import GoogleUser, Category, Event, Interest
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,22 +23,21 @@ class GoogleUserSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class EventSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'featured_image', 'created_at')
+
+
 class CategorySerializer(serializers.ModelSerializer):
     """Category Model serializer class."""
 
+    events = EventSerializer(many=True, read_only=True)
+
     class Meta:
         model = Category
-        fields = ('id', 'name', 'members_count', 'featured_image')
-
-
-class MessageSerializer(serializers.ModelSerializer):
-    
-    creator = UserSerializer(many=True, read_only=True)
-    social_event = CategorySerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Message
-        fields = ('title', 'content', 'creator', 'social_event')
+        fields = ('id', 'name', 'members_count', 'featured_image', 'events')
 
 
 class InterestSerializer(serializers.ModelSerializer):
