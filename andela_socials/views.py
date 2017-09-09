@@ -13,6 +13,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth import login
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from .utils import resolve_google_oauth
 <<<<<<< HEAD
@@ -22,6 +24,15 @@ from .models import GoogleUser, UserProxy, Category, Interest, Event
 >>>>>>> Create social club endpoint (#6)
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
+
+
+class ExemptCSRFMixn(object):
+    """View mixin defined to exempt csrf."""
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ExemptCSRFMixn, self).dispatch(
+    request, *args, **kwargs)
 
 
 class DashBoardView(TemplateView):
@@ -89,16 +100,17 @@ class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class JoinSocialClubView(APIView):
+class JoinSocialClubView(GenericAPIView, ExemptCSRFMixn):
     """Join a social club."""
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         
         email = request.data.get('email')
         club_id = request.data.get('club_id')
         user = request.user
 
         # get the category for the club_id
+        import pdb; pdb.set_trace()
         user_category = Category.objects.get(id=club_id)
 
         user_interest = Interest(
@@ -132,9 +144,14 @@ class SocialClubDetail(GenericAPIView):
         return Response(serializer.data)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 class AttendSocialEventView(APIView):
+=======
+class AttendSocialEventView(GenericAPIView):
+>>>>>>> Add actions to get and join clubs
     """Attend a social event."""
-    def post(self, request, format=None):
+
+    def get(self, request, format=None):
 
         email = request.data.get('email')
         club_id = request.data.get('club_id')
