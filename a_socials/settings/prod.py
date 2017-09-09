@@ -2,7 +2,7 @@
 import os
 
 import dotenv
-from .pg_db_url import config
+from dj_database_url import config, parse
 
 from .base import *
 
@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': config(env=dotenv.get('DATABASE_URL'))
+    'default': parse(dotenv.get('DATABASE_URL'))
 }
 
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'

@@ -17,11 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from .utils import resolve_google_oauth
-<<<<<<< HEAD
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
-=======
-from .models import GoogleUser, UserProxy, Category, Interest, Event
->>>>>>> Create social club endpoint (#6)
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
 
@@ -143,12 +139,8 @@ class SocialClubDetail(GenericAPIView):
         serializer = CategorySerializer(category)
         return Response(serializer.data)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-class AttendSocialEventView(APIView):
-=======
+
 class AttendSocialEventView(GenericAPIView):
->>>>>>> Add actions to get and join clubs
     """Attend a social event."""
 
     def get(self, request, format=None):
@@ -175,5 +167,3 @@ class AttendSocialEventView(GenericAPIView):
         }
 
         return Response(body)
-=======
->>>>>>> Create social club endpoint (#6)

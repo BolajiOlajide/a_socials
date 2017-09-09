@@ -21,11 +21,7 @@ urlpatterns = [
         name='apicategory'),
     url(r'^category/(?P<pk>[0-9]+)/events/$', views.SocialClubDetail.as_view(),
         name="user-detail"),
-<<<<<<< HEAD
-
     url(r'^attend/$', views.AttendSocialEventView.as_view(),
         name='attend'
         ),
-=======
->>>>>>> Create social club endpoint (#6)
 ]
