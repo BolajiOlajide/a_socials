@@ -7,13 +7,16 @@ from rest_framework.views import APIView
 
 from django.http import Http404
 from django.views.generic.base import TemplateView, View
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth import login
 
 from .utils import resolve_google_oauth
-from .models import GoogleUser, UserProxy
+from .models import GoogleUser, UserProxy, Category
+from .serializers import CategorySerializer
+from .setpagination import LimitOffsetpage
 
 
 class DashBoardView(TemplateView):
@@ -70,3 +73,13 @@ class GoogleLoginView(View):
         login(request, userproxy)
 
         return HttpResponse("success", content_type="text/plain")
+
+class CategoryListView(ListAPIView):
+    """List all Categories."""
+
+    model = Category
+    serializer_class = CategorySerializer
+    pagination_class = LimitOffsetpage
+    filter_fields = ('name',)
+    queryset = Category.objects.all()
+

@@ -11,5 +11,6 @@ urlpatterns = [
         views.DashBoardView.as_view(),
         name='dashboard'
         ),
-
+    url(r'^categories/$', views.CategoryListView.as_view(),
+        name='apicategory'),
 ]

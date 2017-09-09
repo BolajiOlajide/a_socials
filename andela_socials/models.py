@@ -101,6 +101,7 @@ class Category(BaseInfo):
     """Category model defined."""
 
     name = models.CharField(max_length=200)
+    featured_image = models.URLField()
 
     class Meta:
         """Define odering below."""
@@ -111,6 +112,8 @@ class Category(BaseInfo):
         interest_count = Interest.objects.filter(follower_category=self)
         result = interest_count.count()
         return result
+    
+    members_count = property(get_count)
 
     def __unicode__(self):
         return "Category : {}" .format(self.name)
