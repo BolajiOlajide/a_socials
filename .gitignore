@@ -13,9 +13,6 @@ env
 .vscode/
 package-lock.json
 a-client/js/main.js
-static/css
-static/js
-static/img
 env/
 .idea/
 staticfiles/
