@@ -7,7 +7,7 @@ class Jumbotron extends Component {
                 <div className="container">
                     <div className="container hero">
                         <div className="no-margin j-content">
-                            <h2> Bringing Andelans Closer </h2>
+                            <h2> Bringing people Closer </h2>
                             <button className="btn btn-join">Join A Social Club</button>
                         </div>
                     </div>

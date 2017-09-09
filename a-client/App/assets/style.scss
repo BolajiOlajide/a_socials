@@ -1,3 +1,7 @@
+@import "tools/index";
+@import "base/index";
+@import "pages/index";
+
 .no-margin {
     margin: 0px;
 }
@@ -7,7 +11,7 @@
 }
 
 .nav-menu {
-    background: #164cd2;
+    background: $primary;
 }
 
 .active {
