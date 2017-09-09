@@ -6,6 +6,10 @@ import EventPage from './App/components/events/event/Index';
 import HomePage from './App/components/HomePage';
 import SocialClubPage from './App/components/SocialClubPage';
 
+import EventPage from './App/components/events/event/Index';
+import HomePage from './App/components/HomePage';
+import SocialClubPage from './App/components/SocialClubPage';
+
 export default
   <Route path="/" component={App}>
   	<Route path="/home" component={HomePage} />

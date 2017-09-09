@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-// import { socialClubs, socialClub } from './socialClubReducers';
+import { socialClub } from './socialClubReducers';
 // import { events, event} from './eventReducers';
 // import { users, user} from './userReducers';
 // import access from './accessReducers';
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   number,
   // access,
   // socialClubs,
-  // socialClub,
+  socialClub
   // events,
   // event,
   // users,
