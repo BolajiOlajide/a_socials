@@ -9,9 +9,12 @@ from .base import *
 # Load the .env file to get environment variables
 dotenv.load()
 
+<<<<<<< HEAD
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+=======
+>>>>>>> b19df9fdb13ed9b7a8ca991bd6568491f0ead902
 ALLOWED_HOSTS = ['*']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
