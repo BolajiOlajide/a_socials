@@ -14,8 +14,11 @@ urlpatterns = [
         views.DashBoardView.as_view(),
         name='dashboard'
         ),
-
     url(r'^join/$', views.JoinSocialClubView.as_view(),
         name='join'
         ),
+    url(r'^categories/$', views.CategoryListView.as_view(),
+        name='apicategory'),
+    url(r'^category/(?P<pk>[0-9]+)/events/$', views.SocialClubDetail.as_view(),
+        name="user-detail"),
 ]

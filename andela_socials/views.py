@@ -15,8 +15,8 @@ from django.urls import reverse
 from django.contrib.auth import login
 
 from .utils import resolve_google_oauth
-from .models import GoogleUser, UserProxy, Category, Interest
-from .serializers import CategorySerializer
+from .models import GoogleUser, UserProxy, Category, Interest, Event
+from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
 
 
@@ -113,4 +113,21 @@ class JoinSocialClubView(APIView):
         }
 
         return Response(body)
+
+
+class SocialClubDetail(GenericAPIView):
+    """List all Social Club Details."""
+
+    model = Event
+    serializer_class = CategorySerializer
+
+    def get(self, request, *args, **kwargs):
+        category_id = kwargs.get('pk')
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            raise Http404
+
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
 
