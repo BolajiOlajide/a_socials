@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Jumbotron from './Jumbotron';
 
-class HomePage extends Component {
+
+class Event extends Component {
   render() {
     return (
       <div>
-        <Jumbotron />
+        <p>Something different</p>
         {this.props.children}
       </div>
     );
   }
 }
 
-export default HomePage;
+export default Event;
