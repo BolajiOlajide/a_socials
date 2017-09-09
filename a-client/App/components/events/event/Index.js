@@ -43,57 +43,75 @@ class HomePage extends Component {
 
 
 
-              <div className="event-details bordered">
-                <table className="table borderless">
-                  <tr>
-                    <td>Venue:</td>
-                    <td>EPIC Towers, 235 Ilupeju, Lagos</td>
-                  </tr>
-                  <tr>
-                    <td>Date:</td>
-                    <td>September 10, 2017</td>
-                  </tr>
-                  <tr>
-                    <td>Time:</td>
-                    <td>01:00pm WAT</td>
-                  </tr>
-                </table>
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-9 main-content">
 
-                <p className="description">
-                  We should visit the new EPIC Towers Hotel and enjoy its amazing swimming pool located 50 metres from the ground.
-                </p>
+                    <div className="content">
+                    <div className="event-details bordered">
 
-                <h3>Who is attending?</h3>
+                      <p className="description">
+                        We should visit the new EPIC Towers Hotel and enjoy its amazing swimming pool located 50 metres from the ground.
+                      </p>
 
-                <ul>
-                  <li>@ignatius</li>
-                  <li>@heavy_water</li>
-                  <li>@fortune</li>
-                  <li>@tams</li>
-                  <li>@gentlefella</li>
-                  <li>@bolaji</li>
-                </ul>
+                      <table className="table borderless">
+                        <tr>
+                          <td>Venue:</td>
+                          <td>EPIC Towers, 235 Ilupeju, Lagos</td>
+                        </tr>
+                        <tr>
+                          <td>Date:</td>
+                          <td>September 10, 2017</td>
+                        </tr>
+                        <tr>
+                          <td>Time:</td>
+                          <td>01:00pm WAT</td>
+                        </tr>
+                      </table>
+
+
+                      <h3>Who is attending?</h3>
+
+                      <ul className="member-list">
+                        <li>@ignatius</li>
+                        <li>@heavy_water</li>
+                        <li>@fortune</li>
+                        <li>@tams</li>
+                        <li>@gentlefella</li>
+                        <li>@bolaji</li>
+                      </ul>
+
+                      <div className="main-cta">
+                        <a href="#" className="btn btn-lg btn-primary cta">
+                          Join this event
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+
+
+                  <div className="col-lg-3 bordered sidebar">
+                    <div className="heading">
+                      Recommendations
+                    </div>
+
+                    <div className="preview-card"
+                         style={{backgroundImage: `url(${defaultImageUrl})`}}>
+                      <div>Reserve a space</div>
+                    </div>
+
+                    <div className="content">
+                      <p><b>Venue: </b>Sheraton Hotel, VI</p>
+                      <p><b>Date: </b>Oct 21st, 2017</p>
+                      <p>@ignatius, @heavy_water, @fortune, @tams have already indicated interest.</p>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
 
-
-
-            <div className="col-lg-3 bordered sidebar">
-              <div className="heading">
-                Recommendations
-              </div>
-
-              <div className="preview-card"
-                    style={{backgroundImage: `url(${defaultImageUrl})`}}>
-                <div>Reserve a space</div>
-              </div>
-
-              <content>
-                <p><b>Venue: </b>Sheraton Hotel, VI</p>
-                <p><b>Date: </b>Oct 21st, 2017</p>
-                <p>@ignatius, @heavy_water, @fortune, @tams have already indicated interest.</p>
-              </content>
-            </div>
           </div>
         </div>
 

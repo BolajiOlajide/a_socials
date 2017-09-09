@@ -71,10 +71,11 @@
   border: 1px solid #ddd;
   padding: 20px;
   border-radius: 10px;
+  margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 table.borderless {
-  font-size: 20px;
   line-height: 2;
   font-weight: 100;
 }
@@ -112,5 +113,25 @@ table.borderless {
     height: 250px;
     background-size: cover;
 
+  }
+
+  .content {
+    margin-top: 20px;
+  }
+}
+
+.main-content {
+  font-size: 18px;
+
+  .description {
+    font-size: 20px;
+  }
+
+  .table {
+    margin-bottom: 50px;
+  }
+
+  .member-list {
+    margin-bottom: 50px;
   }
 }
