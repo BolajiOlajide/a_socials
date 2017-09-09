@@ -16,7 +16,7 @@ class SocialClubPage extends Component {
     toastr.success('Clubs loaded Successfully');
   }
 
-  join(details={club_id: 3, email: 'ig@uk.com'}){
+  join(details={'club_id': 3, 'email': 'ig@uk.com'}){
     this.props.joinClub(details)
     .then(() => {
       toastr.success('You have successfully joined this Club. You will be notified of new events');
