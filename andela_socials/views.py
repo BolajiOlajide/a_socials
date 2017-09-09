@@ -20,6 +20,7 @@ from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
+from .slack import get_slack_name
 
 
 class ExemptCSRFMixn(object):
@@ -96,17 +97,16 @@ class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class JoinSocialClubView(GenericAPIView, ExemptCSRFMixn):
+class JoinSocialClubView(APIView, ExemptCSRFMixn):
     """Join a social club."""
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         
         email = request.data.get('email')
         club_id = request.data.get('club_id')
         user = request.user
 
         # get the category for the club_id
-        import pdb; pdb.set_trace()
         user_category = Category.objects.get(id=club_id)
 
         user_interest = Interest(
@@ -114,6 +114,12 @@ class JoinSocialClubView(GenericAPIView, ExemptCSRFMixn):
             follower_category = user_category
         )
         user_interest.save()
+
+        # send @dm to user on slack
+        slack_name = get_slack_name(user)
+        message  = "you have successfully joined {} social club".format(user_category.name)
+        # proton Take care of this here... 
+
 
         body = {
             message: 'registration successful',
@@ -140,7 +146,7 @@ class SocialClubDetail(GenericAPIView):
         return Response(serializer.data)
 
 
-class AttendSocialEventView(GenericAPIView):
+class AttendSocialEventView(APIView):
     """Attend a social event."""
 
     def get(self, request, format=None):
