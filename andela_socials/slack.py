@@ -1,13 +1,23 @@
-import slackweb
-import requests
+import os
+import time
+from slackclient import SlackClient
+
+import dotenv
+
+dotenv.load()
+
+# instantiate Slack & Twilio clients
+slack_client = SlackClient(dotenv.get('SLACK_BOT_TOKEN'))
 
 def get_slack_users():
     """
     Helper function to return all slack users.
     """
-    slack_token_url = os.environ.get('SLACK_TOKEN_URL')
-    response = requests.get(slack_token_url)
-    return response.json()['members']
+    api_call = slack_client.api_call("users.list")
+    if api_call.get('ok'):
+        # retrieve all users so we can find our bot
+        users = api_call.get('members')
+    return users
 
 
 def get_slack_name(user):
@@ -16,9 +26,6 @@ def get_slack_name(user):
     """
     members = get_slack_users()
     slack_name = None
-    for member in members:
-        if member.get('profile').get('email') == user.email:
-            slack_name = member.get('name')
-            break
-    return slack_name
+    user_name = [member for member in members if member.get('profile').get('email') == user['email']]
+    return user_name[0].get('name')
 
