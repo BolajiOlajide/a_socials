@@ -134,4 +134,4 @@ class AttendSocialEventView(APIView):
         email = request.data.get('email')
         club_id = request.data.get('club_id')
         event_id = request.data.get('event_id')
-        pass
+

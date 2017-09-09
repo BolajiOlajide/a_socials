@@ -147,3 +147,13 @@ class Interest(BaseInfo):
         return "User {} interested in category {}" .format(self.user.username,
                                                        self.follower_category.name)
 
+                                    
+class Attend(BaseInfo):
+    """User Interest Model defined."""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.user.name
+
