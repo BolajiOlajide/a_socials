@@ -2,7 +2,7 @@
   "name": "a_socials",
   "version": "0.0.0",
   "main": "index.js",
-  "repository": "https://cooProton@bitbucket.org/fortunee/a_socials.git",
+  "repository": "https://github.com/BolajiOlajide/a_socials.git",
   "scripts": {
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
     "start": "webpack --config webpack.config.js",
