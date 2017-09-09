@@ -23,3 +23,4 @@ slackclient==1.0.9
 uritemplate==3.0.0
 urllib3==1.22
 websocket-client==0.44.0
+whitenoise==3.3.0
