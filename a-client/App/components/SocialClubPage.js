@@ -7,7 +7,7 @@ import EventList from './EventList';
 
 class SocialClubPage extends Component {
   componentDidMount() {
-    this.props.getClub();
+    this.props.getClub(3);
   }
   render(){
     const { meta, events } = this.props.club;
