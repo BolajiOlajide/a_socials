@@ -28,7 +28,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name', )
+        fields = ('id', 'name', 'members_count', 'featured_image')
 
 
 class MessageSerializer(serializers.ModelSerializer):

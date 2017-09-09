@@ -16,3 +16,10 @@
 To start the app simply run the command: `./start.sh`, it activates your virtualenv and starts the application.
 
 If you're making use of virtualenvwrapper `./start.sh wrap` instead as this skips the activation of virtualenvwrapper.
+
+### DUMMY DATA
+You can seed the dummy data into your database using the command `python manage.py loaddata fixtures/initial.json` when that is done you have access to dummy categories and dummy users. A user information you can use is:
+*username:* _andelasocials_
+*password:* _testuser_
+
+### CONTRUBUTORS
