@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.contrib.auth import login
 
 from .utils import resolve_google_oauth
-from .models import GoogleUser, UserProxy, Category, Interest, Event
+from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
 
@@ -105,7 +105,7 @@ class JoinSocialClubView(APIView):
 
         body = {
             message: 'registration successful',
-            status: 201
+            status: 200
         }
 
         return Response(body)
@@ -135,3 +135,21 @@ class AttendSocialEventView(APIView):
         club_id = request.data.get('club_id')
         event_id = request.data.get('event_id')
 
+        try:
+             my_event.objects.get(id=category_id)
+        except Event.DoesNotExist:
+            raise Http404
+
+        user_attendance = Attend(
+            user=request.user,
+            event = my_event
+        )
+
+        user_attendance.save()
+
+        body = {
+            message: 'registration successful',
+            status: 200
+        }
+
+        return Response(body)
