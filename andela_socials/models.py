@@ -14,6 +14,7 @@ class BaseInfo(models.Model):
 
         abstract = True
 
+
 class UserProxy(User):
     """Class defined to create a proxy for the user model.
         Changes made to this model directly affects the User model
@@ -79,6 +80,7 @@ class UserProfile(models.Model):
 
     # more fields here, not sure for now. 
     user = models.OneToOneField(User)
+
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
