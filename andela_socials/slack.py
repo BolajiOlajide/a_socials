@@ -29,3 +29,21 @@ def get_slack_name(user):
     user_name = [member for member in members if member.get('profile').get('email') == user['email']]
     return user_name[0].get('name')
 
+def notify_channel(message):
+    slack_client.api_call(
+      "chat.postMessage",
+      channel="#andela_socials",
+      text=message,
+      as_user=True,
+      reply_broadcast=True,
+    )
+
+def notify_user(message, user_name):
+    name = "@{}".format(user_name)
+    slack_client.api_call(
+      "chat.postMessage",
+      channel=name,
+      text=message,
+      as_user=True,
+      reply_broadcast=True,
+    )
