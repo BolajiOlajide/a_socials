@@ -4,4 +4,4 @@ set -e
 
 python manage.py makemigrations
 python manage.py migrate
-webpack --config=webpack.config.prod.js
+python manage.py loaddata fixtures/prod.json
