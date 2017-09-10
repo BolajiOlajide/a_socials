@@ -18,6 +18,7 @@ class SocialClubPage extends Component {
       date: '',
       time: '',
       featured_image: '',
+      category_id: ''
     };
 
     this.onChange = this.onChange.bind(this);
@@ -32,7 +33,10 @@ class SocialClubPage extends Component {
   }
 
   onChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ 
+      [event.target.name]: event.target.value, 
+      category_id: this.props.club.id 
+    });
   }
 
   onSubmit(event) {

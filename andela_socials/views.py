@@ -124,7 +124,6 @@ class JoinSocialClubView(TemplateView):
         # send @dm to user on slack
         slack_name = get_slack_name(user)
         message  = "you have successfully joined {} social club".format(user_category.name)
-        # proton Take care of this here... 
         notify_user(message, slack_name)
 
 
@@ -195,6 +194,12 @@ class CreateEventView(TemplateView):
         date = body_data.get('date')
         time = body_data.get('time'),
         featured_image = body_data.get('featured_image')
+        social_event_id = body_data.get('category_id')
+
+        try:
+            social_event = Category.objects.get(id=int(social_event_id)) # ensure this does not fail.
+        except Category.DoesNotExist:
+            raise Http404
 
         new_event = Event(
             title=title,
@@ -204,23 +209,19 @@ class CreateEventView(TemplateView):
             time=time,
             featured_image=featured_image,
             creator=request.use,
-            social_event='random' 
+            social_event=social_event
         )
 
         new_event.save()
 
         # send @dm to user on slack
         slack_name = get_slack_name(user)
-        message  = "New event {} has just been created".format(new_event.title)
-        # proton Take care of this here... 
-
-
-
+        message  = "New Social event {} has just been created".format(new_event.title)
+        
+        # to do (pending on event detail page) build URI for event page to add to message)
+        notify_channel(message)
 
         return http.response.JsonResponse({
             'message': 'registration successful',
             'status': 200
         })
-
-
-        
