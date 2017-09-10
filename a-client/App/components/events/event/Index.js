@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import featuredImage from '../../../assets/img/img_1.jpg'
 
 class HomePage extends Component {

@@ -5,9 +5,7 @@
   "repository": "https://github.com/BolajiOlajide/a_socials.git",
   "scripts": {
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
-    "start": "webpack --config webpack.config.js",
-    "prebuild": "rm -rf ./static/{css,js,img}",
-    "prewatch": "yarn prebuild"
+    "start": "webpack --config webpack.config.prod.js"
   },
   "author": "",
   "license": "MIT",
@@ -21,10 +19,13 @@
     "babel-preset-react-hmre": "1.1.1",
     "bower": "1.8.0",
     "css-loader": "0.28.7",
+    "csso-loader": "^0.3.1",
     "dotenv": "4.0.0",
     "eventsource-polyfill": "0.9.6",
+    "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "0.11.2",
     "image-webpack-loader": "3.4.2",
+    "jquery": "^3.2.1",
     "node-sass": "^4.5.3",
     "react": "15.6.1",
     "react-dom": "15.6.1",
@@ -37,6 +38,7 @@
     "redux-thunk": "^2.2.0",
     "rimraf": "2.6.1",
     "sass-loader": "^6.0.6",
+    "source-map-loader": "^0.2.1",
     "style-loader": "0.18.2",
     "toastr": "2.1.2",
     "url-loader": "^0.5.9",

@@ -9,7 +9,9 @@ import SocialClubPage from './SocialClubPage';
  */
 function Main() {
   return (
-    <div>Don't need you.</div>
+    <Switch>
+      <Route path='/' component={SocialClubPage} />
+    </Switch>
   );
 }
 export default Main;

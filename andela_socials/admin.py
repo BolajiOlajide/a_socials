@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, GoogleUser, Interest, Message
+from .models import Category, GoogleUser, Interest, Event
 
 
 class CategoryUserAdmin(admin.ModelAdmin):
@@ -10,9 +10,10 @@ class CategoryUserAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Basic Information", {
-            'fields': ('name',)
+            'fields': ('name', 'featured_image')
         }),
     )
 
 admin.site.register(Category, CategoryUserAdmin)
 admin.site.register(Interest)
+admin.site.register(Event)
