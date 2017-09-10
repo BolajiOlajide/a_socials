@@ -9,6 +9,6 @@ import SocialClubPage from './App/components/SocialClubPage';
 export default
   <Route path="/" component={App}>
   	<Route path="/home" component={HomePage} />
-  	<Route path="/home/clubs" component={SocialClubPage} />
+  	<Route path="/home/clubs/:id" component={SocialClubPage} />
     <Route path="home/clubs/:club_id/events/:id" component={EventPage} />
   </Route>;
