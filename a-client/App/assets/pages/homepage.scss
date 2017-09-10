@@ -1,0 +1,121 @@
+.no-margin {
+  margin: 0px;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+body{
+
+}
+
+.wrapper {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.homepage {
+  top: 0;
+  left: 0;
+  right: 0;
+  border: 0;
+  background: url(./img/img_group_selfie.jpg) no-repeat;
+  background-size: cover;
+}
+
+.logo {
+  max-height: 100px;
+}
+
+.tagline {
+  text-transform: uppercase;
+  line-height: 1.0;
+  margin: 0;
+  margin-top: -10px;
+  font-size: 25px;
+  letter-spacing: 1.2px;
+  font-weight: normal;
+}
+.center-content {
+  height: 100%;
+}
+
+.nav-menu {
+  background: $primary;
+  border-bottom: 0px;
+}
+
+.active {
+  color: blue !important;
+}
+
+.nav-menu a {
+  color: #fff !important;
+}
+
+.col-sm-4 * {
+  /* background-color: rgba(233, 255, 48, 0.4) */
+}
+.button-group {
+  display: flex;
+  color: #203A53;
+  background-color: #D8D8D8;
+  height: 70px;
+  font-size: 20px;
+}
+
+.button-group button {
+  flex: 1 0 50%;
+}
+
+.button-group button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
+}
+
+.glyphicon {
+  padding: 8px;
+}
+
+.jumbotron{
+  background: rgba(0, 0, 1, .7);
+  color: snow;
+  margin: 0;
+}
+
+.j-content {
+  text-align: center;
+  /* padding-bottom: 65px; */
+  text-shadow:0px 1px 0px #2E18BE;
+
+  > header {
+    margin-bottom: 50px;
+    margin-top: 20px;
+  }
+}
+
+.club {
+  border: 2px solid #979797;
+  border-bottom: none;
+  /* margin: 10px; */
+  border-radius: 10px 10px 0px 0px;
+  height: 300px;
+  background-size: cover;
+}
+
+.club img {
+  border-radius: 10px 10px 0px 0px;
+}
+
+footer {
+  text-align: center;
+}
+
+.club-card {
+  margin-bottom: 50px;
+}
