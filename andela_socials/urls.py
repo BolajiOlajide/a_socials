@@ -24,4 +24,8 @@ urlpatterns = [
     url(r'^attend/?$', views.AttendSocialEventView.as_view(),
         name='attend'
         ),
+
+    url(r'^create/event/?$', views.CreateEventView.as_view(),
+        name='create_event'
+        ),
 ]

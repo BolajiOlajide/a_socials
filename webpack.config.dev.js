@@ -40,7 +40,7 @@ module.exports = {
     compress: true,
     port: 9000,
     proxy: {
-      '/api': {
+      '/api/v1': {
         target: 'http://0.0.0.0:8000',
         secure: false,
       }
