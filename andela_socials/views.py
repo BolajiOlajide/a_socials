@@ -124,7 +124,6 @@ class JoinSocialClubView(TemplateView):
         # send @dm to user on slack
         slack_name = get_slack_name(user)
         message  = "you have successfully joined {} social club".format(user_category.name)
-        # proton Take care of this here... 
         notify_user(message, slack_name)
 
 
@@ -218,11 +217,11 @@ class CreateEventView(TemplateView):
         # send @dm to user on slack
         slack_name = get_slack_name(user)
         message  = "New Social event {} has just been created".format(new_event.title)
+        
+        # to do (pending on event detail page) build URI for event page to add to message)
+        notify_channel(message)
 
         return http.response.JsonResponse({
             'message': 'registration successful',
             'status': 200
         })
-
-
-        
