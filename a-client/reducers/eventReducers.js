@@ -17,14 +17,13 @@ import initialState from './initialState';
  * @param {object} action
  * @returns {array} new state of the event
  */
-// export function event(state = initialState.event, action) {
-//   return state;
-// }
-
-export function number(state=initialState.number, action) {
-   if (action.type == constants.DISPLAY) {
-      return state + action.figure;
+export function event(state = initialState.event, action) {
+  switch(action.type) {
+    case constants.GET_EVENT:
+      return action.details;
+    default:
+      return state;
   }
-  return state;
 }
+
 
