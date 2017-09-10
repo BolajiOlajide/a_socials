@@ -7,9 +7,12 @@ import initialState from './initialState';
  * @param {object} action
  * @returns {array} new state of socialClubs
  */
-// export function socialClubs(state = initialState.socialClubs, action) {
-//   return state;
-// }
+export function socialClubs(state = initialState.socialClubs, action) {
+  if (action.type == constants.GET_CLUBS) {
+    return action.clubs || state;
+  }
+  return state;
+}
 
 /**
  * Reducers for one socialClub

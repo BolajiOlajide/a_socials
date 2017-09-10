@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-eval-source-map',
   context: __dirname,
   entry: './a-client/index.js',
   target: 'web',
@@ -26,7 +26,7 @@ module.exports = {
     loaders: [
       { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } },
       { test: /(\.css|scss)$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
-      { test: /\.(jpeg|png|gif|svg|jpg)$/, loader: 'url-loader' },
+      { test: /\.(jpeg|png|gif|svg|jpg)$/, loader: 'url-loader?limit=25000' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
       { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
@@ -40,7 +40,7 @@ module.exports = {
     compress: true,
     port: 9000,
     proxy: {
-      '/api': {
+      '/api/v1': {
         target: 'http://0.0.0.0:8000',
         secure: false,
       }

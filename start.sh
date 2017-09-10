@@ -8,4 +8,4 @@ else
 	source env/bin/activate
 fi
 
-yarn start:dev & python manage.py runserver
+yarn start:dev & python manage.py runserver 0.0.0.0:8000
