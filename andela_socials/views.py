@@ -22,7 +22,7 @@ from django.contrib.auth.decorators import login_required
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
-from .serializers import CategorySerializer, EventSerializer
+from .serializers import CategorySerializer, EventSerializer, EventDetailSerializer
 from .setpagination import LimitOffsetpage
 from .slack import get_slack_name, notify_channel, notify_user
 
@@ -248,3 +248,19 @@ class SignOutView(View, LoginRequiredMixin):
         return HttpResponseRedirect(
             reverse_lazy('homepage'))
 
+
+class EventDetail(GenericAPIView):
+    """List all Social Club Details."""
+
+    model = Event
+    serializer_class = EventDetailSerializer
+
+    def get(self, request, *args, **kwargs):
+        event_id = kwargs.get('pk')
+        try:
+            event = Event.objects.get(id=event_id)
+        except Event.DoesNotExist:
+            raise Http404
+
+        serializer = EventDetailSerializer(event)
+        return Response(serializer.data)
