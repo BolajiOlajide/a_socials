@@ -23,7 +23,6 @@ import initialState from './initialState';
 
 export function number(state=initialState.number, action) {
    if (action.type == constants.DISPLAY) {
-     console.log('Action', action)
       return state + action.figure;
   }
   return state;

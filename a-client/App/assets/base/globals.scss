@@ -1,6 +1,31 @@
+html, body {
+  height:100%;
+}
+
+html {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border: 0;
+  overflow: scroll;
+}
+
 body {
-  overflow-x: hidden;
+  position: relative;
+  overflow: scroll;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
   @include lato-font;
+}
+
+#app {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: relative;
 }
 
 .text-primary {

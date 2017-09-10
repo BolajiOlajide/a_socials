@@ -20,13 +20,6 @@ class Header extends Component {
                             </button>
                             <a className="navbar-brand" href="#">Andela Socials</a>
                         </div>
-                        <div id="navbar" className="navbar-collapse collapse">
-                            <ul className="nav navbar-nav navbar-right">
-                                <li className="active"><a href="#">Home <span className="sr-only">(current)</span></a></li>
-                                <li><a href="#" onClick={this.display.bind(this)}>Social Clubs</a></li>
-                                <li><a href="#">{this.props.number}</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </nav>
             </div>

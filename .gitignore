@@ -9,7 +9,6 @@ vscode/
 a-client/bundles/
 webpack-stats.json
 andela_socials/migrations/
-env
 .vscode/
 package-lock.json
 a-client/js/main.js
@@ -17,3 +16,8 @@ static/css
 static/js
 static/img
 env/
+**/npm-debug.log*
+**/*.swo
+**/*.swp
+**/.DS_Store
+**/.idea
