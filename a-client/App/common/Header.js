@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {displayEvent} from '../../actions/testActions';
 
 class Header extends Component {
-    display(){
-        this.props.displayEvent();
-    }
     render() {
         return (
             <div>
@@ -23,8 +19,7 @@ class Header extends Component {
                         <div id="navbar" className="navbar-collapse collapse">
                             <ul className="nav navbar-nav navbar-right">
                                 <li className="active"><a href="#">Home <span className="sr-only">(current)</span></a></li>
-                                <li><a href="#" onClick={this.display.bind(this)}>Social Clubs</a></li>
-                                <li><a href="#">{this.props.number}</a></li>
+                                <li><a href="#">Social Clubs</a></li>
                             </ul>
                         </div>
                     </div>
@@ -36,8 +31,8 @@ class Header extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        number: state.number
+        number: state
     };
 }
 
-export default connect(mapStateToProps, {displayEvent})(Header);
+export default connect(mapStateToProps)(Header);
