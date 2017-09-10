@@ -1,3 +1,4 @@
+import json
 from rest_framework import status
 from rest_framework import filters
 from rest_framework.response import Response
@@ -7,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from django.http import Http404
+from django import http
 from django.views.generic.base import TemplateView, View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
@@ -97,13 +99,17 @@ class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class JoinSocialClubView(APIView, ExemptCSRFMixn):
+class JoinSocialClubView(TemplateView):
     """Join a social club."""
 
-    def post(self, request, format=None):
+    def post(self, request):
         
-        email = request.data.get('email')
-        club_id = request.data.get('club_id')
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+
+        
+        email = body_data.get('email')
+        club_id = body_data.get('club_id')
         user = request.user
 
         # get the category for the club_id
@@ -121,12 +127,10 @@ class JoinSocialClubView(APIView, ExemptCSRFMixn):
         # proton Take care of this here... 
 
 
-        body = {
-            message: 'registration successful',
-            status: 200
-        }
-
-        return Response(body)
+        return http.response.JsonResponse({
+            'message': 'registration successful',
+            'status': 200
+        })
 
 
 class SocialClubDetail(GenericAPIView):
@@ -146,14 +150,17 @@ class SocialClubDetail(GenericAPIView):
         return Response(serializer.data)
 
 
-class AttendSocialEventView(APIView):
+class AttendSocialEventView(TemplateView):
     """Attend a social event."""
 
-    def get(self, request, format=None):
+    def post(self, request):
+        
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
 
-        email = request.data.get('email')
-        club_id = request.data.get('club_id')
-        event_id = request.data.get('event_id')
+        email = body_data.get('email')
+        club_id = body_data.get('club_id')
+        event_id = body_data.get('event_id')
 
         try:
              my_event.objects.get(id=category_id)
@@ -167,9 +174,52 @@ class AttendSocialEventView(APIView):
 
         user_attendance.save()
 
-        body = {
-            message: 'registration successful',
-            status: 200
-        }
+        return http.response.JsonResponse({
+            'message': 'registration successful',
+            'status': 200
+        })
 
-        return Response(body)
+
+class CreateEventView(TemplateView):
+    pass
+
+    def post(self, request, *args, **kwargs):
+
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+
+        title = body_data.get('title')
+        description = body_data.get('description')
+        venue = body_data.get('venue')
+        date = body_data.get('date')
+        time = body_data.get('time'),
+        featured_image = body_data.get('featured_image')
+
+        new_event = Event(
+            title=title,
+            description=description,
+            venue=venue,
+            date=date,
+            time=time,
+            featured_image=featured_image,
+            creator=request.use,
+            social_event='random' 
+        )
+
+        new_event.save()
+
+        # send @dm to user on slack
+        slack_name = get_slack_name(user)
+        message  = "New event {} has just been created".format(new_event.title)
+        # proton Take care of this here... 
+
+
+
+
+        return http.response.JsonResponse({
+            'message': 'registration successful',
+            'status': 200
+        })
+
+
+        
