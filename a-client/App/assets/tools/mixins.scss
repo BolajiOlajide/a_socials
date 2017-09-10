@@ -56,6 +56,14 @@
   }
 }
 
+@mixin text-shadow-standard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  text-shadow: 0px 4px 8px #000;
+}
+
 // Font Mixins
 
 @mixin sans-font {

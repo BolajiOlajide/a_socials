@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 function EventList({ event }){
+  const defaultImageUrl = 'https://www.omnihotels.com/-/media/images/hotels/pueave/hotel/pueave-omni-puerto-aventuras-beach-resort.jpg?h=660&la=en&w=1170';
   return (
     <div className="event">
-      <div className="event-image">
-        <img width="250px" src={event.featured_image} />
+      <div className="event-image"
+           style={{
+             backgroundImage: `url(${event.featured_image || defaultImageUrl})`
+           }}>
+
       </div>
       <div className="event-details">
-        <h3>{event.title}</h3>
-        <div>
-          <p>{event.venue}</p>
-          <p>{event.date}</p>
-          <p>{event.time}</p>
+        <div className="event-details-wrapper">
+          <div className="event-name">{event.venue}</div>
+          <div className="event-meta">
+            <p>Went down on {event.date}</p>
+            <p>35 were interested</p>
+            <p>20 attended</p>
+            <p>14 people rated it 4.5 stars</p>
+          </div>
         </div>
-        <div className="event-actions">
-          <small>See who's going...</small>
-          <button>ATTEND</button>
+        <div className="event-meta">
+          <Link to={`/home/clubs/2/events/1`}
+                className="btn btn-primary btn-lg">
+            See who's going
+          </Link>
         </div>
       </div>
     </div>

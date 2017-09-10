@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 class Header extends Component {
   render() {
@@ -14,7 +15,7 @@ class Header extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="#">Andela Socials</a>
+              <Link to="/home" className="navbar-brand">Andela Socials</Link>
             </div>
           </div>
         </nav>

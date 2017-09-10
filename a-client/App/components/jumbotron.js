@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import Footer from './../common/Footer';
 import socialLogo from '../assets/img/vector_blue_flower_logo.png';
@@ -8,6 +9,7 @@ import { getAllClubs } from '../../actions/socialClubActions';
 class Jumbotron extends Component {
   componentDidMount() {
     this.props.getAllClubs();
+    window.scrollTo(0, 0);
   }
   render() {
     const defaultImageUrl = 'https://www.omnihotels.com/-/media/images/hotels/pueave/hotel/pueave-omni-puerto-aventuras-beach-resort.jpg?h=660&la=en&w=1170';
@@ -26,15 +28,19 @@ class Jumbotron extends Component {
                   this.props.clubs && !!this.props.clubs.length && this.props.clubs.map(club => {
                     return (
                       <div key={club.id} className="col-sm-4 club-card">
-                        <div className="club hvr-glow"
-                              style={{
-                                backgroundImage: `url(${club.featured_image || defaultImageUrl})`
-                              }}>
-                        </div>
-                        <section className='button-group hvr-glow'>
-                          <button><span className="glyphicon glyphicon-eye-open"></span><span>preview</span></button>
-                          <button><span className="glyphicon glyphicon-plus"></span><span>join</span></button>
-                        </section>
+                        <Link to={`/home/clubs/${club.id}`}>
+                          <div className="club hvr-glow"
+                                style={{
+                                  backgroundImage: `url(${club.featured_image || defaultImageUrl})`
+                                }}>
+                            <Link to={`/home/clubs/${club.id}`}>{club.name}</Link>
+                          </div>
+                          <section className='button-group hvr-glow'>
+                            <button><span className="glyphicon glyphicon-eye-open"></span><span>preview</span></button>
+                            <button><span className="glyphicon glyphicon-plus"></span><span>join</span></button>
+                          </section>
+                        </Link>
+
                       </div>
                     )
                   })
