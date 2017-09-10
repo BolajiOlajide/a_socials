@@ -7,10 +7,6 @@
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
     "start": "webpack --config webpack.config.prod.js"
   },
-  "engines": {
-    "node": "v7.8.0",
-    "npm": "3.10.10"
-  },
   "author": "",
   "license": "MIT",
   "dependencies": {

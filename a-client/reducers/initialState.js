@@ -3,8 +3,7 @@ export default {
   // socialClubs: [],
   socialClub: {},
   // events: [],
-  // event: {},
+  event: {},
   // users: [],
-  // user: {},
-  number: 0
+  // user: {}
 };
