@@ -22,7 +22,7 @@ from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
-from .slack import get_slack_name
+from .slack import get_slack_name, notify_channel, notify_user
 
 
 class ExemptCSRFMixn(object):
@@ -125,6 +125,7 @@ class JoinSocialClubView(TemplateView):
         slack_name = get_slack_name(user)
         message  = "you have successfully joined {} social club".format(user_category.name)
         # proton Take care of this here... 
+        notify_user(message, slack_name)
 
 
         return http.response.JsonResponse({
