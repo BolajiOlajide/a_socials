@@ -42,8 +42,13 @@
         if (response == "success") {
           location.href= "/andela_socials/user/dashboard/";
         } else {
-          // raise a modal here...
-          // error message like use a an andela mail account.
+          var notify = $.notify("<strong>Only Andelan's allowed</strong>...", {
+                allow_dismiss: true,
+                placement: {
+                    from: "top",
+                    align: "center"
+                },
+            });
         }
       },
       error: function(error) {
