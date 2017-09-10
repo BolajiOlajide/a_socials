@@ -195,6 +195,12 @@ class CreateEventView(TemplateView):
         date = body_data.get('date')
         time = body_data.get('time'),
         featured_image = body_data.get('featured_image')
+        social_event_id = body_data.get('category_id')
+
+        try:
+            social_event = Category.objects.get(id=int(social_event_id)) # ensure this does not fail.
+        except Category.DoesNotExist:
+            raise Http404
 
         new_event = Event(
             title=title,
@@ -204,18 +210,14 @@ class CreateEventView(TemplateView):
             time=time,
             featured_image=featured_image,
             creator=request.use,
-            social_event='random' 
+            social_event=social_event
         )
 
         new_event.save()
 
         # send @dm to user on slack
         slack_name = get_slack_name(user)
-        message  = "New event {} has just been created".format(new_event.title)
-        # proton Take care of this here... 
-
-
-
+        message  = "New Social event {} has just been created".format(new_event.title)
 
         return http.response.JsonResponse({
             'message': 'registration successful',
