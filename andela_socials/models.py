@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
+from .slack import get_slack_name
+
 # Create your models here.
 class BaseInfo(models.Model):
     """Base class containing all models common information."""
@@ -158,4 +160,3 @@ class Attend(BaseInfo):
 
     def __unicode__(self):
         return self.user.name
-

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, GoogleUser, Interest, Event
+from .models import Category, GoogleUser, Interest, Event, Attend
 
 
 class CategoryUserAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ class CategoryUserAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryUserAdmin)
 admin.site.register(Interest)
 admin.site.register(Event)
+admin.site.register(Attend)

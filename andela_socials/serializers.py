@@ -3,7 +3,7 @@
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
-from .models import GoogleUser, Category, Event, Interest
+from .models import GoogleUser, Category, Event, Interest, Attend
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,6 +21,21 @@ class GoogleUserSerializer(serializers.ModelSerializer):
         model = GoogleUser
         fields = ('google_id', 'app_user', 'appuser_picture')
         depth = 1
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    """Attend Model serializer class."""
+
+    class Meta:
+        model = Attend
+        fields = ('id', 'user')
+
+class EventDetailSerializer(serializers.ModelSerializer):
+
+    attend = AttendanceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'featured_image', 'created_at', 'attend')
 
 
 class EventSerializer(serializers.ModelSerializer):
