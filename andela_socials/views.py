@@ -17,12 +17,24 @@ from django.urls import reverse
 from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
 from .serializers import CategorySerializer, EventSerializer
 from .setpagination import LimitOffsetpage
 from .slack import get_slack_name, notify_channel, notify_user
+
+
+class LoginRequiredMixin(object):
+    
+    '''View mixin which requires that the user is authenticated.'''
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 class ExemptCSRFMixn(object):
@@ -225,3 +237,14 @@ class CreateEventView(TemplateView):
             'message': 'registration successful',
             'status': 200
         })
+
+
+class SignOutView(View, LoginRequiredMixin):
+    
+    '''Logout User from session.'''
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(
+            reverse_lazy('homepage'))
+
