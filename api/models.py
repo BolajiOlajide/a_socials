@@ -128,7 +128,7 @@ class Event(BaseInfo):
 
     title = models.CharField(max_length=100)
     description = models.TextField()
-    venue = models.TextField(default='Pekas Night Club')
+    venue = models.TextField()
     date = models.CharField(default='September 10, 2017', max_length=200)
     time = models.CharField(default='01:00pm WAT', max_length=200)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
