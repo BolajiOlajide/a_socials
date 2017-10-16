@@ -2,4 +2,4 @@
 
 set -e
 
-python manage.py dumpdata fixtures/prod.json
+python manage.py dumpdata > fixtures/prod.json

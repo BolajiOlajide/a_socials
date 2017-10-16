@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-
-
-function PageHeader({ image, title, buttonTitle, joinClub }){
+function PageHeader({ image, title, buttonTitle, joinClub }) {
   const divStyle = {
     backgroundImage: 'url(' + image + ')',
   };
+  
   return (
     <div className="page-header" style={divStyle}>
       <div className="club-title">
@@ -14,7 +13,7 @@ function PageHeader({ image, title, buttonTitle, joinClub }){
         <button onClick={joinClub}>{buttonTitle}</button>
       </div>
       <div className="black-cover"></div>
-      
+
     </div>
   );
 }

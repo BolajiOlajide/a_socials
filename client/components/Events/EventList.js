@@ -6,9 +6,9 @@ function EventList({ event }){
   return (
     <div className="event">
       <div className="event-image"
-           style={{
-             backgroundImage: `url(${event.featured_image || defaultImageUrl})`
-           }}>
+         style={{
+           backgroundImage: `url(${event.featured_image || defaultImageUrl})`
+         }}>
 
       </div>
       <div className="event-details">
@@ -24,7 +24,7 @@ function EventList({ event }){
         <div className="event-meta">
           <Link to={`/home/clubs/2/events/1`}
                 className="btn btn-primary btn-lg">
-            See who's going
+            See who is going
           </Link>
         </div>
       </div>

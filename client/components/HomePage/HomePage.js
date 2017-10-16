@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Jumbotron from './jumbotron';
+
+// components
+import Jumbotron from '../common/jumbotron';
 
 class HomePage extends Component {
   render() {

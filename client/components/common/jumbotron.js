@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import Footer from './../common/Footer';
-import socialLogo from '../assets/img/vector_blue_flower_logo.png';
+
+// components
+import Footer from './Footer';
+
+// images
+import socialLogo from '../../assets/img/vector_blue_flower_logo.png'
+
+// actions
 import { getAllClubs } from '../../actions/socialClubActions';
 
 class Jumbotron extends Component {

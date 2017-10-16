@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import featuredImage from '../../../assets/img/img_1.jpg';
-import ClubInfo from './ClubInfo';
-import { getEvent, joinEvent } from '../../../../actions/eventActions';
-import { joinClub } from '../../../../actions/socialClubActions';
+
+// images
+import featuredImage from '../../assets/img/img_1.jpg'
+
+// components
+import ClubInfo from '../SocialClub/ClubInfo';
+
+// actions
+import { getEvent, joinEvent } from '../../actions/eventActions';
+import { joinClub } from '../../actions/socialClubActions'
+
+// toastr service
 import toastr from 'toastr';
 
 class EventPage extends Component {

@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+// actions
 import { getClub, joinClub } from '../../actions/socialClubActions';
 import { sendEvent } from '../../actions/createEventActions';
+
+// components
 import PageHeader from './PageHeader';
-import EventList from './EventList';
+import EventList from '../Events/EventList';
 import toastr from 'toastr';
 
 
 const attendees = [
   {id: 1, slack_id: '@cent'},
-  {id: 1, slack_id: '@proton'},
-  {id: 1, slack_id: '@gentlefella'},
-  {id: 1, slack_id: '@ignatius'}
+  {id: 2, slack_id: '@proton'},
+  {id: 3, slack_id: '@gentlefella'},
+  {id: 4, slack_id: '@ignatius'}
 ]
 
 const clubEvents = [
@@ -39,16 +43,16 @@ class SocialClubPage extends Component {
     this.join = this.join.bind(this);
   }
 
-  
+
   componentDidMount() {
     this.props.getClub(3);
     toastr.success('Clubs loaded Successfully');
   }
 
   onChange(event) {
-    this.setState({ 
-      [event.target.name]: event.target.value, 
-      category_id: this.props.club.id 
+    this.setState({
+      [event.target.name]: event.target.value,
+      category_id: this.props.club.id
     });
   }
 
