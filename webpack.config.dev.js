@@ -5,7 +5,7 @@ const BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   context: __dirname,
-  entry: './a-client/index.js',
+  entry: './client/index.js',
   target: 'web',
   output: {
       path: path.join(__dirname, './static/'),
