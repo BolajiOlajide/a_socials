@@ -40,4 +40,4 @@ As our company grows and the need for staff bonding arises, Andela Socials comes
 
 Andela Socials is a web app integrated into a slack channel, the app displays  a list of staff bonding activities which allows staff who share the same social interest to hangout, from lunch dates to swimming meetups, as it would improve communication, motivate the employees and increase creativity.
 
-Wanna go for swimming or to the movies next weekend? Just log on to Andela Socials  and join any social activity that interests you. When an event is created everyone who joined the social group for that event would be notified via dm's on slack.
+Wanna go for swimming or to the movies next weekend? Just log on to Andela Socials  and join any social activity that interests you. When an event is created everyone who joined the social group for that event would be notified via DMs on slack.
