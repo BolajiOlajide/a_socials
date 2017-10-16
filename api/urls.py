@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
-from andela_socials import views
+from api import views
 
 
 urlpatterns = [
@@ -37,7 +37,7 @@ urlpatterns = [
         views.SignOutView.as_view(),
         name='signout'
         ),
-    
+
     url(r'^event/(?P<pk>[0-9]+)/?$', views.EventDetail.as_view(),
         name='event_detail'
         ),

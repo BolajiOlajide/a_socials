@@ -40,7 +40,7 @@ class UserProxy(User):
                 "first_name" :idinfo['given_name'],
                 "last_name" :idinfo['family_name']
             }
-            
+
         for field in data:
             if getattr(self, field) != data[field] and data[field] != '':
                 setattr(self, field, data[field])
@@ -70,7 +70,7 @@ class GoogleUser(models.Model):
         self.save()
 
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s" % (self.app_user.first_name,
                           self.app_user.last_name)
 
@@ -80,7 +80,7 @@ class UserProfile(models.Model):
     Attributes: user
     """
 
-    # more fields here, not sure for now. 
+    # more fields here, not sure for now.
     user = models.OneToOneField(User)
 
 
@@ -116,10 +116,10 @@ class Category(BaseInfo):
         interest_count = Interest.objects.filter(follower_category=self)
         result = interest_count.count()
         return result
-    
+
     members_count = property(get_count)
 
-    def __unicode__(self):
+    def __str__(self):
         return "Category : {}" .format(self.name)
 
 
@@ -135,7 +135,7 @@ class Event(BaseInfo):
     social_event = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
     featured_image = models.URLField()
 
-    def __unicode__(self):
+    def __str__(self):
         return "Message with title : {}" .format(self.title)
 
 class Interest(BaseInfo):
@@ -147,16 +147,16 @@ class Interest(BaseInfo):
     class Meta:
         ordering = ('-created_at',)
 
-    def __unicode__(self):
+    def __str__(self):
         return "User {} interested in category {}" .format(self.user.username,
                                                        self.follower_category.name)
 
-                                    
+
 class Attend(BaseInfo):
     """User Interest Model defined."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.name
