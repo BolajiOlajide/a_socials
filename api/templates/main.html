@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Andela Socials | Home{% endblock %}
+
+{% block main %}
+
+<style>
+    .authPage {
+        background: #3359DE;
+        height: 100%;
+        padding-top: 162px;
+        color: #fff;
+        font-style: italic;
+        font-family: cursive;
+    }
+
+</style>
+<div class="authPage">
+    <center><img src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/558826-625de22961eeaa0f85618a784e1d5a81-medium_jpg.jpg?buster=1444152051" alt="Andela logo">
+        <div id="my-signin2"></div>
+        <h1>Work Hard! Code Hard! Play Harder!!!</h1>
+    </center>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<script>
+  function onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+  }
+
+  function OnsignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/auth/login/",
+      data: {'ID_Token' : id_token },
+      success: function(response) {
+        console.log(response, "this is the success");
+        if (response == "success") {
+          location.href= "/home";
+        } else {
+          var notify = $.notify("<strong>Only Andelan's allowed</strong>...", {
+                allow_dismiss: true,
+                placement: {
+                    from: "top",
+                    align: "center"
+                },
+            });
+        }
+      },
+      error: function(error) {
+        if (error.error ) {
+          console.log(error.message, "this is the error message");
+        }
+      },
+    })
+  }
+
+  function onFailure(error) {
+    console.log(error);
+  }
+  function renderButton() {
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 50,
+      'longtitle': true,
+      'theme': 'dark',
+      'onsuccess': OnsignIn,
+      'onfailure': onFailure
+    });
+  }
+</script>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% if environment == 'production' %}
+    {% load staticfiles %}
+{% else %}
+    {% load render_bundle from webpack_loader %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-signin-client_id" content="1047993778878-tvd9n8v1mag2g4mv1rugkfm016h69ech.apps.googleusercontent.com"
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Andela Socials </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    {% if environment == 'production' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/vendor.css' %}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/app.css' %}" />
+    {% endif %}
+  </head>
+  <body>
+
+    {% block main %}
+
+
+
+    {% endblock main %}
+    {% block base_js %}
+        {% if environment == 'production' %}
+            <script src="{% static 'js/vendor.js' %}"></script>
+            <script src="{% static 'js/app.js' %}"></script>
+        {% else %}
+            {% render_bundle 'main' %}
+        {% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static "js/bootstrap-notify.min.js" %}"></script>
+    {% endblock %}
+  </body>
+</html>

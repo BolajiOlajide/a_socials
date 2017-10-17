@@ -17,5 +17,3 @@ setup_server
 setup_client
 
 ./start.sh $1
-
-
