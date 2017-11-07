@@ -22,12 +22,14 @@ class GoogleUserSerializer(serializers.ModelSerializer):
         fields = ('google_id', 'app_user', 'appuser_picture')
         depth = 1
 
+
 class AttendanceSerializer(serializers.ModelSerializer):
     """Attend Model serializer class."""
 
     class Meta:
         model = Attend
         fields = ('id', 'user')
+
 
 class EventDetailSerializer(serializers.ModelSerializer):
 
@@ -56,7 +58,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class InterestSerializer(serializers.ModelSerializer):
-    
+
     follower = UserSerializer(many=True, read_only=True)
     follower_category = CategorySerializer(many=True, read_only=True)
 

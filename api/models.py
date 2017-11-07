@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-
 from .slack import get_slack_name
 
-# Create your models here.
+
 class BaseInfo(models.Model):
     """Base class containing all models common information."""
 
@@ -34,11 +33,13 @@ class UserProxy(User):
             Args:
                 idinfo: data passed in from post method.
         """
+        email_length = len(idinfo['email'])
+        hd_length = len(idinfo['hd']) + 1
         data = {
-                "username": idinfo['name'],
-                "email" : idinfo["email"],
-                "first_name" :idinfo['given_name'],
-                "last_name" :idinfo['family_name']
+                "username": idinfo['email'][:email_length - hd_length],
+                "email": idinfo["email"],
+                "first_name": idinfo['given_name'],
+                "last_name": idinfo['family_name']
             }
 
         for field in data:
@@ -54,7 +55,6 @@ class GoogleUser(models.Model):
                                     on_delete=models.CASCADE)
     appuser_picture = models.TextField()
 
-
     def check_diff(self, idinfo):
         """Check for differences between request/idinfo and model data.
             Args:
@@ -68,7 +68,6 @@ class GoogleUser(models.Model):
             if getattr(self, field) != data[field] and data[field] != '':
                 setattr(self, field, data[field])
         self.save()
-
 
     def __str__(self):
         return "%s %s" % (self.app_user.first_name,

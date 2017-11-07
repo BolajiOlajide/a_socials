@@ -1,17 +1,16 @@
 # resource: https://developers.google.com/identity/sign-in/web/backend-auth
 import os
-
 from oauth2client import client, crypt
 from rest_framework.response import Response
 
 from .errors import not_allowed, unauthorized
 
+
 def resolve_google_oauth(request):
     # token should be passed as an object {'ID_Token' : id_token }
     # to this view
     token = request.GET['ID_Token']
-    CLIENT_ID = os.environ.get('CLIENT_ID') # though we need to configure this
-
+    CLIENT_ID = os.environ.get('CLIENT_ID')
     token.replace(" ", "")
 
     try:
@@ -30,6 +29,5 @@ def resolve_google_oauth(request):
 
     except crypt.AppIdentityError:
         return unauthorized('Invalid Token')
-
 
     return idinfo

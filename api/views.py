@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
+from rest_framework_jwt.settings import api_settings
 
 from django.http import Http404
 from django import http
@@ -22,13 +23,13 @@ from django.contrib.auth.decorators import login_required
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
-from .serializers import CategorySerializer, EventSerializer, EventDetailSerializer
+from .serializers import CategorySerializer, EventSerializer, EventDetailSerializer, GoogleUserSerializer, UserSerializer
 from .setpagination import LimitOffsetpage
 from .slack import get_slack_name, notify_channel, notify_user
 
 
 class LoginRequiredMixin(object):
-    
+
     '''View mixin which requires that the user is authenticated.'''
 
     @method_decorator(login_required)
@@ -47,12 +48,13 @@ class ExemptCSRFMixn(object):
 
 
 class DashBoardView(TemplateView):
-    
+
     template_name = 'index.html'
 
+
 class HomeView(TemplateView):
-    
-    template_name = "main.html"
+
+    template_name = 'main.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
@@ -61,15 +63,32 @@ class HomeView(TemplateView):
         return super(HomeView, self).dispatch(request, *args, **kwargs)
 
 
-class GoogleLoginView(View):
+class GoogleLoginView(APIView):
+
+    permission_classes = (AllowAny,)
+
+    def get_oauth_token(self, userproxy, google_user):
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+        payload = jwt_payload_handler(userproxy)
+        token = jwt_encode_handler(payload)
+
+        serializer = GoogleUserSerializer(google_user)
+
+        body = {
+          'token': token,
+          'user': serializer.data,
+        }
+
+        return body
 
     def get(self, request, format=None):
 
         idinfo = resolve_google_oauth(request)
-
         try:
-            if type(idinfo.data) == type(dict()):
-                return HttpResponse(idinfo.data)
+            if idinfo.data:
+                if isinstance(idinfo.data, dict):
+                    return HttpResponse(idinfo.data)
         except Exception as e:
             pass
 
@@ -82,10 +101,11 @@ class GoogleLoginView(View):
 
         except GoogleUser.DoesNotExist:
             # proceed to create the user
-
+            email_length = len(idinfo['email'])
+            hd_length = len(idinfo['hd']) + 1
             userproxy = UserProxy(
-                username=idinfo['name'],
-                email=idinfo["email"],
+                username=idinfo['email'][:email_length - hd_length],
+                email=idinfo['email'],
                 first_name=idinfo['given_name'],
                 last_name=idinfo['family_name']
             )
@@ -95,11 +115,9 @@ class GoogleLoginView(View):
                                      appuser_picture=idinfo['picture'])
             google_user.save()
 
-        # log in user 
-        userproxy.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, userproxy)
+        response = self.get_oauth_token(userproxy, google_user)
+        return Response(response, status=status.HTTP_200_OK)
 
-        return HttpResponse("success", content_type="text/plain")
 
 class CategoryListView(ListAPIView):
     """List all Categories."""
@@ -115,11 +133,11 @@ class JoinSocialClubView(TemplateView):
     """Join a social club."""
 
     def post(self, request):
-        
+
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
 
-        
+
         email = body_data.get('email')
         club_id = body_data.get('club_id')
         user = request.user
@@ -166,7 +184,7 @@ class AttendSocialEventView(TemplateView):
     """Attend a social event."""
 
     def post(self, request):
-        
+
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
 
@@ -229,7 +247,7 @@ class CreateEventView(TemplateView):
         # send @dm to user on slack
         slack_name = get_slack_name(user)
         message  = "New Social event {} has just been created".format(new_event.title)
-        
+
         # to do (pending on event detail page) build URI for event page to add to message)
         notify_channel(message)
 
@@ -240,7 +258,7 @@ class CreateEventView(TemplateView):
 
 
 class SignOutView(View, LoginRequiredMixin):
-    
+
     '''Logout User from session.'''
 
     def get(self, request, *args, **kwargs):
