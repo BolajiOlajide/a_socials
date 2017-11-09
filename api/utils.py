@@ -2,14 +2,14 @@
 import os
 from oauth2client import client, crypt
 from rest_framework.response import Response
-
-from .errors import not_allowed, unauthorized
+from rest_framework.exceptions import AuthenticationFailed
+from .errors import unauthorized
 
 
 def resolve_google_oauth(request):
     # token should be passed as an object {'ID_Token' : id_token }
     # to this view
-    token = request.GET['ID_Token']
+    token = request.data.get('ID_Token')
     CLIENT_ID = os.environ.get('CLIENT_ID')
     token.replace(" ", "")
 
@@ -17,7 +17,7 @@ def resolve_google_oauth(request):
         idinfo = client.verify_id_token(token, CLIENT_ID)
 
         if 'hd' not in idinfo:
-            return not_allowed()
+            raise AuthenticationFailed()
 
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             return unauthorized('Wrong Issuer')

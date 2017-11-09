@@ -20,7 +20,6 @@ from django.views.generic.base import TemplateView
 from api import views
 
 urlpatterns = [
-    url(r'^$', views.HomeView.as_view(), name='homepage'),
     url(r'^admin/?', admin.site.urls),
     url(r'^api/v1/?', include('api.urls')),
     url(r'^/', include('api.urls')),

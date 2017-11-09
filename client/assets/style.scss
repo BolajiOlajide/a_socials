@@ -7,6 +7,19 @@
 body {
     font-family: 'Lato', sans-serif;
 }
+
+.auth-page {
+    background: #3359DE;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-style: italic;
+    font-family: cursive;
+}
+
 .page-header {
     width: 100vw;
     height: 300px;

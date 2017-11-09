@@ -52,17 +52,6 @@ class DashBoardView(TemplateView):
     template_name = 'index.html'
 
 
-class HomeView(TemplateView):
-
-    template_name = 'main.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(
-                reverse_lazy('dashboard'))
-        return super(HomeView, self).dispatch(request, *args, **kwargs)
-
-
 class GoogleLoginView(APIView):
 
     permission_classes = (AllowAny,)
@@ -82,13 +71,14 @@ class GoogleLoginView(APIView):
 
         return body
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
 
         idinfo = resolve_google_oauth(request)
+        import pdb; pdb.set_trace()
         try:
             if idinfo.data:
                 if isinstance(idinfo.data, dict):
-                    return HttpResponse(idinfo.data)
+                    return Response(idinfo.data)
         except Exception as e:
             pass
 
