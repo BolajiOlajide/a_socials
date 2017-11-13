@@ -76,9 +76,6 @@ class GoogleLoginView(APIView):
         idinfo = resolve_google_oauth(request)
         # import pdb; pdb.set_trace()
 
-        if idinfo.status_code:
-            return Response({'error': idinfo.get_full_details(), 'status': idinfo.status_code})
-
         # check if it is a returning user.
         try:
             google_user = GoogleUser.objects.get(google_id=idinfo['sub'])

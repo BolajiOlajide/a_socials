@@ -15,19 +15,18 @@ def resolve_google_oauth(request):
         idinfo = client.verify_id_token(token, CLIENT_ID)
 
         if 'hd' not in idinfo:
-            return AuthenticationFailed('Sorry, only Andelans can sign in')
+            raise AuthenticationFailed('Sorry, only Andelans can sign in')
 
         if idinfo['hd'] != 'andela.com':
-            return AuthenticationFailed('Sorry, only Andelans can sign in')
+            raise AuthenticationFailed('Sorry, only Andelans can sign in')
 
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-            return PermissionDenied('Wrong Issuer')
+            raise PermissionDenied('Wrong Issuer')
 
-        if idinfo['email_verified'] == 'True' and \
-            idinfo['aud'] == CLIENT_ID:
-            return idinfo
+        if idinfo['email_verified'] == 'True' and idinfo['aud'] == CLIENT_ID:
+            raise idinfo
 
     except crypt.AppIdentityError:
-        return PermissionDenied('Invalid Token')
+        raise PermissionDenied('Invalid Token')
 
     return idinfo
