@@ -3,8 +3,8 @@ from rest_framework.response import Response
 
 def unauthorized(message):
     ''' User is unauthorised to perform action.'''
-    body = {'status': 401, 'error': 'unauthorized', 'message': message}
-    return Response(body, status=status.HTTP_401_UNAUTHORIZED)
+    body = {'status_code': 401, 'error': 'unauthorized', 'message': message}
+    return body
 
 def bad_request(message):
     '''Request is bad and not valid '''

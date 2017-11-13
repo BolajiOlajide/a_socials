@@ -1,9 +1,7 @@
 # resource: https://developers.google.com/identity/sign-in/web/backend-auth
 import os
 from oauth2client import client, crypt
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
-from .errors import unauthorized
+from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 
 
 def resolve_google_oauth(request):
@@ -17,17 +15,19 @@ def resolve_google_oauth(request):
         idinfo = client.verify_id_token(token, CLIENT_ID)
 
         if 'hd' not in idinfo:
-            raise AuthenticationFailed()
+            return AuthenticationFailed('Sorry, only Andelans can sign in')
+
+        if idinfo['hd'] != 'andela.com':
+            return AuthenticationFailed('Sorry, only Andelans can sign in')
 
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-            return unauthorized('Wrong Issuer')
+            return PermissionDenied('Wrong Issuer')
 
-        if idinfo['hd'] == 'andela.com' and \
-            idinfo['email_verified'] == 'True' and \
+        if idinfo['email_verified'] == 'True' and \
             idinfo['aud'] == CLIENT_ID:
             return idinfo
 
     except crypt.AppIdentityError:
-        return unauthorized('Invalid Token')
+        return PermissionDenied('Invalid Token')
 
     return idinfo
