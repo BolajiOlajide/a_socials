@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
+const env = require('dotenv').config();
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -13,6 +14,14 @@ module.exports = {
       publicPath: 'http://0.0.0.0:9000/',
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process': {
+        'env': {
+          'G_SUITE_DOMAIN': JSON.stringify(process.env.G_SUITE_DOMAIN),
+          'CLIENT_ID': JSON.stringify(process.env.CLIENT_ID)
+        }
+      }
+    }),
     new BundleTracker({filename: './webpack-stats.json'}),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
@@ -56,5 +65,8 @@ module.exports = {
   resolve: {
     modules: ['node_modules', 'bower_components'],
     extensions: ['.js', '.jsx']
+  },
+  node: {
+    fs: 'empty',
   },
 }

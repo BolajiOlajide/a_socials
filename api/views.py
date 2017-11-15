@@ -74,7 +74,6 @@ class GoogleLoginView(APIView):
     def post(self, request, format=None):
 
         idinfo = resolve_google_oauth(request)
-        # import pdb; pdb.set_trace()
 
         # check if it is a returning user.
         try:

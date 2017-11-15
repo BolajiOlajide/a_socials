@@ -29,7 +29,7 @@
         {% else %}
             {% render_bundle 'main' %}
         {% endif %}
-    <script src="https://apis.google.com/js/platform.js?onload=triggerGoogleLoaded" async defer></script>
+    <script src="https://apis.google.com/js/api:client.js?onload=triggerGoogleLoaded" async defer></script>
     <script type="text/javascript">
       function triggerGoogleLoaded() {
         window.dispatchEvent(new Event('google-loaded'));

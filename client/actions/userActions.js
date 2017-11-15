@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as constants from './constants';
-import {authenticationFailed, handleError} from '../utils/errorHandler';
+import {authenticationFailed, handleError, throwError} from '../utils/errorHandler';
 
 function saveToken(response, type, dispatch) {
   const token = response.token;
@@ -8,17 +8,21 @@ function saveToken(response, type, dispatch) {
     jwt: token
   });
   localStorage.setItem('a_socials', jwtToSave);
-  dispatch({
+  dispatch(login(response.user, type))
+}
+
+export function login(user, type) {
+  return {
     type,
-    user: response.user
-  });
+    user
+  };
 }
 
 export function signIn(id_token) {
   return (dispatch) => {
     return axios.post('/api/v1/auth/login/', {'ID_Token': id_token})
       .then((res) => {
-          saveToken(res.data, constants.SIGN_IN, dispatch);
+          saveToken(res.data, constants.SIGN_IN_SUCCESS, dispatch);
       })
       .catch(error => authenticationFailed(error, dispatch))
   };

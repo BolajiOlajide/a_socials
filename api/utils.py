@@ -24,7 +24,7 @@ def resolve_google_oauth(request):
             raise PermissionDenied('Wrong Issuer')
 
         if idinfo['email_verified'] == 'True' and idinfo['aud'] == CLIENT_ID:
-            raise idinfo
+            return idinfo
 
     except crypt.AppIdentityError:
         raise PermissionDenied('Invalid Token')

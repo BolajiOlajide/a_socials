@@ -7,7 +7,7 @@ import configureStore from './store/configureStore';
 import routes from './routes';
 
 // styles
-import './assets/style.scss'
+import './assets/style.scss';
 
 const store = configureStore();
 

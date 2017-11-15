@@ -1,48 +1,59 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+
+require('dotenv').config();
+
+// images
+import signin_btn from '../../assets/img/btn_google_signin.png';
+import andela_logo from '../../assets/img/andela_logo.jpg';
 
 // actions
 import { signIn } from '../../actions/userActions';
 
 
 class LoginPage extends Component {
-
   constructor(props){
     super(props);
     this.onSignIn = this.onSignIn.bind(this);
-    this.renderLoginButton = this.renderLoginButton.bind(this);
+    this.initializeAuth = this.initializeAuth.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('google-loaded', this.renderLoginButton);
+    window.addEventListener('google-loaded', this.initializeAuth);
   }
 
-  onSignIn(googleUser) {
-    let id_token = googleUser.getAuthResponse().id_token;
-    this.props.signIn(id_token);
-  }
-
-  onFailure(error) {
-    console.log(error);
-  }
-
-  renderLoginButton() {
-    gapi.signin2.render('my-signin2', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-      'onsuccess': this.onSignIn,
-      'onfailure': this.onFailure
+  initializeAuth() {
+    gapi.load('auth2', () => {
+      gapi.auth2.init({
+        client_id: process.env.CLIENT_ID,
+        hosted_domain: process.env.G_SUITE_DOMAIN,
+        ux_mode: 'popup',
+      });
     });
+    gauth = gapi.auth2.getAuthInstance();
+    if (gauth.isSignedIn.get()) {
+      console.log('Signed In')
+      this.onSignIn()
+    }
+  }
+
+  onSignIn() {
+    gapi.auth2.getAuthInstance().signIn()
+      .then((googleUser) => {
+        let id_token = googleUser.getAuthResponse().id_token;
+        this.props.signIn(id_token)
+          .then(() => {
+            browserHistory.push('/home');
+          });
+      });
   }
 
   render() {
     return (
       <div className="auth-page">
-        <img src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/558826-625de22961eeaa0f85618a784e1d5a81-medium_jpg.jpg?buster=1444152051" alt="Andela logo" />
-        <div id="my-signin2" />
+        <img src={andela_logo} alt="Andela logo" />
+        <img src={signin_btn} alt="Click to sign in" onClick={this.onSignIn} />
         <h1>Work Hard! Code Hard! Play Harder!!!</h1>
       </div>
     );

@@ -21,7 +21,7 @@ export function throwError(error, dispatch) {
   throw error;
 }
 
-export function authenticationFailed(error) {
+export function authenticationFailed(error, dispatch) {
   if (error) {
     return toastr.error(error);
   }
