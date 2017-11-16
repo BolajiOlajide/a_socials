@@ -1,13 +1,15 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 from api import views
-from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
 
 urlpatterns = [
     url(r'^auth/login/?$', views.GoogleLoginView.as_view(),
         name='auth_login'),
 
     url(r'^auth/token/?$', obtain_jwt_token),
+
+    url(r'^auth/token-verify/?$', verify_jwt_token),
 
     url(r'^categories/?$', views.CategoryListView.as_view(),
         name='apicategory'),

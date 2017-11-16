@@ -5,4 +5,5 @@ export const JOIN_CLUB = 'JOIN_CLUB';
 export const GET_EVENT = 'GET_EVENT';
 export const JOIN_EVENT = 'JOIN_EVENT';
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';

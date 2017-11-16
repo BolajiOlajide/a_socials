@@ -10,6 +10,7 @@ import andela_logo from '../../assets/img/andela_logo.jpg';
 
 // actions
 import { signIn } from '../../actions/userActions';
+import {authenticationFailed, handleError} from "../../utils/errorHandler";
 
 
 class LoginPage extends Component {
@@ -31,11 +32,6 @@ class LoginPage extends Component {
         ux_mode: 'popup',
       });
     });
-    gauth = gapi.auth2.getAuthInstance();
-    if (gauth.isSignedIn.get()) {
-      console.log('Signed In')
-      this.onSignIn()
-    }
   }
 
   onSignIn() {
@@ -45,7 +41,8 @@ class LoginPage extends Component {
         this.props.signIn(id_token)
           .then(() => {
             browserHistory.push('/home');
-          });
+          })
+          .catch((error) => authenticationFailed(error))
       });
   }
 

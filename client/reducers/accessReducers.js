@@ -9,7 +9,7 @@ import initialState from './initialState';
  */
 function access(state = initialState.access, action) {
   switch (action.type) {
-    case constants.SIGN_IN:
+    case constants.SIGN_IN_SUCCESS:
       return {
         isAuthenticated: true,
         user: action.user
