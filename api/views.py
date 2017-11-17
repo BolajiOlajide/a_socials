@@ -7,7 +7,6 @@ from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.views import verify_jwt_token
 
 from django.http import Http404
 from django import http

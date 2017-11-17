@@ -1,6 +1,5 @@
 import * as constants from '../actions/constants';
 import axios from 'axios';
-import {authenticationFailed} from "../utils/errorHandler";
 
 export const saveTokenMiddleware = ({getState, dispatch}) => next => action => {
   if (action.type === constants.SIGN_IN){
