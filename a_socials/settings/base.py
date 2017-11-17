@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'api.middleware.jwt_authentication.JWTAuthMiddleware'
 ]
 
 ROOT_URLCONF = 'a_socials.urls'

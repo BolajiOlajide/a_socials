@@ -7,6 +7,9 @@ urlpatterns = [
     url(r'^auth/login/?$', views.GoogleLoginView.as_view(),
         name='auth_login'),
 
+    url(r'^auth/retrieve-user/?$', views.RetrieveUser.as_view(),
+        name='retrieve_user'),
+
     url(r'^auth/token/?$', obtain_jwt_token),
 
     url(r'^auth/token-verify/?$', verify_jwt_token),

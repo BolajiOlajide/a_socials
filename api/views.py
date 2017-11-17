@@ -7,6 +7,7 @@ from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_jwt.settings import api_settings
+from rest_framework_jwt.views import verify_jwt_token
 
 from django.http import Http404
 from django import http
@@ -50,6 +51,18 @@ class ExemptCSRFMixn(object):
 class DashBoardView(TemplateView):
 
     template_name = 'index.html'
+
+
+class RetrieveUser(APIView):
+
+    permission_classes = (AllowAny,)
+
+    def get(self, request, format=None):
+        print('No way')
+
+        import pdb; pdb.set_trace()
+        user = request.user
+
 
 
 class GoogleLoginView(APIView):
