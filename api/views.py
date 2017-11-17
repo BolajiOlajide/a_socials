@@ -53,18 +53,6 @@ class DashBoardView(TemplateView):
     template_name = 'index.html'
 
 
-class RetrieveUser(APIView):
-
-    permission_classes = (AllowAny,)
-
-    def get(self, request, format=None):
-        print('No way')
-
-        import pdb; pdb.set_trace()
-        user = request.user
-
-
-
 class GoogleLoginView(APIView):
 
     permission_classes = (AllowAny,)

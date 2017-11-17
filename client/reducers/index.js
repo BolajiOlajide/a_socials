@@ -1,11 +1,10 @@
-import { combineReducers } from 'redux';
 import { socialClub, socialClubs } from './socialClubReducers';
 import { event} from './eventReducers';
 // import { users, user} from './userReducers';
 import access from './accessReducers';
 
 
-const rootReducer = combineReducers({
+const rootReducer = {
   access,
   socialClubs,
   socialClub,
@@ -13,6 +12,6 @@ const rootReducer = combineReducers({
   event
   // users,
   // user
-});
+};
 
 export default rootReducer;
