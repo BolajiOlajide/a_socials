@@ -7,4 +7,3 @@ export const JOIN_EVENT = 'JOIN_EVENT';
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
-export const RETRIEVE_USER = 'RETRIEVE_USER';

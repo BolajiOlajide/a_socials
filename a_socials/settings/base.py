@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
 import dotenv
+
 from datetime import timedelta
 from corsheaders.defaults import default_headers
 

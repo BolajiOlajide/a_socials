@@ -1,12 +1,4 @@
 import json
-from rest_framework import status
-from rest_framework import filters
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework_jwt.settings import api_settings
 
 from django.http import Http404
 from django import http
@@ -20,6 +12,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
+from rest_framework import status
+from rest_framework import filters
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework_jwt.settings import api_settings
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend

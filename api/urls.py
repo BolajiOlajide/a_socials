@@ -1,7 +1,8 @@
 from django.conf.urls import url
-from rest_framework.urlpatterns import format_suffix_patterns
-from api import views
+
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
+
+from api import views
 
 urlpatterns = [
     url(r'^auth/login/?$', views.GoogleLoginView.as_view(),
