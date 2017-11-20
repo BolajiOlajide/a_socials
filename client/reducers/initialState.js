@@ -1,5 +1,5 @@
 export default {
-  // access: { loggedIn: false, user: {} },
+  access: { isAuthenticated: false, user: {} },
   socialClubs: [],
   socialClub: {},
   // events: [],

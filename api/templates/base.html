@@ -19,10 +19,7 @@
     {% endif %}
   </head>
   <body>
-
     {% block main %}
-
-
 
     {% endblock main %}
     {% block base_js %}
@@ -32,10 +29,16 @@
         {% else %}
             {% render_bundle 'main' %}
         {% endif %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/api:client.js?onload=triggerGoogleLoaded" async defer></script>
+    <script type="text/javascript">
+      function triggerGoogleLoaded() {
+        window.dispatchEvent(new Event('google-loaded'));
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{% static "js/bootstrap-notify.min.js" %}"></script>
     {% endblock %}
+
   </body>
 </html>

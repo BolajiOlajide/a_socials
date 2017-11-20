@@ -1,12 +1,4 @@
 import json
-from rest_framework import status
-from rest_framework import filters
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework_jwt.settings import api_settings
 
 from django.http import Http404
 from django import http
@@ -20,6 +12,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
+from rest_framework import status
+from rest_framework import filters
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework_jwt.settings import api_settings
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
@@ -52,17 +52,6 @@ class DashBoardView(TemplateView):
     template_name = 'index.html'
 
 
-class HomeView(TemplateView):
-
-    template_name = 'main.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(
-                reverse_lazy('dashboard'))
-        return super(HomeView, self).dispatch(request, *args, **kwargs)
-
-
 class GoogleLoginView(APIView):
 
     permission_classes = (AllowAny,)
@@ -82,15 +71,9 @@ class GoogleLoginView(APIView):
 
         return body
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
 
         idinfo = resolve_google_oauth(request)
-        try:
-            if idinfo.data:
-                if isinstance(idinfo.data, dict):
-                    return HttpResponse(idinfo.data)
-        except Exception as e:
-            pass
 
         # check if it is a returning user.
         try:

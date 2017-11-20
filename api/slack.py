@@ -1,8 +1,8 @@
 import os
 import time
-from slackclient import SlackClient
-
 import dotenv
+
+from slackclient import SlackClient
 
 dotenv.load()
 

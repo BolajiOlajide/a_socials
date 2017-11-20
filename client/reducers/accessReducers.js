@@ -8,7 +8,17 @@ import initialState from './initialState';
  * @returns {object} access state
  */
 function access(state = initialState.access, action) {
-  return state;
+  switch (action.type) {
+    case constants.SIGN_IN_SUCCESS:
+      return {
+        isAuthenticated: true,
+        user: action.user
+      };
+    case constants.SIGN_OUT:
+      return initialState.access;
+    default:
+      return state;
+  }
 }
 
 export default access;

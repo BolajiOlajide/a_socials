@@ -1,9 +1,10 @@
-''' Script Used to convert python objects to json objects.'''
-
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
+
 from .models import GoogleUser, Category, Event, Interest, Attend
+
+''' Script Used to convert python objects to json objects.'''
 
 
 class UserSerializer(serializers.ModelSerializer):

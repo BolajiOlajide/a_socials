@@ -1,7 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import rootReducer from '../reducers/index';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
+import rootReducer from '../reducers/index';
+import { persistStore, persistCombineReducers } from 'redux-persist';
+import storage from 'redux-persist/es/storage';
+import { saveTokenMiddleware } from '../middleware/auth';
+
+const config = {
+  key: 'root',
+  storage,
+};
+const reducers = persistCombineReducers(config, rootReducer);
+const middleware = [thunk, saveTokenMiddleware];
 
 /**
  * Single Store
@@ -9,23 +18,17 @@ import { createLogger } from 'redux-logger';
  * @returns {function} store configuration
  */
 const configureStore = (initialState) => {
-  return createStore(
-    rootReducer,
+  let store = createStore(
+    reducers,
     compose(
-      getMiddleware(),
-      window.devToolsExtension? window.devToolsExtension() : (empty) => empty
+      applyMiddleware(...middleware),
+      window.__REDUX_DEVTOOLS_EXTENSION__
+      ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     )
   );
-}
+  let persistor = persistStore(store);
 
-const getMiddleware = () => {
-  let logger = createLogger();
-  let middleware = applyMiddleware(thunk);
-
-  if (process.ENV !== 'production') {
-    middleware = applyMiddleware(thunk, logger);
-  }
-  return middleware;
-}
+  return { persistor, store };
+};
 
 export default configureStore;

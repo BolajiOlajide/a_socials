@@ -5,7 +5,7 @@ export function getClub(club_id) {
   return (dispatch) => {
     return axios.get(`/api/v1/category/${club_id}/events/`)
       .then((res) => {
-        
+
         dispatch({
           type: constants.GET_CLUB,
           club: res.data
@@ -22,7 +22,7 @@ export function joinClub(details) {
         console.log('Res', res);
       })
       .catch(error => {
-        throw error
+        throw error;
       });
   };
 }
@@ -39,11 +39,12 @@ export function getClubs(socialClubs) {
 
 export function getAllClubs() {
   return (dispatch) => {
-    return axios.get('/api/v1/categories/').then(socialClubs => {
-      console.log(socialClubs);
-      dispatch(getClubs(socialClubs.data.results));
-    }).catch(error => {
-      throw error;
-    });
+    return axios.get('/api/v1/categories/')
+      .then((socialClubs) => {
+        dispatch(getClubs(socialClubs.data.results));
+      })
+      .catch(error => {
+        throw error;
+      });
   };
 }
