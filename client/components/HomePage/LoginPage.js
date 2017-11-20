@@ -35,15 +35,14 @@ class LoginPage extends Component {
   }
 
   onSignIn() {
-    gapi.auth2.getAuthInstance().signIn()
-      .then((googleUser) => {
-        let id_token = googleUser.getAuthResponse().id_token;
-        this.props.signIn(id_token)
-          .then(() => {
-            browserHistory.push('/home');
-          })
-          .catch((error) => authenticationFailed(error))
-      });
+    let googleAuth = gapi.auth2.getAuthInstance();
+    if (googleAuth) {
+      googleAuth.signIn()
+        .then((googleUser) => {
+          let id_token = googleUser.getAuthResponse().id_token;
+          this.props.signIn(id_token)
+        });
+    }
   }
 
   render() {

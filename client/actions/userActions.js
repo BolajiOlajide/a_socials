@@ -9,6 +9,13 @@ export function login(response, type){
   };
 }
 
+export function setRedirectUrl(url){
+  return {
+    type: constants.SET_REDIRECT_URL,
+    url
+  };
+}
+
 export function signIn(id_token){
   return (dispatch) => {
     return axios.post('/api/v1/auth/login/', {'ID_Token': id_token})
