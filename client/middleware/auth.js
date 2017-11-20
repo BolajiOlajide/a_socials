@@ -14,6 +14,9 @@ export const saveTokenMiddleware = ({getState, dispatch}) => next => action => {
       user: action.response.data.user,
     };
     dispatch(nextAction);
+  } else if (action.type === constants.SIGN_OUT){
+    localStorage.removeItem('a_socials');
+    delete axios.defaults.headers.common['Authorization'];
   }
 
   next(action);

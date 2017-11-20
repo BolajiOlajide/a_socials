@@ -8,10 +8,14 @@ import initialState from './initialState';
  * @returns {array} new state of socialClubs
  */
 export function socialClubs(state = initialState.socialClubs, action) {
-  if (action.type == constants.GET_CLUBS) {
-    return action.clubs || state;
+  switch(action.type){
+    case constants.GET_CLUBS:
+      return action.clubs;
+    case constants.SIGN_OUT:
+      return initialState.socialClubs;
+    default:
+      return state;
   }
-  return state;
 }
 
 /**
