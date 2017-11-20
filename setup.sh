@@ -18,15 +18,12 @@ function venv() {
 	else
 		echo 'I take it you have a virtual environment activated'
 	fi
-
-	exit 0
 }
 
 function setup_server() {
 	pip install -r requirements.txt
 	python manage.py makemigrations
 	python manage.py migrate
-	exit 0
 }
 
 function setup_client() {
@@ -41,7 +38,6 @@ function setup_client() {
 
 	yarn install
 	webpack --config=webpack.config.dev
-	exit 0
 }
 
 venv

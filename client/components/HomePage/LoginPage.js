@@ -47,11 +47,19 @@ class LoginPage extends Component {
   }
 
   render() {
+    console.log(this.props.location.pathname);
     return (
       <div className="auth-page">
-        <img src={andela_logo} alt="Andela logo" />
-        <img src={signin_btn} alt="Click to sign in" onClick={this.onSignIn} />
-        <h1>Work Hard! Code Hard! Play Harder!!!</h1>
+        <img className="andela" src="http://res.cloudinary.com/proton/image/upload/v1510947117/Condensed-white_qudkxm.png" />
+        <div className="welcome-text">
+          <p> SOCIALIZE MORE WITHIN <span className="bold"> ANDELA </span> </p>
+        </div>
+        <div className="image-holder">
+          <img src="http://res.cloudinary.com/proton/image/upload/v1509311455/andrew-ly-152166_w5ffs9.jpg" className="featured-meetup" />
+        </div>
+        <div className="button">
+          <button type="submit" id="button" onClick={this.onSignIn}>SIGN IN</button>
+        </div>
       </div>
     );
   }
