@@ -1,4 +1,4 @@
-import * as constants from '../actions/constants';
+import { SIGN_IN_SUCCESS, SIGN_OUT } from '../actions/constants';
 import initialState from './initialState';
 
 /**
@@ -9,12 +9,12 @@ import initialState from './initialState';
  */
 function access(state = initialState.access, action) {
   switch (action.type) {
-    case constants.SIGN_IN_SUCCESS:
+    case SIGN_IN_SUCCESS:
       return {
         isAuthenticated: true,
         user: action.user
       };
-    case constants.SIGN_OUT:
+    case SIGN_OUT:
       return initialState.access;
     default:
       return state;

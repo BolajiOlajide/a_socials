@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
 require('dotenv').config();
 
-// images
-import signin_btn from '../../assets/img/btn_google_signin.png';
-import andela_logo from '../../assets/img/andela_logo.jpg';
-
 // actions
 import { signIn } from '../../actions/userActions';
-import {authenticationFailed, handleError} from "../../utils/errorHandler";
 
 
 class LoginPage extends Component {
@@ -35,19 +29,17 @@ class LoginPage extends Component {
   }
 
   onSignIn() {
-    gapi.auth2.getAuthInstance().signIn()
-      .then((googleUser) => {
-        let id_token = googleUser.getAuthResponse().id_token;
-        this.props.signIn(id_token)
-          .then(() => {
-            browserHistory.push('/home');
-          })
-          .catch((error) => authenticationFailed(error))
-      });
+    let googleAuth = gapi.auth2.getAuthInstance();
+    if (googleAuth) {
+      googleAuth.signIn()
+        .then((googleUser) => {
+          let id_token = googleUser.getAuthResponse().id_token;
+          this.props.signIn(id_token)
+        });
+    }
   }
 
   render() {
-    console.log(this.props.location.pathname);
     return (
       <div className="auth-page">
         <img className="andela" src="http://res.cloudinary.com/proton/image/upload/v1510947117/Condensed-white_qudkxm.png" />

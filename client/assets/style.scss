@@ -7,7 +7,6 @@
 @import url('https://fonts.googleapis.com/css?family=Spectral+SC');
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
-/* MY STYLES */
 body {
   font-family: 'Lato', sans-serif;
 }
@@ -91,8 +90,6 @@ body {
     border: 0;
     font-size: 20px;
 }
-.event-list {
-}
 .event-list-header {
     display: flex;
     justify-content: space-between;
@@ -131,4 +128,15 @@ body {
     border: 0;
     font-size: 14px;
     text-transform: uppercase;
+}
+
+.not-found {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    font-size: 80px;
+    color: #030303;
+  }
 }
