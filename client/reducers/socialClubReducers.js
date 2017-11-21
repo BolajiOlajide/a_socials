@@ -1,4 +1,4 @@
-import * as constants from '../actions/constants';
+import { GET_CLUBS, GET_CLUB, SIGN_OUT } from '../actions/constants';
 import initialState from './initialState';
 
 /**
@@ -9,9 +9,9 @@ import initialState from './initialState';
  */
 export function socialClubs(state = initialState.socialClubs, action) {
   switch(action.type){
-    case constants.GET_CLUBS:
+    case GET_CLUBS:
       return action.clubs;
-    case constants.SIGN_OUT:
+    case SIGN_OUT:
       return initialState.socialClubs;
     default:
       return state;
@@ -26,7 +26,7 @@ export function socialClubs(state = initialState.socialClubs, action) {
  */
 export function socialClub(state = initialState.socialClub, action) {
   switch(action.type){
-    case constants.GET_CLUB:
+    case GET_CLUB:
       return action.club;
     default:
       return state;

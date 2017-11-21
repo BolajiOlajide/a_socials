@@ -1,4 +1,4 @@
-import * as constants from '../actions/constants';
+import { SET_REDIRECT_URL } from '../actions/constants';
 import initialState from './initialState';
 
 /**
@@ -9,7 +9,7 @@ import initialState from './initialState';
  */
 function url(state = initialState.redirectUrl, action) {
   switch (action.type) {
-    case constants.SET_REDIRECT_URL:
+    case SET_REDIRECT_URL:
       return action.url;
     default:
       return state;

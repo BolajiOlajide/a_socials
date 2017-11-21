@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 // components
 import Header from './common/Header';

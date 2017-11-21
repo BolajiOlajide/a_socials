@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import toastr from 'toastr';
 
 // actions
 import { getClub, joinClub } from '../../actions/socialClubActions';
@@ -9,7 +9,7 @@ import { sendEvent } from '../../actions/createEventActions';
 // components
 import PageHeader from './PageHeader';
 import EventList from '../Events/EventList';
-import toastr from 'toastr';
+
 
 
 const attendees = [

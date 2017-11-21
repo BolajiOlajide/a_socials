@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 
-import {setRedirectUrl} from "../../actions/userActions";
+import { setRedirectUrl } from "../../actions/userActions";
 
 
 class EnsureLoggedIn extends Component {
@@ -13,6 +14,7 @@ class EnsureLoggedIn extends Component {
     if (!isAuthenticated) {
       setRedirectUrl(currentUrl);
       browserHistory.replace("/");
+      toastr.warning('Please sign in to continue');
     }
   }
 

@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
 require('dotenv').config();
 
-// images
-import signin_btn from '../../assets/img/btn_google_signin.png';
-import andela_logo from '../../assets/img/andela_logo.jpg';
-
 // actions
 import { signIn } from '../../actions/userActions';
-import {authenticationFailed, handleError} from "../../utils/errorHandler";
 
 
 class LoginPage extends Component {
