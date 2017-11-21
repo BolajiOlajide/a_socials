@@ -20,3 +20,5 @@ env/
 .idea/
 staticfiles/
 .DS_Store
+static/
+api/migrations

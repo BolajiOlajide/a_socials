@@ -3,21 +3,64 @@
 @import "pages/index";
 @import "./toastr.scss";
 
+// google font
+@import url('https://fonts.googleapis.com/css?family=Spectral+SC');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
 /* MY STYLES */
 body {
-    font-family: 'Lato', sans-serif;
+  font-family: 'Lato', sans-serif;
+}
+
+.andela {
+  width: 8vw;
+  margin-top: 3rem;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome-text {
+  color: #FFF;
+  margin: 1rem;
+
+  p {
+    font-size: 5rem;
+    font-family: 'Spectral SC', serif;
+  }
+}
+
+.featured-meetup {
+  width: 40vw;
+  box-shadow: 10px 11px 4px 0 rgba(0, 26, 113, 0.5);
+}
+
+#button {
+  border-radius: 8px;
+  background-color: #01149a;
+  box-shadow: 0 7px 6px 0 rgba(0, 26, 113, 0.5);
+  outline: 0;
+  color: #FFF;
+  width: 15vw;
+  height: 6vh;
+  font-size: 2.2rem;
+  text-align: center;
+  letter-spacing: 0.5rem;
+  font-family: 'Ubuntu', sans-serif;
+  margin-top: 4rem;
 }
 
 .auth-page {
-    background: #3359DE;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-style: italic;
-    font-family: cursive;
+  height: 100vh;
+  background: linear-gradient(180deg, #01149A 50%, #FFF 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: #fff;
 }
 
 .page-header {
