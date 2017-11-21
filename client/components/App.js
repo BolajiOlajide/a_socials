@@ -32,7 +32,7 @@ class App extends Component {
   render() {
     return (
       <div className="wrapper">
-        {this.props.location.pathname === '/' ? null : <Header />}
+        {this.props.location.pathname !== '/' && <Header />}
         {this.props.children}
         <Footer />
       </div>

@@ -46,7 +46,6 @@ class LoginPage extends Component {
   }
 
   render() {
-    console.log(this.props.location.pathname);
     return (
       <div className="auth-page">
         <img className="andela" src="http://res.cloudinary.com/proton/image/upload/v1510947117/Condensed-white_qudkxm.png" />

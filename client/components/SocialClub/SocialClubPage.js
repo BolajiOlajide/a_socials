@@ -244,7 +244,6 @@ class SocialClubPage extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log('State', state)
   return {
     club: state.socialClub
   };

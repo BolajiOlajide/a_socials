@@ -8,10 +8,10 @@ import {setRedirectUrl} from "../../actions/userActions";
 class EnsureLoggedIn extends Component {
 
   componentDidMount() {
-    const { dispatch, currentUrl, isAuthenticated } = this.props;
+    const { setRedirectUrl, currentUrl, isAuthenticated } = this.props;
 
     if (!isAuthenticated) {
-      dispatch(setRedirectUrl(currentUrl));
+      setRedirectUrl(currentUrl);
       browserHistory.replace("/");
     }
   }
@@ -32,4 +32,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(EnsureLoggedIn);
+export default connect(mapStateToProps, { setRedirectUrl })(EnsureLoggedIn);
