@@ -1,10 +1,10 @@
 import axios from 'axios';
-import * as constants from './constants';
+import { GET_CLUB, GET_CLUBS, JOIN_CLUB } from './constants';
 import { handleError } from "../utils/errorHandler";
 
 export function getClubs(socialClubs) {
   return {
-    type: constants.GET_CLUBS,
+    type: GET_CLUBS,
     clubs: socialClubs
   }
 }
@@ -24,7 +24,7 @@ export function getClub(club_id) {
     return axios.get(`/api/v1/category/${club_id}/events/`)
       .then((res) => {
         dispatch({
-          type: constants.GET_CLUB,
+          type: GET_CLUB,
           club: res.data
         });
       })
@@ -36,7 +36,10 @@ export function joinClub(details) {
   return (dispatch) => {
     return axios.post('/api/v1/join/', details)
       .then((res) => {
-        console.log('Res', res);
+        dispatch({
+          type: JOIN_CLUB,
+          data: res.data
+        })
       })
       .catch(error => handleError(error, dispatch));
   };

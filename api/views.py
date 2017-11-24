@@ -23,7 +23,7 @@ from rest_framework_jwt.settings import api_settings
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
-from .serializers import CategorySerializer, EventSerializer,\
+from .serializers import CategorySerializer, EventSerializer, AttendanceSerializer,\
   EventDetailSerializer, GoogleUserSerializer, UserSerializer, InterestSerializer
 from .setpagination import LimitOffsetpage
 from .slack import get_slack_name, notify_channel, notify_user
@@ -122,7 +122,6 @@ class JoinSocialClubView(APIView):
         # body_unicode = request.body.decode('utf-8')
         # body_data = json.loads(body_unicode)
 
-        email = request.data.get('email')
         club_id = request.data.get('club_id')
         user = request.user
 
@@ -165,34 +164,31 @@ class SocialClubDetail(GenericAPIView):
         return Response(serializer.data)
 
 
-class AttendSocialEventView(TemplateView):
+class AttendSocialEventView(APIView):
     """Attend a social event."""
 
     def post(self, request):
 
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
+        # body_unicode = request.body.decode('utf-8')
+        # body_data = json.loads(body_unicode)
 
-        email = body_data.get('email')
-        club_id = body_data.get('club_id')
-        event_id = body_data.get('event_id')
+        club_id = request.data.get('club_id')
+        event_id = request.data.get('event_id')
 
         try:
-             my_event.objects.get(id=category_id)
+            event = Event.objects.get(id=event_id)
         except Event.DoesNotExist:
             raise Http404
 
         user_attendance = Attend(
             user=request.user,
-            event = my_event
+            event=event
         )
 
         user_attendance.save()
 
-        return http.response.JsonResponse({
-            'message': 'registration successful',
-            'status': 200
-        })
+        serializer = AttendanceSerializer(user_attendance)
+        return Response(serializer.data)
 
 
 class CreateEventView(TemplateView):
@@ -240,16 +236,6 @@ class CreateEventView(TemplateView):
             'message': 'registration successful',
             'status': 200
         })
-
-
-class SignOutView(View, LoginRequiredMixin):
-
-    '''Logout User from session.'''
-
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return HttpResponseRedirect(
-            reverse_lazy('homepage'))
 
 
 class EventDetail(GenericAPIView):

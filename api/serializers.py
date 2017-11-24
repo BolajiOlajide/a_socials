@@ -24,28 +24,36 @@ class GoogleUserSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class EventSerializer(serializers.ModelSerializer):
+
+    creator = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'creator', 'featured_image',
+                  'created_at')
+
+
 class AttendanceSerializer(serializers.ModelSerializer):
     """Attend Model serializer class."""
 
+    user = UserSerializer(read_only=True)
+    event = EventSerializer(read_only=True)
+
     class Meta:
         model = Attend
-        fields = ('id', 'user')
+        fields = ('user', 'event')
 
 
 class EventDetailSerializer(serializers.ModelSerializer):
 
     attend = AttendanceSerializer(many=True, read_only=True)
+    creator = UserSerializer(read_only=True)
 
     class Meta:
         model = Event
-        fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'featured_image', 'created_at', 'attend')
-
-
-class EventSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Event
-        fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'featured_image', 'created_at')
+        fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'creator', 'featured_image',
+                  'created_at', 'attend')
 
 
 class CategorySerializer(serializers.ModelSerializer):

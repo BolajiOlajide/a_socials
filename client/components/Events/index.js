@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-
-// images
-import featuredImage from '../../assets/img/img_1.jpg'
+import { Link } from 'react-router';
 
 // components
 import ClubInfo from '../SocialClub/ClubInfo';
 
 // actions
 import { getEvent, joinEvent } from '../../actions/eventActions';
-import { joinClub } from '../../actions/socialClubActions'
+import { joinClub, getClub } from '../../actions/socialClubActions'
 
 // toastr service
 import toastr from 'toastr';
@@ -24,11 +21,13 @@ class EventPage extends Component {
   // TODO: There will be two API calls here
   // To get the clicked event and a recommended event
   componentDidMount(){
-    window.scrollTo(0, 0);
-    this.props.getEvent();
+    this.props.getEvent(this.props.params.id);
+    this.props.getClub(this.props.params.club_id);
   }
 
-  joinThisClub(details={'club_id': 3, 'email': 'ig@uk.com'}){
+
+  joinThisClub(){
+    let details = {'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
     this.props.joinClub(details)
     .then(() => {
       toastr.success('You have successfully joined this Club. You will be notified of new events');
@@ -38,7 +37,8 @@ class EventPage extends Component {
     });
   }
 
-  joinThisEvent(details={'event_id': 1, 'club_id': 3, 'email': 'ig@uk.com'}){
+  joinThisEvent(){
+    let details={'event_id': this.props.event.id, 'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
     this.props.joinEvent(details)
     .then(() => {
       toastr.success('You have successfully subscribed. You will get notifications on this event');
@@ -49,11 +49,15 @@ class EventPage extends Component {
   }
 
   render() {
-    const { featured_image, title, attendees, created_by, created_on,
-      description, venue, date, time, club_id } = this.props.event;
+    const { featured_image, title, attendees, creator,
+      description, venue, date, time } = this.props.event;
+
     return (
       <div className="events-page">
-        <ClubInfo joinClub={this.joinThisClub} />
+        <ClubInfo
+          joinClub={this.joinThisClub}
+          club={this.props.club}
+        />
         <div>
           <div className="row">
             <div className="col-lg-12">
@@ -65,7 +69,7 @@ class EventPage extends Component {
                     <h2>{title}</h2>
                   </div>
                   <div className="header-meta">
-                    Created by {created_by}  on {created_on}
+                    Created by {creator.first_name}
                   </div>
 
                   <div className="main-cta">
@@ -114,7 +118,11 @@ class EventPage extends Component {
                       </ul>
 
                       <div className="main-cta">
-                        <a href="#" className="btn btn-lg btn-primary cta">
+                        <a
+                          href="#"
+                          className="btn btn-lg btn-primary cta"
+                          onClick={this.joinThisEvent}
+                        >
                           Join this event
                         </a>
                       </div>
@@ -157,8 +165,10 @@ class EventPage extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    event: state.event
+    user: state.access.user,
+    event: state.event,
+    club: state.socialClub
   };
 }
 
-export default connect(mapStateToProps, { getEvent, joinClub, joinEvent })(EventPage);
+export default connect(mapStateToProps, { getClub, getEvent, joinClub, joinEvent })(EventPage);

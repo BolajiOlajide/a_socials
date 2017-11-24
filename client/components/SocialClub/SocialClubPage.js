@@ -18,12 +18,6 @@ const attendees = [
   {id: 4, slack_id: '@ignatius'}
 ]
 
-const clubEvents = [
-  {id: 1, venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'},
-  {id: 2, venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'},
-  {id: 3, venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'}
-]
-
 class SocialClubPage extends Component {
   constructor(props){
     super(props);
@@ -68,12 +62,12 @@ class SocialClubPage extends Component {
   join(){
     let details = {'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
     this.props.joinClub(details)
-    .then(() => {
-      toastr.success('You have successfully joined this Club. You will be notified of new events');
-    })
-    .catch((error) => {
-      toastr.error('Aww! Something went wong');
-    });
+      .then(() => {
+        toastr.success('You have successfully joined this Club. You will be notified of new events');
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
   }
 
   render(){
@@ -120,7 +114,7 @@ class SocialClubPage extends Component {
                               <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Create Event</button>
                             </div>
                             <div className="event-list-content">
-                              {clubEvents.map(event =>
+                              {events && events.map(event =>
                                 <EventList
                                   key={event.id}
                                   event={event}

@@ -137,7 +137,7 @@ class Event(BaseInfo):
     featured_image = models.URLField()
 
     def __str__(self):
-        return "Message with title : {}" .format(self.title)
+        return "Event: {}" .format(self.title)
 
 
 class Interest(BaseInfo):
@@ -150,15 +150,14 @@ class Interest(BaseInfo):
         ordering = ('-created_at',)
 
     def __str__(self):
-        return "User {} interested in category {}" .format(self.follower.username,
-                                                       self.follower_category.name)
+        return "User {} interested in category {}" .format(self.follower.username, self.follower_category.name)
 
 
 class Attend(BaseInfo):
-    """User Interest Model defined."""
+    """User Attendance Model defined."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.name
+        return "User {} attending event {}" .format(self.user.username, self.event.title)

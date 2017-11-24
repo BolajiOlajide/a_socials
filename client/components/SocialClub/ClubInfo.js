@@ -1,13 +1,13 @@
 import React from 'react';
 
-function ClubInfo({ joinClub }) {
+function ClubInfo({ joinClub, club }) {
   return (
     <div className="click-bait">
       <div className="container">
         <div className="mini-header">
           <div className="title">
-            Swimming Meetups
-            <small>For those who no matter what, stay afloat...</small>
+            {club.name}
+            <small>{club.description}</small>
           </div>
           <a
             href="#"
