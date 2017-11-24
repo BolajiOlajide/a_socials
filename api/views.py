@@ -23,7 +23,8 @@ from rest_framework_jwt.settings import api_settings
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
-from .serializers import CategorySerializer, EventSerializer, EventDetailSerializer, GoogleUserSerializer, UserSerializer
+from .serializers import CategorySerializer, EventSerializer,\
+  EventDetailSerializer, GoogleUserSerializer, UserSerializer, InterestSerializer
 from .setpagination import LimitOffsetpage
 from .slack import get_slack_name, notify_channel, notify_user
 
@@ -112,17 +113,17 @@ class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class JoinSocialClubView(TemplateView):
+class JoinSocialClubView(APIView):
     """Join a social club."""
 
     def post(self, request):
 
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
 
+        # body_unicode = request.body.decode('utf-8')
+        # body_data = json.loads(body_unicode)
 
-        email = body_data.get('email')
-        club_id = body_data.get('club_id')
+        email = request.data.get('email')
+        club_id = request.data.get('club_id')
         user = request.user
 
         # get the category for the club_id
@@ -130,26 +131,27 @@ class JoinSocialClubView(TemplateView):
 
         user_interest = Interest(
             follower=user,
-            follower_category = user_category
+            follower_category=user_category
         )
         user_interest.save()
 
         # send @dm to user on slack
-        slack_name = get_slack_name(user)
-        message  = "you have successfully joined {} social club".format(user_category.name)
-        notify_user(message, slack_name)
-
-
-        return http.response.JsonResponse({
-            'message': 'registration successful',
-            'status': 200
-        })
+        # slack_name = get_slack_name(user)
+        # message  = "you have successfully joined {} social club".format(user_category.name)
+        # notify_user(message, slack_name)
+        # return http.response.JsonResponse({
+        #     'message': 'registration successful',
+        #     'status': 200
+        # })
+        # import pdb; pdb.set_trace()
+        serializer = InterestSerializer(user_interest)
+        return Response(serializer.data)
 
 
 class SocialClubDetail(GenericAPIView):
     """List all Social Club Details."""
 
-    model = Event
+    model = Category
     serializer_class = CategorySerializer
 
     def get(self, request, *args, **kwargs):

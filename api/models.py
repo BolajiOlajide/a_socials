@@ -101,15 +101,16 @@ def create_user_profile(sender, instance, created, **kwargs):
     post_save.connect(create_user_profile, sender=User,
                       dispatch_uid=create_user_profile)
 
+
 class Category(BaseInfo):
     """Category model defined."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
     featured_image = models.URLField()
+    description = models.TextField(max_length=280, default="For people who want to be happy.")
 
     class Meta:
-        """Define odering below."""
-
+        """Define ordering below."""
         ordering = ['name']
 
     def get_count(self):
@@ -138,6 +139,7 @@ class Event(BaseInfo):
     def __str__(self):
         return "Message with title : {}" .format(self.title)
 
+
 class Interest(BaseInfo):
     """User Interest Model defined."""
 
@@ -148,7 +150,7 @@ class Interest(BaseInfo):
         ordering = ('-created_at',)
 
     def __str__(self):
-        return "User {} interested in category {}" .format(self.user.username,
+        return "User {} interested in category {}" .format(self.follower.username,
                                                        self.follower_category.name)
 
 

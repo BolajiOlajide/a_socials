@@ -55,13 +55,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'members_count', 'featured_image', 'events')
+        fields = ('id', 'name', 'members_count', 'featured_image', 'description', 'events')
 
 
 class InterestSerializer(serializers.ModelSerializer):
 
-    follower = UserSerializer(many=True, read_only=True)
-    follower_category = CategorySerializer(many=True, read_only=True)
+    follower = UserSerializer(read_only=True)
+    follower_category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Interest

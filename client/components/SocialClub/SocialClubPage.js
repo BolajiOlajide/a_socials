@@ -11,7 +11,6 @@ import PageHeader from './PageHeader';
 import EventList from '../Events/EventList';
 
 
-
 const attendees = [
   {id: 1, slack_id: '@cent'},
   {id: 2, slack_id: '@proton'},
@@ -20,9 +19,9 @@ const attendees = [
 ]
 
 const clubEvents = [
-  {venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'},
-  {venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'},
-  {venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'}
+  {id: 1, venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'},
+  {id: 2, venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'},
+  {id: 3, venue: 'Hotel Ibis, Ikeja', date: '20th of June, 2017', time: '2:30px'}
 ]
 
 class SocialClubPage extends Component {
@@ -45,8 +44,7 @@ class SocialClubPage extends Component {
 
 
   componentDidMount() {
-    this.props.getClub(3);
-    toastr.success('Clubs loaded Successfully');
+    this.props.getClub(this.props.params.id);
   }
 
   onChange(event) {
@@ -67,7 +65,8 @@ class SocialClubPage extends Component {
     });
   }
 
-  join(details={'club_id': 3, 'email': 'ig@uk.com'}){
+  join(){
+    let details = {'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
     this.props.joinClub(details)
     .then(() => {
       toastr.success('You have successfully joined this Club. You will be notified of new events');
@@ -95,10 +94,9 @@ class SocialClubPage extends Component {
                           <h2>{name}</h2>
                         </div>
                         <div className="header-meta">
-                          For those who wish to stay afloat no matter what
+                          {description}
                         </div>
                       </div>
-
                       <div className="main-cta">
                         <a
                           href="#"
@@ -116,39 +114,20 @@ class SocialClubPage extends Component {
                     <div className="col-lg-9 main-content">
                       <div className="content">
                         <div className="event-details bordered">
-
-
                           <div className="event-list">
                             <div className="event-list-header">
                               Past events
                               <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Create Event</button>
-
-
-
-
-
-
                             </div>
                             <div className="event-list-content">
-
-                              <p className="description">
-                                {description}
-                              </p>
-
-                            { events &&
-                            clubEvents.map(event =>
-                              <EventList
-                                key={event.id}
-                                event={event}
-                              />
-                            )}
+                              {clubEvents.map(event =>
+                                <EventList
+                                  key={event.id}
+                                  event={event}
+                                />
+                              )}
                             </div>
                           </div>
-
-
-
-
-
                         </div>
                       </div>
                     </div>
@@ -236,8 +215,6 @@ class SocialClubPage extends Component {
             </div>
           </div>
         </div>
-
-
       </div>
     );
   }
@@ -245,8 +222,9 @@ class SocialClubPage extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    club: state.socialClub
+    club: state.socialClub,
+    user: state.access.user
   };
 }
 
-export default connect(mapStateToProps, {getClub, joinClub, sendEvent})(SocialClubPage);
+export default connect(mapStateToProps, { getClub, joinClub, sendEvent })(SocialClubPage);

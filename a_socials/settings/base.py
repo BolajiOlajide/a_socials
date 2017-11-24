@@ -149,9 +149,7 @@ WEBPACK_LOADER = {
 }
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': timedelta(days=1),
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=3),
+    'JWT_VERIFY_EXPIRATION': False,
 }
 
 

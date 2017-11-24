@@ -10,7 +10,7 @@ class CategoryUserAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Basic Information", {
-            'fields': ('name', 'featured_image')
+            'fields': ('name', 'featured_image', 'description')
         }),
     )
 
