@@ -21,4 +21,3 @@ env/
 staticfiles/
 .DS_Store
 static/
-api/migrations
