@@ -69,7 +69,7 @@ class EventPage extends Component {
                     <h2>{title}</h2>
                   </div>
                   <div className="header-meta">
-                    Created by {creator.first_name}
+                    Created by {creator.first_name} {creator.last_name}
                   </div>
 
                   <div className="main-cta">

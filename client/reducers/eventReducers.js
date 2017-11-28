@@ -1,4 +1,4 @@
-import * as constants from '../actions/constants';
+import { GET_EVENT } from '../actions/constants';
 import initialState from './initialState';
 
 /**
@@ -19,7 +19,7 @@ import initialState from './initialState';
  */
 export function event(state = initialState.event, action) {
   switch(action.type) {
-    case constants.GET_EVENT:
+    case GET_EVENT:
       return action.details;
     default:
       return state;

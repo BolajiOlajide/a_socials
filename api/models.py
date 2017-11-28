@@ -136,6 +136,13 @@ class Event(BaseInfo):
     social_event = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
     featured_image = models.URLField()
 
+    def get_count(self):
+        attendees = Attend.objects.filter(event=self)
+        result = attendees.count()
+        return result
+
+    attendees_count = property(get_count)
+
     def __str__(self):
         return "Event: {}" .format(self.title)
 

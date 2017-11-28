@@ -138,11 +138,7 @@ class JoinSocialClubView(APIView):
         # slack_name = get_slack_name(user)
         # message  = "you have successfully joined {} social club".format(user_category.name)
         # notify_user(message, slack_name)
-        # return http.response.JsonResponse({
-        #     'message': 'registration successful',
-        #     'status': 200
-        # })
-        # import pdb; pdb.set_trace()
+
         serializer = InterestSerializer(user_interest)
         return Response(serializer.data)
 
@@ -191,11 +187,11 @@ class AttendSocialEventView(APIView):
         return Response(serializer.data)
 
 
-class CreateEventView(TemplateView):
-    pass
+class CreateEventView(CreateAPIView):
+    """Create a new event"""
 
     def post(self, request, *args, **kwargs):
-
+        # import pdb; pdb.set_trace()
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
 
@@ -219,23 +215,21 @@ class CreateEventView(TemplateView):
             date=date,
             time=time,
             featured_image=featured_image,
-            creator=request.use,
+            creator=request.user,
             social_event=social_event
         )
 
         new_event.save()
 
         # send @dm to user on slack
-        slack_name = get_slack_name(user)
-        message  = "New Social event {} has just been created".format(new_event.title)
+        # slack_name = get_slack_name(user)
+        # message  = "New Social event {} has just been created".format(new_event.title)
 
         # to do (pending on event detail page) build URI for event page to add to message)
-        notify_channel(message)
+        # notify_channel(message)
 
-        return http.response.JsonResponse({
-            'message': 'registration successful',
-            'status': 200
-        })
+        serializer = EventSerializer(new_event)
+        return Response(serializer.data)
 
 
 class EventDetail(GenericAPIView):

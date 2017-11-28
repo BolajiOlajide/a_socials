@@ -16,7 +16,7 @@ function EventList({ event }){
           <div className="event-name">{event.venue}</div>
           <div className="event-meta">
             <p>Going down on {event.date}</p>
-            <p>35 are attending</p>
+            <p>{event.attendees_count} are attending</p>
           </div>
         </div>
         <div className="event-meta">
