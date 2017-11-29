@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 function ClubInfo({ joinClub, club }) {
   return (
@@ -6,7 +7,11 @@ function ClubInfo({ joinClub, club }) {
       <div className="container">
         <div className="mini-header">
           <div className="title">
-            {club.name}
+            <h4 className="club-link">
+              <Link to={`/clubs/${club.id}`}>
+                {club.name}
+              </Link>
+            </h4>
             <small>{club.description}</small>
           </div>
           <a

@@ -21,6 +21,7 @@ class EventPage extends Component {
   // TODO: There will be two API calls here
   // To get the clicked event and a recommended event
   componentDidMount(){
+    window.scrollTo(0, 0);
     this.props.getEvent(this.props.params.id);
     this.props.getClub(this.props.params.club_id);
   }

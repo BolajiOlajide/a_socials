@@ -1,4 +1,4 @@
-import { GET_EVENT } from '../actions/constants';
+import { GET_EVENT, SIGN_OUT } from '../actions/constants';
 import initialState from './initialState';
 
 /**
@@ -21,6 +21,8 @@ export function event(state = initialState.event, action) {
   switch(action.type) {
     case GET_EVENT:
       return action.details;
+    case SIGN_OUT:
+      return initialState.event;
     default:
       return state;
   }

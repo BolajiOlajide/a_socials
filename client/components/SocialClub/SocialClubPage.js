@@ -40,6 +40,7 @@ class SocialClubPage extends Component {
 
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.props.getClub(this.props.params.id);
   }
 

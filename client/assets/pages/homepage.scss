@@ -6,10 +6,6 @@
   padding: 0px;
 }
 
-body{
-
-}
-
 .wrapper {
   top: 0;
   left: 0;
@@ -129,4 +125,7 @@ footer {
 
 .club-card {
   margin-bottom: 50px;
+  a {
+    text-decoration: none;
+  }
 }
