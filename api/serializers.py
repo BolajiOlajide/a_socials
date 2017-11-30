@@ -47,13 +47,13 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
 class EventDetailSerializer(serializers.ModelSerializer):
 
-    attend = AttendanceSerializer(many=True, read_only=True)
+    attendees = AttendanceSerializer(many=True, read_only=True)
     creator = UserSerializer(read_only=True)
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'description', 'venue', 'date', 'time', 'social_event', 'creator', 'featured_image',
-                  'created_at', 'attend')
+                  'created_at', 'attendees')
 
 
 class CategorySerializer(serializers.ModelSerializer):

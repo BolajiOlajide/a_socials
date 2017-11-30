@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_EVENT, JOIN_EVENT, CREATE_EVENT_SUCCESS } from './constants';
+import { GET_EVENT, JOIN_EVENT, CREATE_EVENT } from './constants';
 import { handleError } from "../utils/errorHandler";
 
 export function getEvent(event_id) {
@@ -8,7 +8,8 @@ export function getEvent(event_id) {
       .then((res) => {
         dispatch({
           type: GET_EVENT,
-          details: res.data
+          payload: res.data,
+          error: false
         });
       })
       .catch(error => handleError(error, dispatch));
@@ -21,7 +22,8 @@ export function joinEvent(details) {
       .then((res) => {
         dispatch({
           type: JOIN_EVENT,
-          data: res.data
+          payload: res.data,
+          error: false
         })
       })
       .catch(error => handleError(error, dispatch));
@@ -34,8 +36,9 @@ export function createEvent(eventData) {
     return axios.post('/api/v1/create/event', eventData)
       .then((res) => {
         dispatch({
-          type: CREATE_EVENT_SUCCESS,
-          event: res.data
+          type: CREATE_EVENT,
+          payload: res.data,
+          error: false
         })
       })
       .catch(error => handleError(error, dispatch));

@@ -20,7 +20,7 @@ import initialState from './initialState';
 export function event(state = initialState.event, action) {
   switch(action.type) {
     case GET_EVENT:
-      return action.details;
+      return action.payload;
     case SIGN_OUT:
       return initialState.event;
     default:

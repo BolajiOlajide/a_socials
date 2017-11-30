@@ -5,7 +5,8 @@ import { handleError } from "../utils/errorHandler";
 export function getClubs(socialClubs) {
   return {
     type: GET_CLUBS,
-    clubs: socialClubs
+    payload: socialClubs,
+    error: false
   }
 }
 
@@ -25,7 +26,8 @@ export function getClub(club_id) {
       .then((res) => {
         dispatch({
           type: GET_CLUB,
-          club: res.data
+          payload: res.data,
+          error: false
         });
       })
       .catch(error => handleError(error, dispatch));
@@ -38,7 +40,8 @@ export function joinClub(details) {
       .then((res) => {
         dispatch({
           type: JOIN_CLUB,
-          data: res.data
+          payload: res.data,
+          error: false
         })
       })
       .catch(error => handleError(error, dispatch));

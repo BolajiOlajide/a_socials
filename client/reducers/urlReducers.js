@@ -10,7 +10,7 @@ import initialState from './initialState';
 function url(state = initialState.redirectUrl, action) {
   switch (action.type) {
     case SET_REDIRECT_URL:
-      return action.url;
+      return action.payload;
     case SIGN_OUT:
       return initialState.redirectUrl;
     default:

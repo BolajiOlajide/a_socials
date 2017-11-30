@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const saveTokenMiddleware = ({getState, dispatch}) => next => action => {
   if (action.type === SIGN_IN){
-    const token = action.response.data.token;
+    const token = action.payload.data.token;
     axios.defaults.headers.common['Authorization'] = `JWT ${token}`;
     const jwtToSave = JSON.stringify({
       jwt: token
@@ -11,7 +11,7 @@ export const saveTokenMiddleware = ({getState, dispatch}) => next => action => {
     localStorage.setItem('a_socials', jwtToSave);
     let nextAction = {
       type: SIGN_IN_SUCCESS,
-      user: action.response.data.user,
+      payload: action.payload.data.user,
     };
     dispatch(nextAction);
   } else if (action.type === SIGN_OUT){
