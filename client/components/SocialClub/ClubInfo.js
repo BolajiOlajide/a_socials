@@ -14,13 +14,12 @@ function ClubInfo({ joinClub, club }) {
             </h4>
             <small>{club.description}</small>
           </div>
-          <a
-            href="#"
+          <button
             className="btn btn-primary btn-lg"
             onClick={joinClub}
           >
           Join
-          </a>
+          </button>
         </div>
       </div>
     </div>

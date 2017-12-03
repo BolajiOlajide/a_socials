@@ -38,11 +38,10 @@ class AttendanceSerializer(serializers.ModelSerializer):
     """Attend Model serializer class."""
 
     user = UserSerializer(read_only=True)
-    event = EventSerializer(read_only=True)
 
     class Meta:
         model = Attend
-        fields = ('user', 'event')
+        fields = ('user',)
 
 
 class EventDetailSerializer(serializers.ModelSerializer):

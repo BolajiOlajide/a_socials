@@ -15,7 +15,6 @@ class Jumbotron extends Component {
   }
 
   render() {
-    const defaultImageUrl = 'https://www.omnihotels.com/-/media/images/hotels/pueave/hotel/pueave-omni-puerto-aventuras-beach-resort.jpg?h=660&la=en&w=1170';
     return (
       <div className="jumbotron">
         <div className="container">
@@ -33,7 +32,7 @@ class Jumbotron extends Component {
                         <Link to={`/clubs/${club.id}`}>
                           <div className="club hvr-glow"
                                style={{
-                                 backgroundImage: `url(${club.featured_image || defaultImageUrl})`
+                                 backgroundImage: `url(${club.featured_image})`
                                }}
                           >
                             {club.name}

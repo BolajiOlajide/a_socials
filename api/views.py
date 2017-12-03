@@ -118,10 +118,6 @@ class JoinSocialClubView(APIView):
 
     def post(self, request):
 
-
-        # body_unicode = request.body.decode('utf-8')
-        # body_data = json.loads(body_unicode)
-
         club_id = request.data.get('club_id')
         user = request.user
 
@@ -133,11 +129,6 @@ class JoinSocialClubView(APIView):
             follower_category=user_category
         )
         user_interest.save()
-
-        # send @dm to user on slack
-        # slack_name = get_slack_name(user)
-        # message  = "you have successfully joined {} social club".format(user_category.name)
-        # notify_user(message, slack_name)
 
         serializer = InterestSerializer(user_interest)
         return Response(serializer.data)
@@ -165,10 +156,6 @@ class AttendSocialEventView(APIView):
 
     def post(self, request):
 
-        # body_unicode = request.body.decode('utf-8')
-        # body_data = json.loads(body_unicode)
-
-        club_id = request.data.get('club_id')
         event_id = request.data.get('event_id')
 
         try:
@@ -180,7 +167,6 @@ class AttendSocialEventView(APIView):
             user=request.user,
             event=event
         )
-
         user_attendance.save()
 
         serializer = AttendanceSerializer(user_attendance)
@@ -191,7 +177,7 @@ class CreateEventView(CreateAPIView):
     """Create a new event"""
 
     def post(self, request, *args, **kwargs):
-        # import pdb; pdb.set_trace()
+
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
 
@@ -204,7 +190,7 @@ class CreateEventView(CreateAPIView):
         social_event_id = body_data.get('category_id')
 
         try:
-            social_event = Category.objects.get(id=int(social_event_id)) # ensure this does not fail.
+            social_event = Category.objects.get(id=int(social_event_id))
         except Category.DoesNotExist:
             raise Http404
 
@@ -218,15 +204,7 @@ class CreateEventView(CreateAPIView):
             creator=request.user,
             social_event=social_event
         )
-
         new_event.save()
-
-        # send @dm to user on slack
-        # slack_name = get_slack_name(user)
-        # message  = "New Social event {} has just been created".format(new_event.title)
-
-        # to do (pending on event detail page) build URI for event page to add to message)
-        # notify_channel(message)
 
         serializer = EventSerializer(new_event)
         return Response(serializer.data)

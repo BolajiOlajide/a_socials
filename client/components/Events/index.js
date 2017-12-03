@@ -28,25 +28,25 @@ class EventPage extends Component {
 
 
   joinThisClub(){
-    let details = {'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
+    let details = {club_id: this.props.club.id, email: this.props.user.app_user.email};
     this.props.joinClub(details)
-    .then(() => {
-      toastr.success('You have successfully joined this Club. You will be notified of new events');
-    })
-    .catch((error) => {
-      toastr.error('Aww! Something went wong');
-    });
+      .then(() => {
+        toastr.success('You have successfully joined this Club. You will be notified of new events');
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
   }
 
   joinThisEvent(){
-    let details={'event_id': this.props.event.id, 'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
+    let details={event_id: this.props.event.id, club_id: this.props.club.id, email: this.props.user.app_user.email};
     this.props.joinEvent(details)
-    .then(() => {
-      toastr.success('You have successfully subscribed. You will get notifications on this event');
-    })
-    .catch((error) => {
-      toastr.error('Aww! Something went wong');
-    });
+      .then(() => {
+        toastr.success('You have successfully subscribed. You will get notifications on this event');
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
   }
 
   render() {
@@ -74,13 +74,12 @@ class EventPage extends Component {
                   </div>
 
                   <div className="main-cta">
-                    <a
-                      href="#"
+                    <button
                       className="btn btn-lg btn-primary cta"
                       onClick={this.joinThisEvent}
                     >
                       I am attending
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -113,19 +112,18 @@ class EventPage extends Component {
                         {
                           attendees &&
                           attendees.map(attendee =>
-                            <li key={attendee.id}> {attendee.slack_id} </li>
+                            <li key={attendee.user.username}> {attendee.user.first_name} </li>
                           )
                         }
                       </ul>
 
                       <div className="main-cta">
-                        <a
-                          href="#"
+                        <button
                           className="btn btn-lg btn-primary cta"
                           onClick={this.joinThisEvent}
                         >
                           Join this event
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -148,7 +146,7 @@ class EventPage extends Component {
                       {
                           attendees &&
                           attendees.map(attendee =>
-                            <span key={attendee.id}> {attendee.slack_id},</span>
+                            <span key={attendee.user.username}> {attendee.user.first_name},</span>
                           )
                         }
                       <span> have already indicated interest.</span></p>

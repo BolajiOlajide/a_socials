@@ -35,7 +35,7 @@ class SocialClubPage extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.join = this.join.bind(this);
+    this.joinCurrentClub = this.joinCurrentClub.bind(this);
   }
 
 
@@ -61,8 +61,8 @@ class SocialClubPage extends Component {
     });
   }
 
-  join(){
-    let details = {'club_id': this.props.club.id, 'email': this.props.user.app_user.email};
+  joinCurrentClub(){
+    let details = {club_id: this.props.club.id, email: this.props.user.app_user.email};
     this.props.joinClub(details)
       .then(() => {
         toastr.success('You have successfully joined this Club. You will be notified of new events');
@@ -73,7 +73,7 @@ class SocialClubPage extends Component {
   }
 
   render(){
-    const { name, featured_image, events, description} = this.props.club;
+    const { name, featured_image, events, description } = this.props.club;
     return (
       <div>
         <div className="events-page social-club">
@@ -94,13 +94,12 @@ class SocialClubPage extends Component {
                         </div>
                       </div>
                       <div className="main-cta">
-                        <a
-                          href="#"
+                        <button
                           className="btn btn-lg btn-primary cta"
-                          onClick={this.join}
+                          onClick={this.joinCurrentClub}
                         >
                           Join
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -165,7 +164,7 @@ class SocialClubPage extends Component {
 
                                 <div className="form-group">
                                   <label  htmlFor="title">title</label>
-                                  <input value={this.state.newEvent.title}  onChange={this.onChange} type="" className="form-control" id="title" placeholder="title" name="title"/>
+                                  <input value={this.state.newEvent.title}  onChange={this.onChange} type="text" className="form-control" id="title" placeholder="title" name="title"/>
                                 </div>
 
                                 <div className="form-group">
