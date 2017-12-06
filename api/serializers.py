@@ -20,13 +20,22 @@ class GoogleUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GoogleUser
-        fields = ('google_id', 'app_user', 'appuser_picture')
+        fields = ('google_id', 'app_user', 'appuser_picture', 'slack_name')
+        depth = 1
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    """Custom User Model serializer class."""
+
+    class Meta:
+        model = GoogleUser
+        fields = ('slack_name', 'app_user')
         depth = 1
 
 
 class EventSerializer(serializers.ModelSerializer):
 
-    creator = UserSerializer(read_only=True)
+    creator = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Event
@@ -37,7 +46,7 @@ class EventSerializer(serializers.ModelSerializer):
 class AttendanceSerializer(serializers.ModelSerializer):
     """Attend Model serializer class."""
 
-    user = UserSerializer(read_only=True)
+    user = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Attend
@@ -47,7 +56,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
 
     attendees = AttendanceSerializer(many=True, read_only=True)
-    creator = UserSerializer(read_only=True)
+    creator = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Event
@@ -67,7 +76,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class InterestSerializer(serializers.ModelSerializer):
 
-    follower = UserSerializer(read_only=True)
+    follower = CustomUserSerializer(read_only=True)
     follower_category = CategorySerializer(read_only=True)
 
     class Meta:

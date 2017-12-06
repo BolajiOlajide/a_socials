@@ -70,7 +70,7 @@ class EventPage extends Component {
                     <h2>{title}</h2>
                   </div>
                   <div className="header-meta">
-                    Created by {creator && creator.first_name} {creator && creator.last_name}
+                    Created by @{creator && creator.slack_name}
                   </div>
 
                   <div className="main-cta">
@@ -112,7 +112,7 @@ class EventPage extends Component {
                         {
                           attendees &&
                           attendees.map(attendee =>
-                            <li key={attendee.user.username}> {attendee.user.first_name} </li>
+                            <li key={attendee.user.app_user.id}> @{attendee.user.slack_name} </li>
                           )
                         }
                       </ul>
@@ -146,7 +146,7 @@ class EventPage extends Component {
                       {
                           attendees &&
                           attendees.map(attendee =>
-                            <span key={attendee.user.username}> {attendee.user.first_name},</span>
+                            <span key={attendee.user.app_user.id}> @{attendee.user.slack_name},</span>
                           )
                         }
                       <span> have already indicated interest.</span></p>

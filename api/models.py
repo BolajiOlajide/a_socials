@@ -40,7 +40,7 @@ class UserProxy(User):
                 "username": idinfo['email'][:email_length - hd_length],
                 "email": idinfo["email"],
                 "first_name": idinfo['given_name'],
-                "last_name": idinfo['family_name']
+                "last_name": idinfo['family_name'],
             }
 
         for field in data:
@@ -55,6 +55,7 @@ class GoogleUser(models.Model):
     app_user = models.OneToOneField(User, related_name='user',
                                     on_delete=models.CASCADE)
     appuser_picture = models.TextField()
+    slack_name = models.CharField(max_length=80, blank=True)
 
     def check_diff(self, idinfo):
         """Check for differences between request/idinfo and model data.
@@ -62,7 +63,8 @@ class GoogleUser(models.Model):
                 idinfo: data passed in from post method.
         """
         data = {
-                "appuser_picture": idinfo['picture']
+                "appuser_picture": idinfo['picture'],
+                "slack_name": get_slack_name({"email": idinfo["email"]}),
             }
 
         for field in data:
@@ -71,8 +73,7 @@ class GoogleUser(models.Model):
         self.save()
 
     def __str__(self):
-        return "%s %s" % (self.app_user.first_name,
-                          self.app_user.last_name)
+        return "@{}".format(self.slack_name)
 
 
 class UserProfile(models.Model):
@@ -132,7 +133,7 @@ class Event(BaseInfo):
     venue = models.TextField()
     date = models.CharField(default='September 10, 2017', max_length=200)
     time = models.CharField(default='01:00pm WAT', max_length=200)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     social_event = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
     featured_image = models.URLField()
 
@@ -155,21 +156,21 @@ class Event(BaseInfo):
 class Interest(BaseInfo):
     """User Interest Model defined."""
 
-    follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    follower = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     follower_category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-created_at',)
 
     def __str__(self):
-        return "User {} interested in category {}" .format(self.follower.username, self.follower_category.name)
+        return "@{} is interested in category {}" .format(self.follower.slack_name, self.follower_category.name)
 
 
 class Attend(BaseInfo):
     """User Attendance Model defined."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "User {} attending event {}" .format(self.user.username, self.event.title)
+        return "@{} is attending event {}" .format(self.user.slack_name, self.event.title)

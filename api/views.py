@@ -91,12 +91,14 @@ class GoogleLoginView(APIView):
                 username=idinfo['email'][:email_length - hd_length],
                 email=idinfo['email'],
                 first_name=idinfo['given_name'],
-                last_name=idinfo['family_name']
+                last_name=idinfo['family_name'],
             )
             userproxy.save()
             google_user = GoogleUser(google_id=idinfo['sub'],
                                      app_user=userproxy,
-                                     appuser_picture=idinfo['picture'])
+                                     appuser_picture=idinfo['picture'],
+                                     slack_name=get_slack_name({'email': idinfo['email']}),
+                                     )
             google_user.save()
 
         response = self.get_oauth_token(userproxy, google_user)
@@ -119,13 +121,11 @@ class JoinSocialClubView(APIView):
     def post(self, request):
 
         club_id = request.data.get('club_id')
-        user = request.user
 
         # get the category for the club_id
         user_category = Category.objects.get(id=club_id)
-
         user_interest = Interest(
-            follower=user,
+            follower=request.cached_user,
             follower_category=user_category
         )
         user_interest.save()
@@ -164,7 +164,7 @@ class AttendSocialEventView(APIView):
             raise Http404
 
         user_attendance = Attend(
-            user=request.user,
+            user=request.cached_user,
             event=event
         )
         user_attendance.save()
@@ -201,7 +201,7 @@ class CreateEventView(CreateAPIView):
             date=date,
             time=time,
             featured_image=featured_image,
-            creator=request.user,
+            creator=request.cached_user,
             social_event=social_event
         )
         new_event.save()

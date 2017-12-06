@@ -10,14 +10,6 @@ import { createEvent } from '../../actions/eventActions';
 import PageHeader from './PageHeader';
 import EventList from '../Events/EventList';
 
-
-const attendees = [
-  {id: 1, slack_id: '@cent'},
-  {id: 2, slack_id: '@proton'},
-  {id: 3, slack_id: '@gentlefella'},
-  {id: 4, slack_id: '@ignatius'}
-]
-
 class SocialClubPage extends Component {
   constructor(props){
     super(props);
@@ -141,13 +133,9 @@ class SocialClubPage extends Component {
                         <p><b>Venue: </b></p>
                         <p><b>Date: </b></p>
                         <p>
-                          {
-                            attendees &&
-                            attendees.map(attendee =>
-                              <span key={attendee.id}> {attendee.slack_id},</span>
-                            )
-                          }
-                          <span> have already indicated interest.</span></p>
+
+                          <span> have already indicated interest.</span>
+                        </p>
                       </div>
 
                       <div id="myModal" className="modal fade" role="dialog">
