@@ -161,6 +161,7 @@ class Interest(BaseInfo):
 
     class Meta:
         ordering = ('-created_at',)
+        unique_together = ('follower', 'follower_category')
 
     def __str__(self):
         return "@{} is interested in category {}" .format(self.follower.slack_name, self.follower_category.name)
@@ -171,6 +172,10 @@ class Attend(BaseInfo):
 
     user = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('-created_at',)
+        unique_together = ('user', 'event')
 
     def __str__(self):
         return "@{} is attending event {}" .format(self.user.slack_name, self.event.title)

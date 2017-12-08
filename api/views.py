@@ -134,6 +134,18 @@ class JoinSocialClubView(APIView):
         return Response(serializer.data)
 
 
+class JoinedClubsView(ListAPIView):
+    """List of social clubs a user has joined."""
+
+    model = Interest
+    serializer_class = InterestSerializer
+
+    def get_queryset(self):
+        user = self.request.cached_user
+        joined_clubs = Interest.objects.filter(follower_id=user.id).all()
+        return joined_clubs
+
+
 class SocialClubDetail(GenericAPIView):
     """List all Social Club Details."""
 

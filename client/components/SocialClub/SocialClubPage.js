@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import toastr from 'toastr';
 
 // actions
-import { getClub, joinClub } from '../../actions/socialClubActions';
+import { getClub, joinClub, joinedClubs } from '../../actions/socialClubActions';
 import { createEvent } from '../../actions/eventActions';
 
 // components
@@ -22,7 +22,8 @@ class SocialClubPage extends Component {
         time: '',
         featured_image: '',
         category_id: props.params.id
-      }
+      },
+      joinedClub: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -30,15 +31,21 @@ class SocialClubPage extends Component {
     this.joinCurrentClub = this.joinCurrentClub.bind(this);
   }
 
-
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.getClub(this.props.params.id);
+    this.props.joinedClubs();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.joinedClub !== (nextProps.subscribedClubs.indexOf(nextProps.club.id) !== -1)) {
+      this.setState({ joinedClub: !this.state.joinedClub })
+    }
   }
 
   onChange(event) {
     const newEvent = this.state.newEvent;
-    newEvent[event.target.name] = event.target.value
+    newEvent[event.target.name] = event.target.value;
     this.setState({ newEvent });
   }
 
@@ -86,12 +93,13 @@ class SocialClubPage extends Component {
                         </div>
                       </div>
                       <div className="main-cta">
+                        {!this.state.joinedClub &&
                         <button
                           className="btn btn-lg btn-primary cta"
                           onClick={this.joinCurrentClub}
                         >
                           Join
-                        </button>
+                        </button>}
                       </div>
                     </div>
                   </div>
@@ -206,8 +214,9 @@ class SocialClubPage extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     club: state.socialClub,
-    user: state.access.user
+    user: state.access.user,
+    subscribedClubs: state.joinedClubs
   };
 }
 
-export default connect(mapStateToProps, { getClub, joinClub, createEvent })(SocialClubPage);
+export default connect(mapStateToProps, { getClub, joinClub, joinedClubs, createEvent })(SocialClubPage);

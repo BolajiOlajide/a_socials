@@ -76,9 +76,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class InterestSerializer(serializers.ModelSerializer):
 
-    follower = CustomUserSerializer(read_only=True)
-    follower_category = CategorySerializer(read_only=True)
-
     class Meta:
         model = Interest
         fields = ('follower', 'follower_category')

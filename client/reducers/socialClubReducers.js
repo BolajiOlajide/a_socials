@@ -1,8 +1,12 @@
-import { GET_CLUBS, GET_CLUB, CREATE_EVENT, SIGN_OUT } from '../actions/constants';
+import { GET_CLUBS, GET_CLUB, JOINED_CLUBS, CREATE_EVENT, SIGN_OUT } from '../actions/constants';
 import initialState from './initialState';
 
+function retrieveClubId(interest) {
+  return interest.follower_category;
+}
+
 /**
- * Reducers for socialClubs
+ * Reducer for socialClubs
  * @param {array} [state=initialState.socialClubs]
  * @param {object} action
  * @returns {array} new state of socialClubs
@@ -19,7 +23,7 @@ export function socialClubs(state = initialState.socialClubs, action) {
 }
 
 /**
- * Reducers for one socialClub
+ * Reducer for one socialClub
  * @param {object} state
  * @param {object} action
  * @returns {array} new state of the socialClub
@@ -34,6 +38,21 @@ export function socialClub(state = initialState.socialClub, action) {
       });
     case SIGN_OUT:
       return initialState.socialClub;
+    default:
+      return state;
+  }
+}
+
+/**
+ * Reducer for joined clubs
+ * @param {object} state
+ * @param {object} action
+ * @returns {array} new state of joined clubs
+ */
+export function joinedClubs(state = initialState.joinedClubs, action) {
+  switch(action.type){
+    case JOINED_CLUBS:
+      return action.payload.map(retrieveClubId);
     default:
       return state;
   }
