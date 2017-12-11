@@ -50,7 +50,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attend
-        fields = ('user',)
+        fields = ('user', 'event')
 
 
 class EventDetailSerializer(serializers.ModelSerializer):

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CLUB, GET_CLUBS, JOIN_CLUB, JOINED_CLUBS } from './constants';
+import { GET_CLUB, GET_CLUBS, JOIN_CLUB, UNJOIN_CLUB, JOINED_CLUBS } from './constants';
 import { handleError } from "../utils/errorHandler";
 
 export function getClubs(socialClubs) {
@@ -40,6 +40,20 @@ export function joinClub(details) {
       .then((res) => {
         dispatch({
           type: JOIN_CLUB,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function unjoinClub(details) {
+  return (dispatch) => {
+    return axios.post('/api/v1/unjoin/', details)
+      .then((res) => {
+        dispatch({
+          type: UNJOIN_CLUB,
           payload: res.data,
           error: false
         })

@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^join/?$', views.JoinSocialClubView.as_view(),
         name='join'),
 
+    url(r'^unjoin/?$', views.UnjoinSocialClubView.as_view(),
+        name='unjoin'),
+
     url(r'^joined/?$', views.JoinedClubsView.as_view(),
         name='joined'),
 
@@ -33,6 +36,12 @@ urlpatterns = [
 
     url(r'^attend/?$', views.AttendSocialEventView.as_view(),
         name='attend'),
+
+    url(r'^unsubscribe/?$', views.UnsubscribeEventView.as_view(),
+        name='unsubscribe'),
+
+    url(r'^subscribed/?$', views.SubscribedEventsView.as_view(),
+        name='subscribed'),
 
     url(r'^create/event/?$', views.CreateEventView.as_view(),
         name='create_event'),

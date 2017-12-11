@@ -134,6 +134,20 @@ class JoinSocialClubView(APIView):
         return Response(serializer.data)
 
 
+class UnjoinSocialClubView(APIView):
+    """Unsubscribe from a social club"""
+
+    def post(self, request):
+
+        club_id = request.data.get('club_id')
+        user = request.cached_user
+
+        # get the category for the club_id
+        Interest.objects.filter(follower_category_id=club_id, follower_id=user.id).delete()
+
+        return Response({'club_id': club_id})
+
+
 class JoinedClubsView(ListAPIView):
     """List of social clubs a user has joined."""
 
@@ -183,6 +197,32 @@ class AttendSocialEventView(APIView):
 
         serializer = AttendanceSerializer(user_attendance)
         return Response(serializer.data)
+
+
+class SubscribedEventsView(ListAPIView):
+    """List of events a user has joined."""
+
+    model = Attend
+    serializer_class = AttendanceSerializer
+
+    def get_queryset(self):
+        user = self.request.cached_user
+        subscribed_events = Attend.objects.filter(user_id=user.id).all()
+        return subscribed_events
+
+
+class UnsubscribeEventView(APIView):
+    """Unsubscribe from an event"""
+
+    def post(self, request):
+
+        event = request.data.get('event')
+        user = request.cached_user
+
+        # get the event
+        Attend.objects.filter(event_id=event, user_id=user.id).delete()
+
+        return Response({'event_id': event})
 
 
 class CreateEventView(CreateAPIView):

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import toastr from 'toastr';
 
 // actions
-import { getClub, joinClub, joinedClubs } from '../../actions/socialClubActions';
+import { getClub, joinClub, unjoinClub, joinedClubs } from '../../actions/socialClubActions';
 import { createEvent } from '../../actions/eventActions';
 
 // components
@@ -29,6 +29,7 @@ class SocialClubPage extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.joinCurrentClub = this.joinCurrentClub.bind(this);
+    this.unjoinCurrentClub = this.unjoinCurrentClub.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +66,19 @@ class SocialClubPage extends Component {
     this.props.joinClub(details)
       .then(() => {
         toastr.success('You have successfully joined this Club. You will be notified of new events');
+        this.setState({ joinedClub: true });
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
+  }
+
+  unjoinCurrentClub(){
+    let details = {club_id: this.props.club.id, email: this.props.user.app_user.email};
+    this.props.unjoinClub(details)
+      .then(() => {
+        toastr.warning('You have unsubscribed from this Club. You will no longer receive notifications');
+        this.setState({ joinedClub: false });
       })
       .catch((error) => {
         toastr.error('Aww! Something went wong');
@@ -121,6 +135,10 @@ class SocialClubPage extends Component {
                                   event={event}
                                 />
                               )}
+                            </div>
+                            <div>
+                              { this.state.joinedClub &&
+                              <div onClick={this.unjoinCurrentClub}> Unsubscribe from club </div>}
                             </div>
                           </div>
                         </div>
@@ -219,4 +237,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, { getClub, joinClub, joinedClubs, createEvent })(SocialClubPage);
+export default connect(mapStateToProps, { getClub, joinClub, unjoinClub, joinedClubs, createEvent })(SocialClubPage);

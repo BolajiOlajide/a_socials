@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-function ClubInfo({ joinClub, club }) {
+function ClubInfo({ joinClub, joinedClub, club }) {
   return (
     <div className="click-bait">
       <div className="container">
@@ -14,12 +14,13 @@ function ClubInfo({ joinClub, club }) {
             </h4>
             <small>{club.description}</small>
           </div>
+          { !joinedClub &&
           <button
             className="btn btn-primary btn-lg"
             onClick={joinClub}
           >
           Join
-          </button>
+          </button>}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { socialClub, socialClubs, joinedClubs } from './socialClubReducers';
-import { event } from './eventReducers';
+import { event, subscribedEvents } from './eventReducers';
 import access from './accessReducers';
 import url from './urlReducers';
 
@@ -10,6 +10,7 @@ const rootReducer = {
   joinedClubs,
   socialClub,
   event,
+  subscribedEvents,
   url,
 };
 
