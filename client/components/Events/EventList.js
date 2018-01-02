@@ -15,14 +15,12 @@ function EventList({ event }){
         <div className="event-details-wrapper">
           <div className="event-name">{event.venue}</div>
           <div className="event-meta">
-            <p>Went down on {event.date}</p>
-            <p>35 were interested</p>
-            <p>20 attended</p>
-            <p>14 people rated it 4.5 stars</p>
+            <p>Going down on {event.date}</p>
+            <p>{event.attendees_count} are attending</p>
           </div>
         </div>
         <div className="event-meta">
-          <Link to={`/home/clubs/2/events/1`}
+          <Link to={`/clubs/${event.social_event}/events/${event.id}`}
                 className="btn btn-primary btn-lg">
             See who is going
           </Link>

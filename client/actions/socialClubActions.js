@@ -1,39 +1,12 @@
 import axios from 'axios';
-import * as constants from './constants';
+import { GET_CLUB, GET_CLUBS, JOIN_CLUB, UNJOIN_CLUB, JOINED_CLUBS } from './constants';
+import { handleError } from "../utils/errorHandler";
 
-export function getClub(club_id) {
-  return (dispatch) => {
-    return axios.get(`/api/v1/category/${club_id}/events/`)
-      .then((res) => {
-
-        dispatch({
-          type: constants.GET_CLUB,
-          club: res.data
-        });
-      })
-      .catch(error => console.log(error));
-  };
-}
-
-export function joinClub(details) {
-  return (dispatch) => {
-    return axios.post('/api/v1/join/', details)
-      .then((res) => {
-        console.log('Res', res);
-      })
-      .catch(error => {
-        throw error;
-      });
-  };
-}
-
-/**
- * Social Club List Action Creator
- */
 export function getClubs(socialClubs) {
   return {
-    type: constants.GET_CLUBS,
-    clubs: socialClubs
+    type: GET_CLUBS,
+    payload: socialClubs,
+    error: false
   }
 }
 
@@ -43,8 +16,62 @@ export function getAllClubs() {
       .then((socialClubs) => {
         dispatch(getClubs(socialClubs.data.results));
       })
-      .catch(error => {
-        throw error;
-      });
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function getClub(club_id) {
+  return (dispatch) => {
+    return axios.get(`/api/v1/category/${club_id}/events/`)
+      .then((res) => {
+        dispatch({
+          type: GET_CLUB,
+          payload: res.data,
+          error: false
+        });
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function joinClub(details) {
+  return (dispatch) => {
+    return axios.post('/api/v1/join/', details)
+      .then((res) => {
+        dispatch({
+          type: JOIN_CLUB,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function unjoinClub(details) {
+  return (dispatch) => {
+    return axios.post('/api/v1/unjoin/', details)
+      .then((res) => {
+        dispatch({
+          type: UNJOIN_CLUB,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function joinedClubs() {
+  return (dispatch) => {
+    return axios.get('/api/v1/joined/')
+      .then((res) => {
+        dispatch({
+          type: JOINED_CLUBS,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
   };
 }

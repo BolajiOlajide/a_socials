@@ -40,7 +40,7 @@ class UserProxy(User):
                 "username": idinfo['email'][:email_length - hd_length],
                 "email": idinfo["email"],
                 "first_name": idinfo['given_name'],
-                "last_name": idinfo['family_name']
+                "last_name": idinfo['family_name'],
             }
 
         for field in data:
@@ -55,6 +55,7 @@ class GoogleUser(models.Model):
     app_user = models.OneToOneField(User, related_name='user',
                                     on_delete=models.CASCADE)
     appuser_picture = models.TextField()
+    slack_name = models.CharField(max_length=80, blank=True)
 
     def check_diff(self, idinfo):
         """Check for differences between request/idinfo and model data.
@@ -62,7 +63,8 @@ class GoogleUser(models.Model):
                 idinfo: data passed in from post method.
         """
         data = {
-                "appuser_picture": idinfo['picture']
+                "appuser_picture": idinfo['picture'],
+                "slack_name": get_slack_name({"email": idinfo["email"]}),
             }
 
         for field in data:
@@ -71,8 +73,7 @@ class GoogleUser(models.Model):
         self.save()
 
     def __str__(self):
-        return "%s %s" % (self.app_user.first_name,
-                          self.app_user.last_name)
+        return "@{}".format(self.slack_name)
 
 
 class UserProfile(models.Model):
@@ -101,15 +102,16 @@ def create_user_profile(sender, instance, created, **kwargs):
     post_save.connect(create_user_profile, sender=User,
                       dispatch_uid=create_user_profile)
 
+
 class Category(BaseInfo):
     """Category model defined."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
     featured_image = models.URLField()
+    description = models.TextField(max_length=280, default="For people who want to be happy.")
 
     class Meta:
-        """Define odering below."""
-
+        """Define ordering below."""
         ordering = ['name']
 
     def get_count(self):
@@ -131,32 +133,49 @@ class Event(BaseInfo):
     venue = models.TextField()
     date = models.CharField(default='September 10, 2017', max_length=200)
     time = models.CharField(default='01:00pm WAT', max_length=200)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     social_event = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
     featured_image = models.URLField()
 
+    @property
+    def attendees(self):
+        attendees = Attend.objects.filter(event=self)
+        return attendees
+
+    def get_count(self):
+        attendees = Attend.objects.filter(event=self)
+        result = attendees.count()
+        return result
+
+    attendees_count = property(get_count)
+
     def __str__(self):
-        return "Message with title : {}" .format(self.title)
+        return "Event: {}" .format(self.title)
+
 
 class Interest(BaseInfo):
     """User Interest Model defined."""
 
-    follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    follower = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     follower_category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-created_at',)
+        unique_together = ('follower', 'follower_category')
 
     def __str__(self):
-        return "User {} interested in category {}" .format(self.user.username,
-                                                       self.follower_category.name)
+        return "@{} is interested in category {}" .format(self.follower.slack_name, self.follower_category.name)
 
 
 class Attend(BaseInfo):
-    """User Interest Model defined."""
+    """User Attendance Model defined."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(GoogleUser, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ('-created_at',)
+        unique_together = ('user', 'event')
+
     def __str__(self):
-        return self.user.name
+        return "@{} is attending event {}" .format(self.user.slack_name, self.event.title)

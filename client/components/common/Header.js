@@ -12,6 +12,7 @@ class Header extends Component {
 
   onSignOut(){
     this.props.signOut();
+    window.location.reload();
   }
 
   render() {

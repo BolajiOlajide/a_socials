@@ -12,7 +12,7 @@ function access(state = initialState.access, action) {
     case SIGN_IN_SUCCESS:
       return {
         isAuthenticated: true,
-        user: action.user
+        user: action.payload
       };
     case SIGN_OUT:
       return initialState.access;

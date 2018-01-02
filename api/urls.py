@@ -17,12 +17,16 @@ urlpatterns = [
 
     url(r'^home/?$',
         views.DashBoardView.as_view(),
-        name='dashboard'
-        ),
+        name='dashboard'),
 
     url(r'^join/?$', views.JoinSocialClubView.as_view(),
-        name='join'
-        ),
+        name='join'),
+
+    url(r'^unjoin/?$', views.UnjoinSocialClubView.as_view(),
+        name='unjoin'),
+
+    url(r'^joined/?$', views.JoinedClubsView.as_view(),
+        name='joined'),
 
     url(r'^categories/?$', views.CategoryListView.as_view(),
         name='apicategory'),
@@ -31,19 +35,17 @@ urlpatterns = [
         name="user-detail"),
 
     url(r'^attend/?$', views.AttendSocialEventView.as_view(),
-        name='attend'
-        ),
+        name='attend'),
+
+    url(r'^unsubscribe/?$', views.UnsubscribeEventView.as_view(),
+        name='unsubscribe'),
+
+    url(r'^subscribed/?$', views.SubscribedEventsView.as_view(),
+        name='subscribed'),
 
     url(r'^create/event/?$', views.CreateEventView.as_view(),
-        name='create_event'
-        ),
-
-    url(r'^signout/$',
-        views.SignOutView.as_view(),
-        name='signout'
-        ),
+        name='create_event'),
 
     url(r'^event/(?P<pk>[0-9]+)/?$', views.EventDetail.as_view(),
-        name='event_detail'
-        ),
+        name='event_detail'),
 ]

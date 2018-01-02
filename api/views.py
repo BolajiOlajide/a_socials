@@ -23,7 +23,8 @@ from rest_framework_jwt.settings import api_settings
 
 from .utils import resolve_google_oauth
 from .models import GoogleUser, UserProxy, Category, Interest, Event, Attend
-from .serializers import CategorySerializer, EventSerializer, EventDetailSerializer, GoogleUserSerializer, UserSerializer
+from .serializers import CategorySerializer, EventSerializer, AttendanceSerializer,\
+  EventDetailSerializer, GoogleUserSerializer, UserSerializer, InterestSerializer
 from .setpagination import LimitOffsetpage
 from .slack import get_slack_name, notify_channel, notify_user
 
@@ -90,12 +91,14 @@ class GoogleLoginView(APIView):
                 username=idinfo['email'][:email_length - hd_length],
                 email=idinfo['email'],
                 first_name=idinfo['given_name'],
-                last_name=idinfo['family_name']
+                last_name=idinfo['family_name'],
             )
             userproxy.save()
             google_user = GoogleUser(google_id=idinfo['sub'],
                                      app_user=userproxy,
-                                     appuser_picture=idinfo['picture'])
+                                     appuser_picture=idinfo['picture'],
+                                     slack_name=get_slack_name({'email': idinfo['email']}),
+                                     )
             google_user.save()
 
         response = self.get_oauth_token(userproxy, google_user)
@@ -112,44 +115,55 @@ class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class JoinSocialClubView(TemplateView):
+class JoinSocialClubView(APIView):
     """Join a social club."""
 
     def post(self, request):
 
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
-
-
-        email = body_data.get('email')
-        club_id = body_data.get('club_id')
-        user = request.user
+        club_id = request.data.get('club_id')
 
         # get the category for the club_id
         user_category = Category.objects.get(id=club_id)
-
         user_interest = Interest(
-            follower=user,
-            follower_category = user_category
+            follower=request.cached_user,
+            follower_category=user_category
         )
         user_interest.save()
 
-        # send @dm to user on slack
-        slack_name = get_slack_name(user)
-        message  = "you have successfully joined {} social club".format(user_category.name)
-        notify_user(message, slack_name)
+        serializer = InterestSerializer(user_interest)
+        return Response(serializer.data)
 
 
-        return http.response.JsonResponse({
-            'message': 'registration successful',
-            'status': 200
-        })
+class UnjoinSocialClubView(APIView):
+    """Unsubscribe from a social club"""
+
+    def post(self, request):
+
+        club_id = request.data.get('club_id')
+        user = request.cached_user
+
+        # get the category for the club_id
+        Interest.objects.filter(follower_category_id=club_id, follower_id=user.id).delete()
+
+        return Response({'club_id': club_id})
+
+
+class JoinedClubsView(ListAPIView):
+    """List of social clubs a user has joined."""
+
+    model = Interest
+    serializer_class = InterestSerializer
+
+    def get_queryset(self):
+        user = self.request.cached_user
+        joined_clubs = Interest.objects.filter(follower_id=user.id).all()
+        return joined_clubs
 
 
 class SocialClubDetail(GenericAPIView):
     """List all Social Club Details."""
 
-    model = Event
+    model = Category
     serializer_class = CategorySerializer
 
     def get(self, request, *args, **kwargs):
@@ -163,38 +177,56 @@ class SocialClubDetail(GenericAPIView):
         return Response(serializer.data)
 
 
-class AttendSocialEventView(TemplateView):
+class AttendSocialEventView(APIView):
     """Attend a social event."""
 
     def post(self, request):
 
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
-
-        email = body_data.get('email')
-        club_id = body_data.get('club_id')
-        event_id = body_data.get('event_id')
+        event_id = request.data.get('event_id')
 
         try:
-             my_event.objects.get(id=category_id)
+            event = Event.objects.get(id=event_id)
         except Event.DoesNotExist:
             raise Http404
 
         user_attendance = Attend(
-            user=request.user,
-            event = my_event
+            user=request.cached_user,
+            event=event
         )
-
         user_attendance.save()
 
-        return http.response.JsonResponse({
-            'message': 'registration successful',
-            'status': 200
-        })
+        serializer = AttendanceSerializer(user_attendance)
+        return Response(serializer.data)
 
 
-class CreateEventView(TemplateView):
-    pass
+class SubscribedEventsView(ListAPIView):
+    """List of events a user has joined."""
+
+    model = Attend
+    serializer_class = AttendanceSerializer
+
+    def get_queryset(self):
+        user = self.request.cached_user
+        subscribed_events = Attend.objects.filter(user_id=user.id).all()
+        return subscribed_events
+
+
+class UnsubscribeEventView(APIView):
+    """Unsubscribe from an event"""
+
+    def post(self, request):
+
+        event = request.data.get('event')
+        user = request.cached_user
+
+        # get the event
+        Attend.objects.filter(event_id=event, user_id=user.id).delete()
+
+        return Response({'event_id': event})
+
+
+class CreateEventView(CreateAPIView):
+    """Create a new event"""
 
     def post(self, request, *args, **kwargs):
 
@@ -210,7 +242,7 @@ class CreateEventView(TemplateView):
         social_event_id = body_data.get('category_id')
 
         try:
-            social_event = Category.objects.get(id=int(social_event_id)) # ensure this does not fail.
+            social_event = Category.objects.get(id=int(social_event_id))
         except Category.DoesNotExist:
             raise Http404
 
@@ -221,33 +253,13 @@ class CreateEventView(TemplateView):
             date=date,
             time=time,
             featured_image=featured_image,
-            creator=request.use,
+            creator=request.cached_user,
             social_event=social_event
         )
-
         new_event.save()
 
-        # send @dm to user on slack
-        slack_name = get_slack_name(user)
-        message  = "New Social event {} has just been created".format(new_event.title)
-
-        # to do (pending on event detail page) build URI for event page to add to message)
-        notify_channel(message)
-
-        return http.response.JsonResponse({
-            'message': 'registration successful',
-            'status': 200
-        })
-
-
-class SignOutView(View, LoginRequiredMixin):
-
-    '''Logout User from session.'''
-
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return HttpResponseRedirect(
-            reverse_lazy('homepage'))
+        serializer = EventSerializer(new_event)
+        return Response(serializer.data)
 
 
 class EventDetail(GenericAPIView):

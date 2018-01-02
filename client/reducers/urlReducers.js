@@ -1,4 +1,4 @@
-import { SET_REDIRECT_URL } from '../actions/constants';
+import { SET_REDIRECT_URL, SIGN_OUT } from '../actions/constants';
 import initialState from './initialState';
 
 /**
@@ -10,7 +10,9 @@ import initialState from './initialState';
 function url(state = initialState.redirectUrl, action) {
   switch (action.type) {
     case SET_REDIRECT_URL:
-      return action.url;
+      return action.payload;
+    case SIGN_OUT:
+      return initialState.redirectUrl;
     default:
       return state;
   }

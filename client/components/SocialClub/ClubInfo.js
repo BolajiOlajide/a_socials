@@ -1,21 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router';
 
-function ClubInfo({ joinClub }) {
+function ClubInfo({ joinClub, joinedClub, club }) {
   return (
     <div className="click-bait">
       <div className="container">
         <div className="mini-header">
           <div className="title">
-            Swimming Meetups
-            <small>For those who no matter what, stay afloat...</small>
+            <h4 className="club-link">
+              <Link to={`/clubs/${club.id}`}>
+                {club.name}
+              </Link>
+            </h4>
+            <small>{club.description}</small>
           </div>
-          <a
-            href="#"
+          { !joinedClub &&
+          <button
             className="btn btn-primary btn-lg"
             onClick={joinClub}
           >
           Join
-          </a>
+          </button>}
         </div>
       </div>
     </div>

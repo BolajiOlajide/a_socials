@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-
-// images
-import featuredImage from '../../assets/img/img_1.jpg'
+import { Link } from 'react-router';
 
 // components
 import ClubInfo from '../SocialClub/ClubInfo';
 
 // actions
-import { getEvent, joinEvent } from '../../actions/eventActions';
-import { joinClub } from '../../actions/socialClubActions'
+import { getEvent, joinEvent, getSubscribedEvents, unsubscribeEvent } from '../../actions/eventActions';
+import { joinClub, getClub } from '../../actions/socialClubActions'
 
 // toastr service
 import toastr from 'toastr';
@@ -18,42 +15,79 @@ import toastr from 'toastr';
 class EventPage extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      joinedClub: false,
+      joinedEvent: false
+    };
     this.joinThisClub = this.joinThisClub.bind(this);
     this.joinThisEvent = this.joinThisEvent.bind(this);
+    this.unsubscribeThisEvent = this.unsubscribeThisEvent.bind(this);
   }
   // TODO: There will be two API calls here
   // To get the clicked event and a recommended event
   componentDidMount(){
     window.scrollTo(0, 0);
-    this.props.getEvent();
+    this.props.getEvent(this.props.params.id);
+    this.props.getClub(this.props.params.club_id);
+    this.props.getSubscribedEvents();
   }
 
-  joinThisClub(details={'club_id': 3, 'email': 'ig@uk.com'}){
+  componentWillReceiveProps(nextProps) {
+    if (this.state.joinedClub !== (nextProps.subscribedClubs.indexOf(nextProps.club.id) !== -1)) {
+      this.setState({ joinedClub: !this.state.joinedClub })
+    }
+    if (this.state.joinedEvent !== (nextProps.subscribedEvents.indexOf(nextProps.event.id) !== -1)) {
+      this.setState({ joinedEvent: !this.state.joinedEvent })
+    }
+  }
+
+  joinThisClub(){
+    let details = {club_id: this.props.club.id, email: this.props.user.app_user.email};
     this.props.joinClub(details)
-    .then(() => {
-      toastr.success('You have successfully joined this Club. You will be notified of new events');
-    })
-    .catch((error) => {
-      toastr.error('Aww! Something went wong');
-    });
+      .then(() => {
+        toastr.success('You have successfully joined this Club. You will be notified of new events');
+        this.setState({ joinedClub: true });
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
   }
 
-  joinThisEvent(details={'event_id': 1, 'club_id': 3, 'email': 'ig@uk.com'}){
+  joinThisEvent(){
+    let details={event_id: this.props.event.id, club_id: this.props.club.id, email: this.props.user.app_user.email};
     this.props.joinEvent(details)
-    .then(() => {
-      toastr.success('You have successfully subscribed. You will get notifications on this event');
-    })
-    .catch((error) => {
-      toastr.error('Aww! Something went wong');
-    });
+      .then(() => {
+        toastr.success('You have successfully subscribed. You will get notifications on this event');
+        this.setState({ joinedEvent: true })
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
+  }
+
+  unsubscribeThisEvent(){
+    let event = {event: this.props.event.id};
+    this.props.unsubscribeEvent(event)
+      .then(() => {
+        toastr.warning('You have unsubscribed. You will no longer get notifications on this event');
+        this.setState({ joinedEvent: false })
+      })
+      .catch((error) => {
+        toastr.error('Aww! Something went wong');
+      });
   }
 
   render() {
-    const { featured_image, title, attendees, created_by, created_on,
-      description, venue, date, time, club_id } = this.props.event;
+    const { featured_image, title, attendees, creator,
+      description, venue, date, time } = this.props.event;
+
     return (
       <div className="events-page">
-        <ClubInfo joinClub={this.joinThisClub} />
+        <ClubInfo
+          joinClub={this.joinThisClub}
+          club={this.props.club}
+          joinedClub={this.state.joinedClub}
+        />
         <div>
           <div className="row">
             <div className="col-lg-12">
@@ -65,17 +99,17 @@ class EventPage extends Component {
                     <h2>{title}</h2>
                   </div>
                   <div className="header-meta">
-                    Created by {created_by}  on {created_on}
+                    Created by @{creator && creator.slack_name}
                   </div>
 
                   <div className="main-cta">
-                    <a
-                      href="#"
+                    {!this.state.joinedEvent &&
+                    <button
                       className="btn btn-lg btn-primary cta"
                       onClick={this.joinThisEvent}
                     >
                       I am attending
-                    </a>
+                    </button>}
                   </div>
                 </div>
               </div>
@@ -108,15 +142,21 @@ class EventPage extends Component {
                         {
                           attendees &&
                           attendees.map(attendee =>
-                            <li key={attendee.id}> {attendee.slack_id} </li>
+                            <li key={attendee.user.app_user.id}> @{attendee.user.slack_name} </li>
                           )
                         }
                       </ul>
 
                       <div className="main-cta">
-                        <a href="#" className="btn btn-lg btn-primary cta">
+                        {!this.state.joinedEvent &&
+                        <button
+                          className="btn btn-lg btn-primary cta"
+                          onClick={this.joinThisEvent}
+                        >
                           Join this event
-                        </a>
+                        </button>}
+                        {this.state.joinedEvent &&
+                        <div onClick={this.unsubscribeThisEvent}>Unsubscribe this event</div>}
                       </div>
                     </div>
                   </div>
@@ -139,7 +179,7 @@ class EventPage extends Component {
                       {
                           attendees &&
                           attendees.map(attendee =>
-                            <span key={attendee.id}> {attendee.slack_id},</span>
+                            <span key={attendee.user.app_user.id}> @{attendee.user.slack_name},</span>
                           )
                         }
                       <span> have already indicated interest.</span></p>
@@ -157,8 +197,13 @@ class EventPage extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    event: state.event
+    user: state.access.user,
+    event: state.event,
+    club: state.socialClub,
+    subscribedClubs: state.joinedClubs,
+    subscribedEvents: state.subscribedEvents
   };
 }
 
-export default connect(mapStateToProps, { getEvent, joinClub, joinEvent })(EventPage);
+export default connect(mapStateToProps,
+  { getClub, getEvent, joinClub, joinEvent, getSubscribedEvents, unsubscribeEvent })(EventPage);

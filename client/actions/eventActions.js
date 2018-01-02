@@ -1,59 +1,73 @@
-import * as constants from './constants';
+import axios from 'axios';
+import {GET_EVENT, JOIN_EVENT, CREATE_EVENT, SUBSCRIBED_EVENTS, UNSUBSCRIBE_EVENT} from './constants';
+import { handleError } from "../utils/errorHandler";
 
-// This should be uncommented when the endpoint works
-// export function getEvent(event_id) {
-//   return (dispatch) => {
-//     return axios.get(`/api/v1/event/${event_id}`)
-//       .then((res) => {
-//         console.log('Res', res);
-//         dispatch({
-//           type: constants.GET_EVENT,
-//           details: res.data
-//         });
-//       })
-//       .catch(error => console.log(error));
-//   };
-// }
+export function getEvent(event_id) {
+  return (dispatch) => {
+    return axios.get(`/api/v1/event/${event_id}`)
+      .then((res) => {
+        dispatch({
+          type: GET_EVENT,
+          payload: res.data,
+          error: false
+        });
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
 
 export function joinEvent(details) {
   return (dispatch) => {
     return axios.post('/api/v1/attend', details)
       .then((res) => {
-        console.log('Res', res);
+        dispatch({
+          type: JOIN_EVENT,
+          payload: res.data,
+          error: false
+        })
       })
-      .catch(error => {
-        throw error
-      });
+      .catch(error => handleError(error, dispatch));
   };
 }
 
-// This should be deleted when getEvent endpoint works
-export function getEvent(event_id) {
-  return {
-    type: constants.GET_EVENT,
-    details: {
-        id: 1,
-        club_id: 3,
-        featured_image: 'https://www.omnihotels.com/-/media/images/hotels/pueave/hotel/pueave-omni-puerto-aventuras-beach-resort.jpg?h=660&la=en&w=1170',
-        title: 'Swimming at EPIC Towers hotel',
-        description: 'We should visit blah blah blah',
-        venue: 'EPIC Towers, 235 Ilupeju, Lagos',
-        date: 'September 10, 2017',
-        time: '01:00pm WAT',
-        created_on:  'September 10, 2017',
-        created_by: '@gentlefella',
-        attendees: [
-            {
-                id: 1,
-                full_name: 'Innocent Amadi',
-                slack_id: '@cent'
-            },
-            {
-                id: 2,
-                full_name: 'Ignatius Ukwuoma',
-                slack_id: '@ignatius'
-            }
-        ]
-      }
+export function createEvent(eventData) {
+  return (dispatch) => {
+    return axios.post('/api/v1/create/event', eventData)
+      .then((res) => {
+        dispatch({
+          type: CREATE_EVENT,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function getSubscribedEvents() {
+  return (dispatch) => {
+    return axios.get('/api/v1/subscribed')
+      .then((res) => {
+        dispatch({
+          type: SUBSCRIBED_EVENTS,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
+  };
+}
+
+export function unsubscribeEvent(event) {
+  return (dispatch) => {
+    return axios.post('/api/v1/unsubscribe', event)
+      .then((res) => {
+        dispatch({
+          type: UNSUBSCRIBE_EVENT,
+          payload: res.data,
+          error: false
+        })
+      })
+      .catch(error => handleError(error, dispatch));
   };
 }

@@ -2,17 +2,18 @@ import axios from 'axios';
 import { SET_REDIRECT_URL, SIGN_OUT, SIGN_IN } from './constants';
 import { authenticationFailed } from '../utils/errorHandler';
 
-export function login(response, type){
+export function login(payload, type){
   return {
-    response,
-    type
+    payload,
+    type,
+    error: false
   };
 }
 
 export function setRedirectUrl(url){
   return {
     type: SET_REDIRECT_URL,
-    url
+    payload: url
   };
 }
 
