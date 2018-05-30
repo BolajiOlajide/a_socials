@@ -9,10 +9,10 @@ These will improve socialization between Andelans inside and outside the company
 ### INSTALLATION
 Clone from git using
 ```
-git@github.com:BolajiOlajide/a_socials.git
+git@github.com:AndelaOSP/Andela-Socials.git
 ```
 
-Navigate into the root directoru of the project and run the script `setup.sh` with the command:
+Navigate into the root directory of the project and run the script `setup.sh` with the command:
 ```
 ./setup.sh
 ```
@@ -34,4 +34,4 @@ You can seed the dummy data into your database using the command `python manage.
 *password:* _testuser_
 
 ### CONTRIBUTORS
-View the list of [contributors](https://github.com/BolajiOlajide/a_socials/contributors) who participate in this project.
+View the list of [contributors](https://github.com/AndelaOSP/Andela-Socials/contributors) who participate in this project.
