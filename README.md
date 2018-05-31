@@ -12,6 +12,8 @@ Clone from git using
 git@github.com:AndelaOSP/Andela-Socials.git
 ```
 
+Create a `.env` file with the content of the `.env.sample` and edit with your personal details.
+
 Navigate into the root directory of the project and run the script `setup.sh` with the command:
 ```
 ./setup.sh
