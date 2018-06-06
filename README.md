@@ -27,6 +27,17 @@ Subsequently, if you need to start the application after the initial setup has c
 ./start.sh
 ```
 
+### DB CREATION
+Use the createdb.sh script to setup your database for the application
+
+Your .env variable should look like this, you can aslo reference the file to see how it is used. 
+```
+    DB_USER=a_socials
+    DB_PASS=a_socials
+    DB_PORT=5432
+    DB_NAME=a_socials
+```
+
 ### UI MOCK
 The UI mock for the project is available [here](https://www.figma.com/file/Yn3JRZ3YLBVSg4o8L9dhIAv2/Andela_Socials)
 
