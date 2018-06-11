@@ -5,7 +5,8 @@
   "repository": "https://github.com/BolajiOlajide/a_socials.git",
   "scripts": {
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
-    "start": "webpack --config webpack.config.prod.js"
+    "start": "webpack --config webpack.config.prod.js",
+    "precommit": "lint-staged"
   },
   "author": "",
   "license": "MIT",
@@ -47,6 +48,18 @@
     "webpack-dev-server": "2.7.1"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.5",
     "redux-devtools": "^3.4.0"
+  },
+  "lint-staged": {
+    "client/**/*.{js,jsx,json,scss,css}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
