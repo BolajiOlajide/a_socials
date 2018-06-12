@@ -2,14 +2,6 @@
 FROM python:3.6.2-slim
 ENV PYTHONUNBUFFERED 1
 
-# Setup Debian linux
-#RUN export DEBIAN_FRONTEND=noninteractive
-#RUN apt-get update && apt-get -y install build-essential curl
-#RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-#RUN apt-get install -y nodejs
-#RUN nodejs -v && npm -v
-#RUN npm rebuild node-sass
-
  #Update pip version
 RUN pip install --upgrade pip
 
@@ -21,15 +13,18 @@ COPY . /andela_social
 COPY requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt
 
+# Expose this port outside of the container
 EXPOSE 8000
 
 # Copy setup scripts to folder
 COPY ./start-server.sh /start-server.sh
 COPY ./wait_for_database.sh /wait_for_database.sh
 
+# Make the setup scripts executable
 RUN chmod +x /start-server.sh
 RUN chmod +x /wait_for_database.sh
 
+#set the wait for database script as the entry
 ENTRYPOINT "/wait_for_database.sh" && /bin/bash
 
 
