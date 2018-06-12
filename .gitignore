@@ -21,3 +21,4 @@ env/
 staticfiles/
 .DS_Store
 static/
+venv
