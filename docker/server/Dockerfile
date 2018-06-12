@@ -26,6 +26,3 @@ RUN chmod +x /wait_for_database.sh
 
 #set the wait for database script as the entry
 ENTRYPOINT "/wait_for_database.sh" && /bin/bash
-
-
-
