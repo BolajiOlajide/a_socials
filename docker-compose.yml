@@ -8,28 +8,25 @@ services:
   db:
     container_name: andela_social_db
     build:
-      context: ./docker/postgres
+      context: ./docker/database
       dockerfile: Dockerfile
     restart: always
-    environment:
-      - POSTGRES_PASSWORD=a_socials
-      - POSTGRES_DB=a_socials
-      - POSTGRES_USER=a_socials
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
     ports:
       - "5432"
 
-  web:
-    image: andela_social:1.0
-    container_name: andela_social
+  server:
+    container_name: andela_social_server
     env_file:
       - .env
     build:
-      context: ./docker/django
+      context: ./docker/server
       dockerfile: Dockerfile
-    command: /setup-dev.sh
+    command: /start-server.sh
     depends_on:
       - db
     ports:
@@ -38,7 +35,20 @@ services:
       - db
     volumes:
       - .:/andela_social
-
+  client:
+    container_name: andela_social_client
+    build:
+      context: ./docker/client
+      dockerfile: Dockerfile
+    command: /start-client.sh
+    volumes:
+      - .:/andela_social
+    env_file:
+      - .env
+    depends_on:
+      - server
+    ports:
+      - "9000:9000"
 
 
 

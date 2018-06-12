@@ -9,7 +9,7 @@ import sys
 import psycopg2
 
 try:
-  conn = psycopg2.connect(dbname="postgres", user="postgres", password="postgres", host="postgres")
+  conn = psycopg2.connect(dbname="$DB_NAME", user="$DB_USER", password="$DB_PASS", host="$DB_HOST")
 except psycopg2.OperationalError:
     sys.exit(-1)
 sys.exit(0)
@@ -20,4 +20,6 @@ until wait_db; do
   sleep 1
 done
 >&2 echo "Postgres is up - continuing..."
+
+/start-server.sh
 
