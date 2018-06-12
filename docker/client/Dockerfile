@@ -9,11 +9,14 @@ WORKDIR /andela_social
 # uninstall node sass to remove any previous version
 RUN npm uninstall node-sass -g
 
+# Copy package json to working directory
+COPY ./package.json  /andela_social/package.json
+
 # Install the dependencies from package json
 RUN npm install
 
 # Copy start-client.sh scripts
-COPY ./start-client.sh  /start-client.sh
+COPY docker/client/start-client.sh  /start-client.sh
 
 # Make the start-client script executable
 RUN chmod +x /start-client.sh

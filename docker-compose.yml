@@ -24,8 +24,8 @@ services:
     env_file:
       - .env
     build:
-      context: ./docker/server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/server/Dockerfile
     command: /start-server.sh
     depends_on:
       - db
@@ -38,8 +38,8 @@ services:
   client:
     container_name: andela_social_client
     build:
-      context: ./docker/client
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/client/Dockerfile
     command: /start-client.sh
     volumes:
       - .:/andela_social
