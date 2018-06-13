@@ -9,10 +9,16 @@ These will improve socialization between Andelans inside and outside the company
 ### INSTALLATION
 Clone from git using
 ```
-git@github.com:BolajiOlajide/a_socials.git
+git@github.com:AndelaOSP/Andela-Socials.git
 ```
 
-Navigate into the root directoru of the project and run the script `setup.sh` with the command:
+Create a `.env` file with the content of the `.env.sample` and edit with your personal details.
+
+Check that the node version you are running is version 8. Otherwise you can use nvm to help manage the node version you are running.
+Follow this [guide](https://gist.github.com/d2s/372b5943bce17b964a79#install-nvm-for-managing-nodejs-versions) to help install nvm.
+You would then run `nvm install v8.0` to install node version 8 and `nvm use v8` to use that specific node version, but this will only work with that running bash session. To make version 8 the default node version for your system you would use `nvm alias default 8.0` 
+
+Navigate into the root directory of the project and run the script `setup.sh` with the command:
 ```
 ./setup.sh
 ```
@@ -25,6 +31,17 @@ Subsequently, if you need to start the application after the initial setup has c
 ./start.sh
 ```
 
+### DB CREATION
+Use the createdb.sh script to setup your database for the application
+
+Your .env variable should look like this, you can aslo reference the file to see how it is used. 
+```
+    DB_USER=a_socials
+    DB_PASS=a_socials
+    DB_PORT=5432
+    DB_NAME=a_socials
+```
+
 ### UI MOCK
 The UI mock for the project is available [here](https://www.figma.com/file/Yn3JRZ3YLBVSg4o8L9dhIAv2/Andela_Socials)
 
@@ -34,4 +51,4 @@ You can seed the dummy data into your database using the command `python manage.
 *password:* _testuser_
 
 ### CONTRIBUTORS
-View the list of [contributors](https://github.com/BolajiOlajide/a_socials/contributors) who participate in this project.
+View the list of [contributors](https://github.com/AndelaOSP/Andela-Socials/contributors) who participate in this project.
