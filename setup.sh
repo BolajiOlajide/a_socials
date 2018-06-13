@@ -37,7 +37,6 @@ function setup_client() {
 	fi
 
 	yarn install
-	webpack --config=webpack.config.dev
 }
 
 venv

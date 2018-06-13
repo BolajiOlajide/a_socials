@@ -21,4 +21,8 @@ env/
 staticfiles/
 .DS_Store
 static/
+<<<<<<< HEAD
 venv
+=======
+venv/
+>>>>>>> 9ac3aceb420a6be5431c074f8abd5566d8e3e5c7
