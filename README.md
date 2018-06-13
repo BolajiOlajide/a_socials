@@ -14,6 +14,10 @@ git@github.com:AndelaOSP/Andela-Socials.git
 
 Create a `.env` file with the content of the `.env.sample` and edit with your personal details.
 
+Check that the node version you are running is version 8. Otherwise you can use nvm to help manage the node version you are running.
+Follow this [guide](https://gist.github.com/d2s/372b5943bce17b964a79#install-nvm-for-managing-nodejs-versions) to help install nvm.
+You would then run `nvm install v8.0` to install node version 8 and `nvm use v8` to use that specific node version, but this will only work with that running bash session. To make version 8 the default node version for your system you would use `nvm alias default 8.0` 
+
 Navigate into the root directory of the project and run the script `setup.sh` with the command:
 ```
 ./setup.sh
