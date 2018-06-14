@@ -49,7 +49,3 @@ services:
       - server
     ports:
       - "9000:9000"
-
-
-
-
