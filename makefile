@@ -1,7 +1,7 @@
 DOCKER_COMPOSE_FILE := ./docker-compose.yml
 
 # Build the required images and start the container
-build:	
+build:
 	@ echo "Building the required docker images"
 	@ docker-compose -f $(DOCKER_COMPOSE_FILE) build
 	@ echo "Build Completed successfully"
@@ -11,7 +11,7 @@ build:
 
 # Start all the containers
 start:
-	@ echo "Starting the required andela_socials containers"
+	@ echo "Starting andela_socials docker containers"
 	@ echo " "
 	@ docker-compose -f $(DOCKER_COMPOSE_FILE) up
 
