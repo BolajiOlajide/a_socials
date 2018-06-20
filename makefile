@@ -1,4 +1,4 @@
-DOCKER_COMPOSE_FILE := ./docker-compose.yml
+DOCKER_COMPOSE_FILE := ./docker/dev/docker-compose-dev.yml
 
 # Build the required images and start the container
 build:
