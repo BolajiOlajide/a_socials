@@ -9,10 +9,12 @@ These will improve socialization between Andelans inside and outside the company
 ### INSTALLATION
 Clone from git using
 ```
-git@github.com:BolajiOlajide/a_socials.git
+git@github.com:AndelaOSP/Andela-Socials.git
 ```
 
-Navigate into the root directoru of the project and run the script `setup.sh` with the command:
+Create a `.env` file with the content of the `.env.sample` and edit with your personal details.
+
+Navigate into the root directory of the project and run the script `setup.sh` with the command:
 ```
 ./setup.sh
 ```
@@ -25,6 +27,17 @@ Subsequently, if you need to start the application after the initial setup has c
 ./start.sh
 ```
 
+### DB CREATION
+Use the createdb.sh script to setup your database for the application
+
+Your .env variable should look like this, you can aslo reference the file to see how it is used. 
+```
+    DB_USER=a_socials
+    DB_PASS=a_socials
+    DB_PORT=5432
+    DB_NAME=a_socials
+```
+
 ### UI MOCK
 The UI mock for the project is available [here](https://www.figma.com/file/Yn3JRZ3YLBVSg4o8L9dhIAv2/Andela_Socials)
 
@@ -34,4 +47,4 @@ You can seed the dummy data into your database using the command `python manage.
 *password:* _testuser_
 
 ### CONTRIBUTORS
-View the list of [contributors](https://github.com/BolajiOlajide/a_socials/contributors) who participate in this project.
+View the list of [contributors](https://github.com/AndelaOSP/Andela-Socials/contributors) who participate in this project.

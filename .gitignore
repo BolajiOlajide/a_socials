@@ -21,3 +21,5 @@ env/
 staticfiles/
 .DS_Store
 static/
+venv/
+cypress.env.json
