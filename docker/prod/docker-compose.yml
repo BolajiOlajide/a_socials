@@ -1,0 +1,34 @@
+version: '3'
+
+volumes:
+    postgres_data: {}
+    postgres_backup: {}
+
+services:
+  application:
+    container_name: prod_andela_socials
+    build:
+      context: ../../
+      dockerfile: docker/prod/Dockerfile
+    links:
+     - database
+    env_file:
+      - ../../.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+
+  database:
+    container_name: prod_andela_socials_db
+    build:
+      context: ../../docker/database
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ../../.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_backup:/backups
+    expose:
+      - "5432"
