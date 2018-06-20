@@ -6,13 +6,13 @@ volumes:
 
 services:
   db:
-    container_name: andela_social_db
+    container_name: dev_andela_social_db
     build:
-      context: ./docker/database
+      context: ../../docker/database
       dockerfile: Dockerfile
     restart: always
     env_file:
-      - .env
+      - ../../.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
@@ -20,13 +20,12 @@ services:
       - "5432"
 
   server:
-    container_name: andela_social_server
+    container_name: dev_andela_social_server
     env_file:
-      - .env
+      - ../../.env
     build:
-      context: .
-      dockerfile: ./docker/server/Dockerfile
-    command: /start-server.sh
+      context: ../../
+      dockerfile: docker/dev/server/Dockerfile
     depends_on:
       - db
     ports:
@@ -34,17 +33,15 @@ services:
     links:
       - db
     volumes:
-      - .:/andela_social
+      - ../.././:/andela_social
+    
   client:
-    container_name: andela_social_client
+    container_name: dev_andela_social_client
     build:
-      context: .
-      dockerfile: ./docker/client/Dockerfile
-    command: /start-client.sh
-    volumes:
-      - .:/andela_social
+      context: ../../
+      dockerfile: docker/dev/client/Dockerfile
     env_file:
-      - .env
+      - ../../.env
     depends_on:
       - server
     ports:

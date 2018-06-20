@@ -1,5 +1,0 @@
-Dockerfile
-.gitignore
-venv
-node_modules/
-npm-debug.log

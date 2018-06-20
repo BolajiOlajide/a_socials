@@ -10,12 +10,11 @@ RUN pip install --upgrade pip \
  && pip install -r /requirements.txt
 
 # Load project files to new work directory
-COPY . /andela_social
 WORKDIR /andela_social
 
 # Copy setup scripts to folder
-COPY docker/server/start-server.sh /start-server.sh
-COPY docker/server/wait_for_database.sh /wait_for_database.sh
+COPY docker/start-server.sh /start-server.sh
+COPY docker/wait_for_database.sh /wait_for_database.sh
 
 # Make the setup scripts executable
 RUN chmod +x /start-server.sh \
