@@ -46,7 +46,7 @@ module.exports = {
     })
   ],
   entry: [
-    './client/index.js',
+    './index.js',
   ],
   target: 'web',
   output: {

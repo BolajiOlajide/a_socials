@@ -3,22 +3,37 @@ version: '3'
 volumes:
     postgres_data: {}
     postgres_backup: {}
+    staticfiles: {}
     static_dir: {}
 
 services:
-  application:
-    container_name: prod_andela_socials
-    build:
-      context: ../../
-      dockerfile: docker/prod/Dockerfile
+  server:
+    container_name: prod_andela_social_server
     env_file:
-      - ../../.env
-    ports:
-      - "8000:8000"
+      - ./prod.env
+    build:
+      context: ../../server
+      dockerfile: ../docker/server/Dockerfile
     depends_on:
       - database
+      - client
+    ports:
+      - "8000:8000"
     volumes:
-      - static_dir:/andela_social/staticfiles
+      - static_dir:/andela_social/static
+      - staticfiles:/andela_social/staticfiles
+      
+  client:
+    container_name: prod_andela_social_client
+    build:
+      context: ../../client
+      dockerfile: ../docker/prod/client/Dockerfile
+    env_file:
+      - ./prod.env
+    ports:
+      - "9000:9000"
+    volumes:
+      - static_dir:/andela_social/static
 
   database:
     container_name: prod_andela_socials_db
@@ -27,7 +42,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     env_file:
-      - ../../.env
+      - ./prod.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
@@ -38,10 +53,9 @@ services:
     container_name: nginx_server
     build: ../nginx
     depends_on:
-      - application
+      - server
     ports:
       - "0.0.0.0:80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - static_dir:/andela_social/staticfiles
-      
+      - staticfiles:/andela_social/staticfiles

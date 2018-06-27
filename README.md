@@ -26,6 +26,43 @@ Subsequently, if you need to start the application after the initial setup has c
 ```
 ./start.sh
 ```
+### SETTING UP WITH DOCKER
+Before booting up the environment (`make build`) ensure that you have [docker](https://docs.docker.com/docker-for-mac/install/) **installed** and **running** on your machine.
+If you are using mac this [install](https://docs.docker.com/docker-for-mac/install/) should get you started
+
+The resources will be configured via docker-compose services. This will ensure that the application will be developed and deployed under similar environments.
+To setup development environment, create a dev.env file in the `docker/dev` directory and populate it with environment variables using `.env.sample` as a model
+To start the build, run:
+
+```bash
+$ make build
+```
+After the build is complete, spin up the containers with:
+
+```bash
+$ make start
+```
+Then you can access the client application; served by webpack-dev-server at `http://localhost:9000`, and the backend application; served by the django development server at `http://localhost:8000`
+
+To stop the application, you can pull down the containers with:
+```bash
+$ make stop
+```
+
+To setup production environment, create a prod.env file in the `docker/prod` directory and populate it with environment variables using `.env.sample` as a model
+To run any make command successfully for the production application, variable `env` must be set to `production` in the makefile.
+If on a bash terminal, you can do `export env=production` before running any make command.
+Alternatively, you can set the variable as part of the make command.
+
+```bash
+$ make build env=production
+$ make start env=production
+$ make stop env=production
+```
+For the production application, [Nginx](https://www.nginx.com/resources/glossary/nginx/) serves as an HTTP and reverse proxy server. It serves static assets that have been collected into the staticfiles directory and routes dynamic requests to the django application running on gunicorn server. After a succesful `make start` command, Nginx listens for requests on port 80. You can go to http://localhost to view application.
+
+Please note that you only need to build the dockerized application once. Subsequently, run `make start` to start the application.
+
 
 ### DB CREATION
 Use the createdb.sh script to setup your database for the application
