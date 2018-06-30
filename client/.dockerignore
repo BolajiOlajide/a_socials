@@ -1,0 +1,11 @@
+# Node and Webpack files
+node_modules
+npm-debug.log
+webpack-stats*
+
+# Secret environment settings
+.env
+env
+
+# Dockerignore
+.dockerignore
