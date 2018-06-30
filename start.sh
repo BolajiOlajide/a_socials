@@ -14,5 +14,5 @@ else
   echo "Virtualenv Wrapper in use!"
 fi
 
-yarn start:dev & python manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000 & yarn start:dev
 exit 0

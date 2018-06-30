@@ -8,7 +8,7 @@ from .base import *
 # Load the .env file to get environment variables
 dotenv.load()
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,10 +22,11 @@ DATABASES = {
       'USER': dotenv.get('DB_USER'),
       'PASSWORD': dotenv.get('DB_PASSWORD'),
       'PORT': dotenv.get('DB_PORT'),
+      'HOST': dotenv.get('DB_HOST'),
       'TEST': {
-        'CHARSET': None, 
+        'CHARSET': None,
         'COLLATION': None,
-        'NAME': os.path.join(os.path.dirname(__file__), 'test.db'), 
+        'NAME': os.path.join(os.path.dirname(__file__), 'test.db'),
         'MIRROR': None
       }
   }
