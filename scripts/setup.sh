@@ -21,28 +21,33 @@ function venv() {
 }
 
 function setup_server() {
-	pip install -r requirements.txt
-	python manage.py makemigrations
-	python manage.py migrate
+	pip install -r server/requirements.txt
+	python server/manage.py makemigrations
+	python server/manage.py migrate
+	echo "from django.contrib.auth.models import User; User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'nimda')" | python server/manage.py shell
+
 }
 
 function setup_client() {
+	cd client
+
 	yarn -v
 	export status=$?
 	echo $status
 
-	if (($status!=0)); then
+	if [[ $status!=0 ]]; then
 		echo 'I will be installing yarn for you now'
 		npm install -g yarn
 	fi
 
-	yarn install
-	webpack --config=webpack.config.dev
+	if ! [[ -d "node_modules" ]]; then
+		# run yarn install to install dependencies
+		yarn install
+	fi
+
 }
 
 venv
 setup_server
 setup_client
-
-yarn start:dev & python manage.py runserver 0.0.0.0:8000
 exit 0

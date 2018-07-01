@@ -14,5 +14,15 @@ else
   echo "Virtualenv Wrapper in use!"
 fi
 
-yarn start:dev & python manage.py runserver 0.0.0.0:8000
+function start_client() {
+  cd client
+  yarn start:dev &
+}
+
+function start_server() {
+  cd ..
+  python server/manage.py runserver 0.0.0.0:8000
+}
+
+start_client && start_server
 exit 0
