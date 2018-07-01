@@ -5,16 +5,7 @@
   "repository": "https://github.com/BolajiOlajide/a_socials.git",
   "scripts": {
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
-    "start": "webpack --config webpack.config.prod.js",
-    "precommit": "lint-staged",
-    "stylelint-staged": "stylelint \"client/**/*.scss\" --syntax scss",
-    "test": "cypress run"
-  },
-  "lint-staged": {
-    "client/**/*.{js,jsx,json,scss,css}": [
-      "prettier --write"
-    ],
-    "client/**/*.scss": "npm run stylelint-staged --"
+    "start": "webpack --config webpack.config.prod.js"
   },
   "author": "",
   "license": "MIT",
@@ -33,7 +24,6 @@
     "eventsource-polyfill": "0.9.6",
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "0.11.2",
-    "html-webpack-plugin": "^3.2.0",
     "image-webpack-loader": "3.4.2",
     "jquery": "3.2.1",
     "node-sass": "4.5.3",
@@ -57,18 +47,6 @@
     "webpack-dev-server": "2.7.1"
   },
   "devDependencies": {
-    "cypress": "^3.0.1",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.10.0",
-    "lint-staged": "^7.2.0",
-    "prettier": "^1.13.5",
-    "redux-devtools": "^3.4.0",
-    "husky": "^0.14.3",
-    "stylelint": "^9.3.0"
+    "redux-devtools": "^3.4.0"
   }
 }
