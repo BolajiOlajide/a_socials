@@ -32,15 +32,16 @@ read -d '' HELP_STRING <<'EOF'
 EOF
 
 
-if [[ $# -eq 0 ]]; then
-    echo 'Please provide a single argument for the username/dbname'
-    echo "$HELP_STRING"
+if [[ "$#" -eq 0 ]]; then
+    echo -e "\n\n\033[31mPlease provide a single argument for the username/dbname\033[0m\n"
+    echo -e "\n\n\033[32m$HELP_STRING\033[0m\n"
 elif
-    [ "$#" -ne 1 ]; then
-    echo 'Please provide just one argument as the username'
-    echo "$HELP_STRING"
+    [[ "$#" -ne 1 ]; then
+    echo -e "\n\n\033[31mPlease provide just one argument as the username\033[0m\n"
+    echo -e "\n\n\033[32m$HELP_STRING\033[0m\n"
 else
     USERNAME_DBNAME=$1
+    dropdb $1
     createuser -P -s -e $USERNAME_DBNAME
     createdb --username=$USERNAME_DBNAME --owner=$USERNAME_DBNAME -W $USERNAME_DBNAME
 fi
