@@ -2,24 +2,18 @@ const path = require("path");
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const env = require('dotenv').config();
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   context: __dirname,
-  entry: './index.js',
+  entry: './client/index.js',
   target: 'web',
   output: {
-  path: path.join(__dirname, '/dist/'),
-  filename: 'bundle.js',
-  publicPath: '/',
-},
+      path: path.join(__dirname, './static/'),
+      filename: 'js/[name].js',
+      publicPath: 'http://0.0.0.0:9000/',
+  },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: './index.html'
-    }),
     new webpack.DefinePlugin({
       'process': {
         'env': {

@@ -46,7 +46,7 @@ module.exports = {
     })
   ],
   entry: [
-    './index.js',
+    './client/index.js',
   ],
   target: 'web',
   output: {
@@ -84,8 +84,5 @@ module.exports = {
         loader: 'url-loader'
       }
     ]
-  },
-  node: {
-    fs: "empty",
   }
 };
