@@ -12,19 +12,21 @@ Clone from git using
 git@github.com:AndelaOSP/Andela-Socials.git
 ```
 
-Create a `.env` file with the content of the `.env.sample` and edit with your personal details.
+Create a `.env` file in the root directory with the content of the `.env.sample` and edit with your personal details.
+
+For a proper `.env` details reach out to the Team Lead when in doubt. :)
 
 Navigate into the root directory of the project and run the script `setup.sh` with the command:
 ```
-./setup.sh
+scripts/setup.sh
 ```
 
-This scripts automatically sets up the project automatically and starts the application once that is done.
+This scripts automatically sets up the project.
 
 ### STARTING THE APP
 Subsequently, if you need to start the application after the initial setup has completed you can run the command:
 ```
-./start.sh
+scripts/start.sh
 ```
 ### SETTING UP WITH DOCKER
 Before booting up the environment (`make build`) ensure that you have [docker](https://docs.docker.com/docker-for-mac/install/) **installed** and **running** on your machine.
@@ -82,6 +84,12 @@ The UI mock for the project is available [here](https://www.figma.com/file/Yn3JR
 You can seed the dummy data into your database using the command `python manage.py loaddata fixtures/initial.json` when that is done you have access to dummy categories and dummy users. A user information you can use is:
 *username:* _andelasocials_
 *password:* _testuser_
+
+### DEFAULT ADMIN 
+Navigate to django's default admin page `/admin` using the credentials below to gain access. 
+USERNAME: admin
+PASSWORD: nimda
+
 
 ### CONTRIBUTORS
 View the list of [contributors](https://github.com/AndelaOSP/Andela-Socials/contributors) who participate in this project.

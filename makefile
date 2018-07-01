@@ -5,7 +5,7 @@ else
 	DOCKER_COMPOSE_FILE=./docker/dev/docker-compose.yml
 endif
 
-# Build the required images and start the container
+# Build the required images
 build:
 	@ echo "Building the required docker images"
 	@ docker-compose -f $(DOCKER_COMPOSE_FILE) build
