@@ -24,10 +24,17 @@ scripts/setup.sh
 This scripts automatically sets up the project.
 
 ### STARTING THE APP
-Subsequently, if you need to start the application after the initial setup has completed you can run the command:
+Subsequently, if you need to START the application after the initial setup has completed you can run the command:
 ```
 scripts/start.sh
 ```
+
+### STOPPING THE APP
+To STOP the application run the command:
+```
+scripts/stop.sh
+```
+
 ### SETTING UP WITH DOCKER
 Before booting up the environment (`make build`) ensure that you have [docker](https://docs.docker.com/docker-for-mac/install/) **installed** and **running** on your machine.
 If you are using mac this [install](https://docs.docker.com/docker-for-mac/install/) should get you started
@@ -87,6 +94,7 @@ You can seed the dummy data into your database using the command `python manage.
 
 ### DEFAULT ADMIN 
 Navigate to django's default admin page `/admin` using the credentials below to gain access. 
+
 USERNAME: admin
 PASSWORD: nimda
 
