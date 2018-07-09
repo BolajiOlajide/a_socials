@@ -1,4 +1,4 @@
-.env
+**/*.env
 __pycache__/
 node_modules/
 *.pyc
@@ -23,4 +23,6 @@ staticfiles/
 static/
 venv/
 cypress.env.json
-
+yarn-error.log
+.coverage
+.tox
