@@ -21,13 +21,6 @@ env/
 staticfiles/
 .DS_Store
 static/
-<<<<<<< HEAD
-<<<<<<< HEAD
-venv
-=======
-venv/
->>>>>>> 9ac3aceb420a6be5431c074f8abd5566d8e3e5c7
-=======
 venv/
 cypress.env.json
->>>>>>> 975c1d854e1e8a2d0a48c974af4b0678dff106b9
+

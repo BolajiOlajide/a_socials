@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9.8.0
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: sudo make test
