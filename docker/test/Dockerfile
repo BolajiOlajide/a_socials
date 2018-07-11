@@ -20,9 +20,9 @@ RUN chmod +x /usr/local/bin/start.sh
 
 COPY client /application/client
 
-COPY package.json /application/package.json
+COPY client/package.json /application/package.json
 
-COPY webpack.config.dev.js /application/webpack.config.dev.js
+COPY client/webpack.config.dev.js /application/webpack.config.dev.js
 
 COPY cypress.json /application/cypress.json
 
