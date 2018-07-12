@@ -34,7 +34,6 @@ jobs:
           command: |
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=a_socials.settings.dev
-            export SECRET_KEY=hjhkhkjhjkhjkhjkhkjhkhhjkhjkhjk
             printenv
             python server/manage.py test
 
