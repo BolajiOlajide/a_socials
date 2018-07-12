@@ -32,7 +32,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            export SECRET_KEY=$SECRET_KEY
+            export SECRET_KEY=hjhkhkjhjkhjkhjkhkjhkhhjkhjkhjk
             pip install tox
             tox
 
