@@ -34,7 +34,7 @@ DEBUG = dotenv.get('DEBUG', True)
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = dotenv.get('SECRET_KEY')
+SECRET_KEY = dotenv.get('SECRET_KEY') or os.environ.get('SECRET_KEY')
 
 # Application definition
 
