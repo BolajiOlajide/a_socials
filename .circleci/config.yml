@@ -3,9 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.1
-    environment:
-      TERM: xterm-256color
-      SECRET_KEY: $SECRET_KEY
 
     working_directory: ~/repo
     steps:
@@ -35,6 +32,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            export SECRET_KEY=$SECRET_KEY
             pip install tox
             tox
 
