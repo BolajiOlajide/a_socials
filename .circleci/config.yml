@@ -14,9 +14,12 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+
+      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "server/requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - run:
@@ -37,7 +40,7 @@ jobs:
           command: |
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=a_socials.settings.dev
-            tox
+            python server/manage.py test
 
       - store_artifacts:
           path: test-reports
