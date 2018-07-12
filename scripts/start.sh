@@ -18,6 +18,7 @@ else
   echo "Virtualenv Wrapper in use!"
 fi
 
+
 function start_client() {
   cd client
   yarn start:dev &

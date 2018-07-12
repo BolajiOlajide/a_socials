@@ -1,0 +1,49 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.1
+      - image: circleci/postgres:9.4
+        environment:
+          - POSTGRES_USER: circleci
+          - POSTGRES_DB: circlecidb
+          - POSTGRES_PASSWORD: $DB_PASSWORD
+
+
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "server/requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r server/requirements.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+            - server
+          key: v1-dependencies-{{ checksum "server/requirements.txt" }}
+
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            export DJANGO_SETTINGS_MODULE=a_socials.settings.dev
+            python server/manage.py test
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+
