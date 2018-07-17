@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/AndelaOSP/Andela-Socials.svg?style=svg&circle-token=f63d8e7f6a1e65078cd1988847cbb29e6382bba1)](https://circleci.com/gh/AndelaOSP/Andela-Socials)
+[![CircleCI](https://circleci.com/gh/AndelaOSP/Andela-Socials.svg?style=shield&circle-token=f63d8e7f6a1e65078cd1988847cbb29e6382bba1)](https://circleci.com/gh/AndelaOSP/Andela-Socials)
 
 # ANDELA SOCIALS
 
