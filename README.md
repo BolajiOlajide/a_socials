@@ -51,7 +51,7 @@ $ tox
 
 ### SETTING UP WITH DOCKER
 Before booting up the environment (`make build`) ensure that you have [docker](https://docs.docker.com/docker-for-mac/install/) **installed** and **running** on your machine.
-If you are using mac this [install](https://docs.docker.com/docker-for-mac/install/) should get you started
+If you are using mac this [install](https://docs.docker.com/docker-for-mac/install/) should get you started.
 
 The resources will be configured via docker-compose services. This will ensure that the application will be developed and deployed under similar environments.
 To setup development environment, create a dev.env file in the `docker/dev` directory and populate it with environment variables using `.env.sample` as a model
