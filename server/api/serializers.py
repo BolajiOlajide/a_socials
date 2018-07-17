@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import GoogleUser, Category, Event, Interest, Attend
+from .models import AndelaUserProfile, Category, Event, Interest, Attend
 
 ''' Script Used to convert python objects to json objects.'''
 
@@ -12,30 +12,21 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 
-class GoogleUserSerializer(serializers.ModelSerializer):
+class AndelaUserProfileSerializer(serializers.ModelSerializer):
     """GoogleUser Model serializer class."""
 
     class Meta:
-        model = GoogleUser
-        fields = ('google_id', 'app_user', 'appuser_picture', 'slack_name')
-        depth = 1
-
-
-class CustomUserSerializer(serializers.ModelSerializer):
-    """Custom User Model serializer class."""
-
-    class Meta:
-        model = GoogleUser
-        fields = ('slack_name', 'app_user')
+        model = AndelaUserProfile
+        fields = ('google_id', 'user', 'user_picture', 'slack_name')
         depth = 1
 
 
 class EventSerializer(serializers.ModelSerializer):
 
-    creator = CustomUserSerializer(read_only=True)
+    creator = AndelaUserProfileSerializer(read_only=True)
 
     class Meta:
         model = Event
@@ -46,7 +37,7 @@ class EventSerializer(serializers.ModelSerializer):
 class AttendanceSerializer(serializers.ModelSerializer):
     """Attend Model serializer class."""
 
-    user = CustomUserSerializer(read_only=True)
+    user = AndelaUserProfileSerializer(read_only=True)
 
     class Meta:
         model = Attend
@@ -56,7 +47,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
 
     attendees = AttendanceSerializer(many=True, read_only=True)
-    creator = CustomUserSerializer(read_only=True)
+    creator = AndelaUserProfileSerializer(read_only=True)
 
     class Meta:
         model = Event

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import dotenv
+import sys
+
 
 from datetime import timedelta
 from corsheaders.defaults import default_headers
@@ -163,10 +165,12 @@ JWT_AUTH = {
 REST_FRAMEWORK = {
   'DEFAULT_PERMISSION_CLASSES': (
     'rest_framework.permissions.IsAuthenticated',
+    'api.permissions.IsTokenAuthenticated',
   ),
 
   'DEFAULT_AUTHENTICATION_CLASSES': (
     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    'api.utils.auth.TokenAuth',
   ),
 
   'DEFAULT_PARSER_CLASSES': (
@@ -192,3 +196,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = default_headers + (
   'Authorization',
 )
+
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
