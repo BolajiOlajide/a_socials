@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/AndelaOSP/Andela-Socials.svg?style=shield&circle-token=f63d8e7f6a1e65078cd1988847cbb29e6382bba1)](https://circleci.com/gh/AndelaOSP/Andela-Socials)
+
 # ANDELA SOCIALS
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/0da1c9a1fec63a855e21/maintainability)](https://codeclimate.com/github/AndelaOSP/Andela-Socials/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/0da1c9a1fec63a855e21/test_coverage)](https://codeclimate.com/github/AndelaOSP/Andela-Socials/test_coverage)
@@ -57,7 +59,7 @@ $ make server test
 
 ### SETTING UP WITH DOCKER
 Before booting up the environment (`make build`) ensure that you have [docker](https://docs.docker.com/docker-for-mac/install/) **installed** and **running** on your machine.
-If you are using mac this [install](https://docs.docker.com/docker-for-mac/install/) should get you started
+If you are using mac this [install](https://docs.docker.com/docker-for-mac/install/) should get you started.
 
 The resources will be configured via docker-compose services. This will ensure that the application will be developed and deployed under similar environments.
 To setup development environment, create a dev.env file in the `docker/dev` directory and populate it with environment variables using `.env.sample` as a model
