@@ -36,8 +36,8 @@
       font-size: map-get($font-size,  x-large) + 0.75rem;
       font-weight: map-get($font-weight, light);
       text-align: center;
-      color: map-get($colors, light);
-      margin-bottom: 25px;
+      color: map-get($colors, white);
+      margin-bottom: 1.5625rem;
     }
 
     .login_container__btn {
@@ -51,7 +51,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 48rem) {
   .login_container {
     padding: 1.25rem 0;
     -moz-background-position: 50%;
