@@ -84,6 +84,9 @@ module.exports = {
         test: /\.(jpg|png|svg|gif)$/,
         loader: 'url-loader',
       },
+      {
+        test: /\.otf$/, loader: 'file-loader',
+      },
     ],
   },
   node: {
