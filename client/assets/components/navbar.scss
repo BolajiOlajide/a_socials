@@ -1,0 +1,171 @@
+.top-navbar {
+  height: 70px;
+  border-radius: 0;
+  background-color: #fff;
+  margin: 0;
+  border: 0;
+  .navbar-brand {
+    height: 70px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.navbar-collapse.collapse {
+  display: flex !important;
+  height: 70px !important;
+}
+.top-navbar__right-container {
+  align-items: center;
+  justify-content: right;
+  padding: 0;
+  .nav-profile {
+    width: 183.5px;
+    &__list-menus {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: -1px 6px 6px #dedede;
+      border: 0;
+      border-radius: 0;
+      height: 9.125rem;
+      width: 10rem;
+      li {
+        height: 2.5rem;
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1em 0 1em 0;
+        &:first-child:after {
+          content: '';
+          position: absolute;
+          bottom: 50%;
+          width: 80%;
+          border-bottom: 1px solid #dedede;
+        }
+        a {
+          color: #ccc;
+          font-family: Abel;
+          font-size: 24px;
+        }
+        a:hover {
+          background: none;
+        }
+      }
+    }
+    &__img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+    &__username {
+      font-family: Abel;
+      font-size: 21px;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: lighter;
+      margin: 0 5px 0 5px;
+      color: #ccc;
+    }
+    &__dropdown-icon {
+      color: #ccc;
+    }
+    &__button {
+      box-shadow: none;
+    }
+  }
+  .notification-container {
+    padding: 0 38px 0 48px;
+    &__button {
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+    &__button:active,
+    &__button:hover {
+      box-shadow: none;
+      background: transparent;
+    }
+    &__list-notifications {
+      position: absolute;
+      top: 40px;
+      display: flex;
+      flex-direction: column;
+      width: 21.25rem;
+      left: -2.6em;
+      align-items: center;
+      box-shadow: -1px 6px 6px #dedede;
+      .notifier:last-child {
+        border-bottom: 0;
+      }
+    }
+    .notifier {
+      display: flex;
+      flex-direction: row;
+      width: 19.5rem;
+      align-items: center;
+      height: 2.5rem;
+      margin-top: 1rem;
+      border-bottom: 1px solid #dedede;
+      &__avatar {
+        img {
+          width: 30px;
+        }
+      }
+      &__text {
+        font-family: Abel;
+        font-size: 12px;
+        width: 100%;
+        color: #ccc;
+      }
+      &__text--description {
+        margin-left: 1em;
+      }
+      &__text--description-strong {
+        color: #000;
+      }
+      &__text--time {
+        float: right;
+      }
+    }
+  }
+  .nav-profile__button,
+  .notification-container__button {
+    display: flex;
+    align-items: center;
+    border: 0;
+    background: transparent;
+  }
+  .search-bar {
+    width: 17.5rem;
+    height: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid #dedede;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    .form-group {
+      display: flex;
+      align-items: center;
+    }
+    &__input {
+      border: 0;
+      width: 15rem;
+      box-shadow: none;
+      font-family: Abel;
+      background: transparent;
+    }
+  }
+}
+// Styles for fading when showing the notifications
+.notification-appear {
+  opacity: 0.01;
+}
+
+.notification-appear.notification-appear-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
