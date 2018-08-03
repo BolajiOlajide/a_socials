@@ -11,7 +11,7 @@ import SocialClubPage from './components/SocialClub/SocialClubPage';
 import EnsureLoggedIn from "./components/common/EnsureLoggedIn";
 import NotFound from "./components/common/NotFound";
 
-export const Routes = () => (
+const Routes = () => (
   <Switch>
       <Route exact path="/login" component={Login} />
       <Route path="/" component={App}>
