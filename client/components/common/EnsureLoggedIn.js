@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import toastr from 'toastr';
 
-import { setRedirectUrl } from "../../actions/userActions";
-class EnsureLoggedIn extends Component {
+import { setRedirectUrl } from '../../actions/userActions';
 
+
+class EnsureLoggedIn extends Component {
   componentDidMount() {
     const {
       setRedirectUrl,
@@ -15,17 +16,18 @@ class EnsureLoggedIn extends Component {
 
     if (!isAuthenticated) {
       setRedirectUrl(currentUrl);
-      browserHistory.replace("/");
+      browserHistory.replace('/');
       toastr.warning('Please sign in to continue');
     }
   }
 
   render() {
-    if (this.props.isAuthenticated) {
-      return this.props.children
-    } else {
-      return null
+    const { isAuthenticated, children } = this.props;
+
+    if (isAuthenticated) {
+      return children;
     }
+    return null;
   }
 }
 
@@ -34,4 +36,6 @@ const mapStateToProps = (state, ownProps) => ({
   currentUrl: ownProps.location.pathname,
 });
 
-export default connect(mapStateToProps, { setRedirectUrl })(EnsureLoggedIn);
+export default connect(mapStateToProps, {
+  setRedirectUrl,
+})(EnsureLoggedIn);
