@@ -1,24 +1,21 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 @import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
-
 .event {
   &__container {
-    background-color: rgba(244,248,249, 1);
+    background-color: rgba(244, 248, 249, 1);
     display: grid;
-    grid-template-columns: [sidebar-start] rem(330px) [sidebar-end full-start] rem(30px) [event-gallery-start] auto [event-gallery-end] rem(20px) [full-end];
-    grid-template-rows: auto auto;
-    margin-left: rem(30px);
+    grid-template-columns: [full-start] rem(30px) [sidebar-start] rem(330px) [sidebar-end] rem(30px) [event-gallery-start] auto [event-gallery-end] rem(36px) [full-end];
+    grid-template-rows: auto rem(147.69px);
     @include mobile('600px') {
-      grid-template-rows: repeat(3, auto);
+      grid-template-rows: repeat(2, auto) rem(100px);
       grid-template-columns: auto;
       grid-row-gap: rem(30px);
       margin-left: rem(5px);
     }
   }
   &__sidebar {
-    grid-column: sidebar-start/ sidebar-end;
+    grid-column: sidebar-start/sidebar-end;
     width: rem(330px);
-    padding: 10%;
     vertical-align: middle;
   }
   &__gallery {
@@ -31,16 +28,59 @@
     justify-content: flex-start;
   }
   &__footer {
-    padding: 10rem; // todo:  remove this 
-    grid-column: sidebar-start/full-end;
+    grid-column: event-gallery-start/event-gallery-end;
+    height: 100%;
+    width: 100%;
+    margin-top: rem(29.69px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__load-more-button {
+    width: 16vw;
+    height: rem(52px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: normal;
+    font-size: rem(20px);
+    color: $white;
+    font-family: inherit;
+    text-decoration: none;
+    border: none;
+    transition: all .2s;
+    position: relative;
+    @include mobile('600px') {
+      width: 35vw;
+    }
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 rem(5px) rem(10px) rgba(black, .2);
+      &::after {
+        transform: scaleX(1.4) scaleY(1.6);
+        opacity: 0;
+      }
+    }
+    &:active {
+      transform: translateY(-1px);
+      box-shadow: 0 rem(2px) rem(5px) rgba(black, .2);
+    }
+    &::after {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(#365DDB, 0.3);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      transition: all .4s;
+    }
   }
 }
 
-/* FONT IMPORTS */
-
-@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
-
-.calenders{
+.calenders {
   &__icon {
     font-family: 'Material Icons', serif;
     font-style: normal;
@@ -52,20 +92,17 @@
     word-wrap: normal;
     white-space: nowrap;
     direction: ltr;
-  
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: 'liga';
   }
-
   &__header {
     display: block;
     width: 100%;
     padding: 1.75em 0;
     border-bottom: 1px solid var(--border-color);
     background: var(--neutral-color);
-    
     #logo {
       font-size: 175%;
       text-align: center;
@@ -75,11 +112,8 @@
         padding-right: .25em;
       }
     }
-
-  } 
-  
-/* GRID */
-
+  }
+  /* GRID */
   &__row {
     margin: 0;
     padding: 0;
@@ -88,40 +122,34 @@
     flex-wrap: wrap;
     width: 100%;
   }
-
   &__row-middle {
     align-items: center;
   }
-
   &__col {
     flex-grow: 1;
     flex-basis: 0;
     max-width: 100%;
   }
-
   &__col-start {
     justify-content: flex-start;
     text-align: left;
   }
-
   &__col-center {
     justify-content: center;
     text-align: center;
   }
-
   &__col-end {
     justify-content: flex-end;
     text-align: right;
-  } 
-  
+  }
   &__circle {
     border-radius: 50%;
     border-style: solid;
     border-width: 1px;
-  }  
+  }
   &__header-arrow {
     max-width: 20%;
-  }    
+  }
 }
 
 :root {
@@ -150,6 +178,7 @@ main {
   width: 100%;
   background: var(--neutral-color);
   border-radius: 10px;
+  height: rem(373px);
   .header {
     text-transform: uppercase;
     font-size: 15px;
@@ -194,10 +223,9 @@ main {
       }
     }
     .selected {
-
       border-radius: 50%;
       color: var(--neutral-color);
-      background: var(--calender-selected-backgroung);    
+      background: var(--calender-selected-backgroung);
     }
     .row {
       border-bottom: 1px solid var(--border-color);
@@ -214,7 +242,7 @@ main {
         font-size: 82.5%;
         line-height: 1;
         top: 50%;
-        left: 50%; 
+        left: 50%;
         transform: translateX(-50%) translateY(-50%);
       }
     }
@@ -259,7 +287,7 @@ main {
     position: relative;
     width: 100%;
     background: var(--neutral-color);
-    border-radius: 10px;    
+    border-radius: 10px;
     margin-bottom: 40px;
     padding: 1rem;
   }
@@ -267,7 +295,7 @@ main {
     font-size: 22px;
     font-weight: 300;
     display: inline-block;
-    position: relative;    
+    position: relative;
     &:after {
       content: "";
       position: absolute;
@@ -275,14 +303,13 @@ main {
       height: 1px;
       bottom: 0;
       left: 1%;
-      border-bottom: 4px solid rgba(51,89,219,1);
+      border-bottom: 4px solid rgba(51, 89, 219, 1);
     }
   }
   &__box {
     padding: 5px;
     margin-top: 10px;
   }
-
 }
 
 .cd-wrapper {
@@ -290,11 +317,11 @@ main {
   position: relative;
   width: 100%;
   background: var(--neutral-color);
-  border: 1px solid #DEDEDE; border-radius: 9px; 
+  border: 1px solid #DEDEDE;
+  border-radius: 9px;
   height: 35px;
   cursor: pointer;
-  margin: 10px 0;
-  //z-index: 1;
+  margin: 10px 0; //z-index: 1;
 }
 
 .cd-icon {
@@ -332,7 +359,7 @@ main {
   list-style: none;
   margin-top: 33px;
   padding: 5px 0 5px 5px;
-  border: 1px solid #DEDEDE; 
+  border: 1px solid #DEDEDE;
   position: absolute;
   z-index: 20;
   width: 100%;
@@ -345,5 +372,4 @@ main {
   background: #3359DB;
   color: white;
   border-radius: 0px !important;
-
 }
