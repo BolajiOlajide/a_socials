@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ../../
+      dockerfile: docker/release/server/Dockerfile
+
+    env_file:
+        - ./prod.env
+    environment:
+      - DJANGO_SETTINGS_MODULE=a_socials.settings.prod
+
+    command : ["gunicorn", "a_socials.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+    ports:
+        - 8000:8000
+
