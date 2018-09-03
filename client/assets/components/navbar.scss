@@ -41,7 +41,7 @@
   padding: 0;
   height: rem(70px);
   .nav-profile {
-    width: rem(183.5px);
+    min-width: rem(183.5px);
     margin: 0;
     &__list-menus {
       @include column-flex;
@@ -91,6 +91,7 @@
     }
     &__button {
       box-shadow: none;
+      margin-right: rem(26px);
     }
   }
   .notification-container {
@@ -155,6 +156,7 @@
     border: 0;
     background: transparent;
     padding: 0;
+    width: 100%;
   }
   .search-bar {
     @include flex;
