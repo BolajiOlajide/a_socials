@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 // components
@@ -10,6 +10,22 @@ import LogoReplacement from '../../assets/icons/LogoReplacement';
 
 // assets
 import '../../assets/components/navbar.scss';
+
+const NavMenu = ({
+  to,
+  children,
+}) => (
+  <div className="link__container">
+    <NavLink to={to} activeClassName="link__container--active">
+      <span>{children}</span>
+    </NavLink>
+  </div>
+);
+
+NavMenu.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 const NavBar = (props) => {
   const {
@@ -52,8 +68,8 @@ const NavBar = (props) => {
       </nav>
       <div className="navbar">
         <div className="navbar__bottom-section">
-            <Link to="#dashboard">Dashboard</Link>
-            <Link to="#groups">My Groups</Link>
+          <NavMenu to="/dashboard">Dashboard</NavMenu>
+          <NavMenu to="/groups">Groups</NavMenu>
         </div>
       </div>
     </Fragment>
