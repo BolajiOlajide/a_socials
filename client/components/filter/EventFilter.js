@@ -11,38 +11,14 @@ class EventFilter extends React.Component {
       category: '',
       list: [ // todo: remove, just for test
         {
-          id: 0,
-          title: 'New York',
+          id: 'Lagos',
+          title: 'Lagos',
           selected: false,
           key: 'location',
         },
         {
-          id: 1,
-          title: 'Dublin',
-          selected: false,
-          key: 'location',
-        },
-        {
-          id: 2,
-          title: 'California',
-          selected: false,
-          key: 'location',
-        },
-        {
-          id: 3,
-          title: 'Istanbul',
-          selected: false,
-          key: 'location',
-        },
-        {
-          id: 4,
-          title: 'Izmir',
-          selected: false,
-          key: 'location',
-        },
-        {
-          id: 5,
-          title: 'Oslo',
+          id: 'Kenya',
+          title: 'Kenya',
           selected: false,
           key: 'location',
         },
@@ -50,16 +26,17 @@ class EventFilter extends React.Component {
     };
     this.onLocationChange = this.onLocationChange.bind(this);
     this.onCategoryChange = this.onCategoryChange.bind(this);
+    this.onApply = this.onApply.bind(this);
   }
 
   onApply() {
-    const { eventFilterAction } = this.props;
+    const { filterSelected } = this.props;
     const {
       location,
       category,
     } = this.state;
-    if (eventFilterAction !== undefined) {
-      eventFilterAction(location, category);
+    if (filterSelected !== undefined) {
+      filterSelected(null, location, category);
     }
   }
 
@@ -88,7 +65,7 @@ class EventFilter extends React.Component {
             Category
             <CustomDropDown
               title="Select category"
-              list={this.state.list}
+              list={this.props.categoryList}
               onSelected={this.onCategoryChange}
             />
           </div>
@@ -96,6 +73,7 @@ class EventFilter extends React.Component {
             <button
               type="button"
               className="event-button btn btn-default"
+              onClick={this.onApply}
             >
               APPLY
             </button>
@@ -106,8 +84,14 @@ class EventFilter extends React.Component {
   }
 }
 
-EventFilter.propTypes = { eventFilterAction: PropTypes.func };
+EventFilter.propTypes = {
+  filterSelected: PropTypes.func,
+  categoryList: PropTypes.arrayOf(PropTypes.object),
+};
 
-EventFilter.defaultProps = { eventFilterAction: undefined };
+EventFilter.defaultProps = {
+  filterSelected: undefined,
+  categoryList: [],
+};
 
 export default EventFilter;
