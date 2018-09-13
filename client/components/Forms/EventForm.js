@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
 
 import IncrementalSelect from '../common/IncrementalSelect';
-import TimePicker from '../common/Form/TimePicker'
+import TimePicker from '../common/Form/TimePicker';
 import DateTimePicker from '../common/Form/DateTimePicker';
 
 import {
@@ -85,13 +85,14 @@ class EventForm extends Component {
     />
   )
 
+  formatDate = formData => (`${formData.date} ${formData.hour}:${formData.minute}:00`);
 
   validateFormData = (formData) => {
     const errors = JSON.parse(JSON.stringify(this.state.errors));
     const errorFields = Object.keys(errors);
 
     errorFields.forEach((field) => {
-      if (field !== "time" && formData[field].length === 0) {
+      if ((field !== 'time' && field !== 'imgUrl') && formData[field].length === 0) {
         errors[field].hasError = true;
       } else {
         errors[field].hasError = false;
@@ -106,7 +107,7 @@ class EventForm extends Component {
   };
 
   formSubmitHandler = (e) => {
-    const { formMode } = this.props;
+    const { formMode, dismiss } = this.props;
     const { formData } = this.state;
 
     e.preventDefault();
@@ -117,8 +118,21 @@ class EventForm extends Component {
     this.setState({ errors });
 
     if (isValid) {
+      const startDate = this.formatDate(formData.start);
+      const endDate = this.formatDate(formData.end);
       if (formMode === 'create') {
-        // CALL Create endpoint
+        const { createEvent } = this.props;
+        createEvent({
+          title: formData.title,
+          description: formData.description,
+          featuredImage: formData.imgUrl,
+          venue: formData.venue,
+          startDate: dateFns.format(startDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+          endDate: dateFns.format(endDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+          categoryId: 'Q2F0ZWdvcnlOb2RlOjI=', // To be populated on eventsform in next PR
+          timezone: 'Africa/Algiers', // To be populated on eventsform in next PR
+        });
+        dismiss();
       } else if (formMode === 'update') {
         // CALL Update endpoint
       }
@@ -212,7 +226,9 @@ EventForm.defaultProps = {
 
 EventForm.propTypes = {
   formMode: PropTypes.oneOf(['create', 'update']).isRequired,
+  createEvent: PropTypes.func.isRequired,
   formId: PropTypes.string.isRequired,
+  dismiss: PropTypes.func.isRequired,
   formData: PropTypes.shape({
     title: PropTypes.string,
     description: PropTypes.string,
