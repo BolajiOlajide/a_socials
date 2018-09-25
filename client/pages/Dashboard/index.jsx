@@ -126,7 +126,7 @@ class Dashboard extends Component {
             }
             className="create-event-btn"
           >
-            Create Event
+            <span className="create-event-btn__icon">+</span>
           </button>
         );
       }}
