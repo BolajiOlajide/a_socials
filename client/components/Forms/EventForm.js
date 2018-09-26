@@ -65,20 +65,31 @@ class EventForm extends Component {
 
 
   renderField = (fieldType, type, id, label, formData, error, value) => {
-    if (fieldType === 'input') {
-      if (type === 'file') {
-        return (<UploadField
-          {...this.commonProps(id, type, label, formData, error)} />);
-      }
-      return (<InputField
-        value={value}
-        {...this.commonProps(id, type, label, formData, error)}
-        onChange={this.handleFormInput}/>);
+    switch(fieldType) {
+      case "input":
+        if (type === 'file') {
+          return (<UploadField
+            {...this.commonProps(id, type, label, formData, error)} />);
+        }
+        return (<InputField
+          value={value}
+          {...this.commonProps(id, type, label, formData, error)}
+          onChange={this.handleFormInput}/>);
+      case "timePicker":
+        return (<DateTimePicker
+                type={type}
+                label={label}
+                time={this.renderTimePicker(type)}
+                timeValue={this.getTimeValues(type)}
+                dateSelected={this.timeSelectHandler}
+                dateValue={this.state.formData[type].date}/>)
+      default:
+        return (<TextField
+          value={value}
+          {...this.commonProps(id, type, label, formData, error)}
+          onChange={this.handleFormInput}/>);
+
     }
-    return (<TextField
-      value={value}
-      {...this.commonProps(id, type, label, formData, error)}
-      onChange={this.handleFormInput}/>);
   }
 
 
@@ -241,22 +252,8 @@ class EventForm extends Component {
           />
         </div>
         <div className='date-time-picker-wrapper'>
-          <DateTimePicker 
-            type="start"
-            label="start-date"
-            time={this.renderTimePicker("start")} 
-            timeValue={this.getTimeValues("start")}
-            dateSelected={this.timeSelectHandler}
-            dateValue={this.state.formData.start.date}
-          />
-          <DateTimePicker 
-            type="end"
-            label="end-date"
-            time={this.renderTimePicker("end")} 
-            timeValue={this.getTimeValues("end")}
-            dateSelected={this.timeSelectHandler}
-            dateValue={this.state.formData.end.date}
-          />
+          {this.renderField('timePicker', 'start', '', 'start-date')}
+          {this.renderField('timePicker', 'end', '', 'end-date')}
         </div>
       </form>
     );
