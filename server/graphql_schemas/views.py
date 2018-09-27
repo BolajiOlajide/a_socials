@@ -3,16 +3,14 @@ import rest_framework
 from graphene_django.views import GraphQLView
 from rest_framework.decorators import authentication_classes, permission_classes, api_view
 from rest_framework.settings import api_settings
+from graphene_file_upload.django import FileUploadGraphQLView
+
 from graphql_schemas.utils.helpers import UnauthorizedCalendarError
 
 from graphql.error.located_error import GraphQLLocatedError
 
 
-class DRFAuthenticatedGraphQLView(GraphQLView):
-    def parse_body(self, request):
-        if isinstance(request, rest_framework.request.Request):
-            return request.data
-        return super(GraphQLView, self).parse_body(request)
+class DRFAuthenticatedGraphQLView(FileUploadGraphQLView, GraphQLView):
 
     @classmethod
     def as_view(cls, *args, **kwargs):

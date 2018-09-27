@@ -48,7 +48,7 @@ class CreateEvent(relay.ClientIDMutation):
         venue = graphene.String(required=True)
         start_date = graphene.DateTime(required=True)
         end_date = graphene.DateTime(required=True)
-        featured_image = graphene.String(required=False)
+        featured_image = graphene.String(required=True)
         category_id = graphene.ID(required=True)
         timezone = graphene.String(required=False)
 
@@ -57,6 +57,7 @@ class CreateEvent(relay.ClientIDMutation):
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
         category_id = from_global_id(input.pop('category_id'))[1]
+
         try:
             category = Category.objects.get(
                 pk=category_id)
@@ -68,7 +69,6 @@ class CreateEvent(relay.ClientIDMutation):
                     input['timezone'] = user_profile.timezone
                 if not_valid_timezone(input.get('timezone')):
                     return GraphQLError("Timezone is invalid")
-
                 new_event = Event.objects.create(
                     **input,
                     creator=user_profile,

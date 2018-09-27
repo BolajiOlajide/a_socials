@@ -1,8 +1,13 @@
+import os
+import uuid
+import datetime
 import pytz
 import dateutil.parser as parser
+
 from api.utils.oauth_helper import get_auth_url
 from api.models import Interest
 from googleapiclient.discovery import build
+from google.cloud import storage
 
 from django.conf import settings
 
@@ -95,3 +100,36 @@ def build_event(event, invitees):
 
 def not_valid_timezone(timezone):
     return timezone not in pytz.all_timezones
+
+
+def _safe_filename(filename):
+    """
+    Generates a safe filename that is unlikely to collide with existing objects
+    in Google Cloud Storage.
+    ``filename.ext`` is transformed into ``filename-YYYY-MM-DD-HHMMSS.ext``
+    """
+    date = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H%M%S")
+    basename, extension = filename.rsplit('.', 1)
+    return "{0}-{1}.{2}".format(basename, date, extension)
+
+
+def upload_image_file(uploaded_file):
+    """
+    Uploads a file to a given Cloud Storage bucket and returns the public url
+    to the new object.
+    """
+
+    # Authenticate storage client
+    storage_client = storage.Client.from_service_account_json(
+        os.getenv('GOOGLE_CLOUD_CREDENTIALS_PATH')
+    )
+
+    filename = _safe_filename(uploaded_file.name)
+
+    bucket = storage_client.get_bucket(os.getenv('GOOGLE_CLOUD_BUCKET_NAME'))
+    blob = bucket.blob(filename)
+
+    blob.upload_from_file(uploaded_file)
+    url = blob.public_url
+
+    return url

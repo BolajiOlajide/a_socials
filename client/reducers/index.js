@@ -5,6 +5,7 @@ import {
   subscribedEvents,
   attendees,
   eventsSearchList,
+  uploadImage,
 } from './eventReducers';
 import interests from './interestReducers';
 import url from './urlReducers';
@@ -17,6 +18,7 @@ const rootReducer = {
   joinedCategories,
   socialClubs,
   events,
+  uploadImage,
   subscribedEvents,
   eventsSearchList,
   attendees,
