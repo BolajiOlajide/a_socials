@@ -29,7 +29,7 @@ authorize_docker() {
 }
 
 deploy_image() {
-    make build_backend
+    make build_frontend
 
     make tagFrontend $IMAGE_TAG
     echo "$IMAGE_TAG ==>>>>>>>"
