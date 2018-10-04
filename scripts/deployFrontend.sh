@@ -31,10 +31,10 @@ authorize_docker() {
 deploy_image() {
     make build_backend
 
-    make tag $IMAGE_TAG
+    make tagFrontend $IMAGE_TAG
     echo "$IMAGE_TAG ==>>>>>>>"
 
-    make publish
+    make publishFrontend
 }
 
 install_google_cloud_sdk(){
@@ -55,8 +55,8 @@ configure_google_cloud_sdk() {
 deploy_to_kubernetes(){
      echo "====> Prepare image for deployement"
 
-    IMAGE="${DOCKER_REGISTRY}/${GOOGLE_PROJECT_ID}/${BACKEND_REPO_NAME}:${IMAGE_TAG}"
-    DEPLOYMENT_NAME="${ENVIRONMENT}-${BACKEND_PROJECT_NAME}"
+    IMAGE="${DOCKER_REGISTRY}/${GOOGLE_PROJECT_ID}/${FRONTEND_REPO_NAME}:${IMAGE_TAG}"
+    DEPLOYMENT_NAME="${ENVIRONMENT}-${FRONTEND_PROJECT_NAME}"
     echo "====> Deploying ${IMAGE} to ${DEPLOYMENT_NAME} in ${ENVIRONMENT} environment"
 
 
