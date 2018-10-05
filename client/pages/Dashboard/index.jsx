@@ -24,7 +24,7 @@ import '../../assets/style.scss';
 
 // thunk
 import { loadActiveUser, displayLoginErrorMessage } from '../../actions/userActions';
-import { savePermission } from '../../actions/outhActions';
+import { savePermission } from '../../actions/oauthActions';
 
 // utils
 import isLoggedIn from '../../utils/isLoggedIn';
