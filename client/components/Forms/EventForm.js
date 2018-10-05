@@ -60,17 +60,6 @@ class EventForm extends Component {
     }
   }
 
-  handleUploadedImages = (imageUploaded) => {
-    const {
-      error,
-      node,
-    } = imageUploaded[imageUploaded.length - 1];
-    // After the upload is successful, create the actual event
-    if (!error && node.responseMessage) {
-      this.saveCreatedEvent(node);
-    }
-  }
-
   saveCreatedEvent = (imageNode) => {
     const {
       formData,
@@ -108,8 +97,8 @@ class EventForm extends Component {
 
 
   renderField = (fieldType, type, id, label, formData, error, value) => {
-    switch(fieldType) {
-      case "input":
+    switch (fieldType) {
+      case 'input':
         if (type === 'file') {
           return (<UploadField
             {...this.commonProps(id, type, label, formData, error)}
@@ -241,16 +230,32 @@ class EventForm extends Component {
   };
 
   timeSelectHandler = (type, name, value) => {
-    const dateTime = { ...this.state.formData[type] };
-    const formDataCopy = { ...this.state.formData };
+    const { formData } = this.state;
+    const dateTime = { ...formData[type] };
+    const formDataCopy = { ...formData };
     dateTime[name] = value;
     formDataCopy[type] = dateTime;
     this.setState({ formData: formDataCopy });
   };
 
-  getTimeValues = type => (
-    `${this.state.formData[type].hour}:${this.state.formData[type].minute}`
-  )
+  getTimeValues = (type) => {
+    const { formData } = this.state;
+    const {
+      hour, minute,
+    } = formData[type];
+    return `${hour}:${minute}`;
+  }
+
+  handleUploadedImages = (imageUploaded) => {
+    const {
+      error,
+      node,
+    } = imageUploaded[imageUploaded.length - 1];
+    // After the upload is successful, create the actual event
+    if (!error && node.responseMessage) {
+      this.saveCreatedEvent(node);
+    }
+  }
 
   render() {
     const {
@@ -265,8 +270,10 @@ class EventForm extends Component {
       categories,
     } = this.props;
     const {
-      title, description, venue, featuredImage, start, end,
-    } = this.state.formData;
+      formData: {
+        title, description, venue, featuredImage,
+      },
+    } = this.state;
     const categoryClass = categoryIsValid ? 'category-label' : 'category-label category-error';
     const timezoneClass = timezoneIsValid ? 'category-label' : 'category-label category-error';
     return (
@@ -301,7 +308,7 @@ class EventForm extends Component {
             }}
           />
         </div>
-        <div className='date-time-picker-wrapper'>
+        <div className="date-time-picker-wrapper">
           {this.renderField('timePicker', 'start', '', 'start-date')}
           {this.renderField('timePicker', 'end', '', 'end-date')}
         </div>
