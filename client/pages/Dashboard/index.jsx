@@ -12,6 +12,7 @@ import Header from '../../components/common/Header';
 import External from '../../components/External';
 import EventsPage from '../Event/EventsPage';
 import EventDetailsPage from '../Event/EventDetailsPage';
+import Invite from '../Invite';
 import ModalContextProvider, { ModalContextCreator } from '../../components/Modals/ModalContext';
 import Modal from '../../components/Modals/ModalContainer';
 import LoadComponent from '../../utils/loadComponent';
@@ -196,6 +197,7 @@ class Dashboard extends Component {
             path="/events/:eventId"
             render={props => <EventDetailsPage {...props} activeUser={activeUser} />}
           />
+          <Route path="/invite/:inviteHash" component={Invite} />
           <Route path="/events" render={() => <EventsPage />} />
           <Route path="/dashboard" render={() => <EventsPage />} />
           <Route path="*" component={NotFound} />
