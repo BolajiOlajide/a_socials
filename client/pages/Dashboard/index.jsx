@@ -16,7 +16,7 @@ import Invite from '../Invite';
 import ModalContextProvider, { ModalContextCreator } from '../../components/Modals/ModalContext';
 import Modal from '../../components/Modals/ModalContainer';
 import LoadComponent from '../../utils/loadComponent';
-import { createEvent } from '../../actions/graphql/eventGQLActions';
+import { createEvent, updateEvent } from '../../actions/graphql/eventGQLActions';
 import uploadImage from '../../actions/graphql/uploadGQLActions';
 import { getCategoryList } from '../../actions/graphql/categoryGQLActions';
 
@@ -148,7 +148,7 @@ class Dashboard extends Component {
    * @memberof Dashboard
    */
   render() {
-    const { location: { search } } = this.props;
+    const { location: { search }, uploadImage, updateEvent } = this.props;
     const {
       activeUser, categoryList, oauthCounter,
     } = this.state;
@@ -195,7 +195,7 @@ class Dashboard extends Component {
           />
           <Route
             path="/events/:eventId"
-            render={props => <EventDetailsPage {...props} activeUser={activeUser} />}
+            render={props => <EventDetailsPage {...props} activeUser={activeUser} categories={categories} updateEvent={updateEvent} uploadImage={uploadImage} />}
           />
           <Route path="/invite/:inviteHash" component={Invite} />
           <Route path="/events" render={() => <EventsPage />} />
@@ -222,6 +222,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     loadActiveUser,
     displayLoginErrorMessage,
     createEvent,
+    updateEvent,
     uploadImage,
     getCategoryList,
     savePermission,
