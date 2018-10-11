@@ -130,6 +130,7 @@ class Dashboard extends Component {
                 categories,
                 createEvent,
                 uploadImage,
+                updateEvent: () => '',
               })}
               className="create-event-btn"
             >

@@ -167,7 +167,8 @@ class EventDetailsPage extends React.Component {
                   formId: 'event-form',
                   eventData,
                   categories,
-                  createEvent: updateEvent,
+                  createEvent: () => '',
+                  updateEvent,
                   uploadImage,
                 }
               )}
