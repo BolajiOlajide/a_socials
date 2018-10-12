@@ -25,6 +25,7 @@ const EVENT_GQL = (id = '') => ({
           edges {
             node {
               user {
+                id
                 slackId
                 googleId
               }
