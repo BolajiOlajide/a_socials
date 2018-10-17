@@ -153,7 +153,7 @@ INSPECT := $$(docker-compose -p $$1 -f $$2 ps -q $$3 | xargs -I ARGS docker insp
 CHECK := @bash -c 'if [[ $(INSPECT) -ne 0 ]]; then exit $(INSPECT); fi' VALUE
 
 IMAGE_ID = $$(docker images andelasocialsbackend_server -q)
-FRONTEND_IMAGE_ID = $$(docker images $(FRONTEND_REPO_NAME)_web  -q )
+FRONTEND_IMAGE_ID = $$(docker images andelasocialsfrontend_web  -q )
 
 REPO_EXPR := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(IMAGE_ID) | grep -oh "$(REPO_FILTER)" | xargs)
 REPO_EXPR_FRONTEND := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(FRONTEND_IMAGE_ID) | grep -oh "$(REPO_FILTER)" | xargs)
