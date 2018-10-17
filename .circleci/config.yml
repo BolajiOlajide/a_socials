@@ -69,6 +69,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker
+    - run: npm install
     - run:
         name: Deploy frontend application
         command: |
