@@ -29,7 +29,7 @@ authorize_docker() {
 }
 
 deploy_image() {
-    cd client && npm run build
+    cd client && npm run build && cd ..
     make build_frontend
 
     make tagFrontend $IMAGE_TAG
