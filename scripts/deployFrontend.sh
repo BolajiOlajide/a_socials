@@ -29,6 +29,7 @@ authorize_docker() {
 }
 
 deploy_image() {
+    npm run build
     make build_frontend
 
     make tagFrontend $IMAGE_TAG
