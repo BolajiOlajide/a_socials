@@ -57,12 +57,13 @@ deploy_to_kubernetes(){
      echo "====> Prepare image for deployement"
 
     IMAGE="${DOCKER_REGISTRY}/${GOOGLE_PROJECT_ID}/${FRONTEND_REPO_NAME}:${IMAGE_TAG}"
+    echo ${FRONTEND_REPO_NAME}
     DEPLOYMENT_NAME="${ENVIRONMENT}-${FRONTEND_PROJECT_NAME}"
     echo "====> Deploying ${IMAGE} to ${DEPLOYMENT_NAME} in ${ENVIRONMENT} environment"
 
 
     kubectl set image deployment/${DEPLOYMENT_NAME} frontend=${IMAGE} -n "${ENVIRONMENT}"
-    
+
 
     if [ "$?" == "0" ]; then
         echo "Deployment completed successfully"
