@@ -13,9 +13,11 @@ DOCKER_FRONTEND_PROJECT := "$(PROJECT_NAME)-frontend"
 DOCKER_REGISTRY ?= gcr.io
 
 ifeq ($(DOCKER_REGISTRY), docker.io)
-	REPO_FILTER := ($(ORG_NAME)/$(BACKEND_REPO_NAME) || $(ORG_NAME)/$(FRONTEND_REPO_NAME))
+	REPO_FILTER := $(ORG_NAME)/$(BACKEND_REPO_NAME)
+	REPO_FILTER2 := $(ORG_NAME)/$(FRONTEND_REPO_NAME)
 else
-	REPO_FILTER := ($(DOCKER_REGISTRY)/$(ORG_NAME)/$(BACKEND_REPO_NAME)[^[:space:]|\$$]*
+	REPO_FILTER := $(DOCKER_REGISTRY)/$(ORG_NAME)/$(BACKEND_REPO_NAME)[^[:space:]|\$$]*
+	REPO_FILTER2 := $(DOCKER_REGISTRY)/$(ORG_NAME)/$(FRONTEND_REPO_NAME)[^[:space:]|\$$]*
 endif
 
 
@@ -96,12 +98,10 @@ upgrade:
 	${CHECK} $(DOCKER_BACKEND_PROJECT) $(DOCKER_RELEASE_COMPOSE_FILE) server
 	${SUCCESS} "Upgrade complete"
 
-
-
 tag:
 	${INFO} "Tagging release image with tags $(TAG_ARGS)..."
 	@ $(foreach tag,$(TAG_ARGS), docker tag $(IMAGE_ID) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(BACKEND_REPO_NAME):$(tag);)
-
+	@ docker images
 	${SUCCESS} "Tagging completed successfully"
 
 tagFrontend:
@@ -110,8 +110,8 @@ tagFrontend:
 	${SUCCESS} "Tagging completed successfully"
 
 publish:
-	@ echo "we are in publishing now"
 	${INFO} "Publishing release image $(BACKEND_REPO_NAME)rel to $(DOCKER_REGISTRY)/$(BACKEND_REPO_NAME).."
+	echo "$(REPO_FILTER)"
 	@ $(foreach tag,$(shell echo $(REPO_EXPR)), docker push $(tag);)
 	${INFO} "Publish complete"
 
@@ -120,6 +120,7 @@ publishFrontend:
 	${INFO} "Publishing release image $(FRONTEND_REPO_NAME)rel to $(DOCKER_REGISTRY)/$(FRONTEND_REPO_NAME).."
 	@ $(foreach tag,$(shell echo $(REPO_EXPR_FRONTEND)), docker push $(tag);)
 	${INFO} "Publish complete"
+
 
 ifeq (tag,$(firstword $(MAKECMDGOALS)))
   TAG_ARGS := $(word 2, $(MAKECMDGOALS))
@@ -156,5 +157,5 @@ IMAGE_ID = $$(docker images andelasocialsbackend_server -q)
 FRONTEND_IMAGE_ID = $$(docker images andelasocialsfrontend_web  -q )
 
 REPO_EXPR := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(IMAGE_ID) | grep -oh "$(REPO_FILTER)" | xargs)
-REPO_EXPR_FRONTEND := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(FRONTEND_IMAGE_ID) | grep -oh "$(REPO_FILTER)" | xargs)
+REPO_EXPR_FRONTEND := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(FRONTEND_IMAGE_ID) | grep -oh "$(REPO_FILTER2)" | xargs)
 
