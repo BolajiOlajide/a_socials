@@ -80,17 +80,7 @@ workflows:
     test_and_deploy:
         jobs:
             # - test
-            # - deployBackend:
-            #     # requires:
-            #     #     - test
-            #     filters:
-            #         branches:
-            #             only:
-            #                 - master
-            #                 - develop
-            #                 - /release\/v[0-9].[0-9].[0-9]/
-            #                 - ch-frontend-release
-            - deployFrontend:
+            - deployBackend:
                 # requires:
                 #     - test
                 filters:
@@ -100,3 +90,13 @@ workflows:
                             - develop
                             - /release\/v[0-9].[0-9].[0-9]/
                             - ch-frontend-release
+
+            # - deployFrontend:
+            #     requires:
+            #         - test
+            #     filters:
+            #         branches:
+            #             only:
+            #                 - master
+            #                 - develop
+            #                 - /release\/v[0-9].[0-9].[0-9]/
