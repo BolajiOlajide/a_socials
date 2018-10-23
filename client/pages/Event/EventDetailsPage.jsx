@@ -76,7 +76,7 @@ class EventDetailsPage extends React.Component {
           <div className="event-details__social_event">{socialEvent.name}</div>
           {creator
             ? <div>
-            {this.renderCreateEventButton(eventData)}
+              {this.renderCreateEventButton(eventData)}
             </div>
             : <button type="submit" className="event-details__rsvp_button">
               {' '}
@@ -131,11 +131,11 @@ class EventDetailsPage extends React.Component {
           </div>
         </div>
         <div className="event-details__section">
-          <img src={featuredImage} alt="event img" className="event-details__picture" />
+          <div className="event-details__img-container">
+            <img src={featuredImage} alt="event img" className="event-details__picture" />
+          </div>
+          <br />
           <div className="event-details__mini-gallery">
-            <img src={featuredImage} alt="event img" className="event-details__gallery-picture" />
-            <img src={featuredImage} alt="event img" className="event-details__gallery-picture" />
-            <img src={featuredImage} alt="event img" className="event-details__gallery-picture" />
             <img src={featuredImage} alt="event img" className="event-details__gallery-picture" />
           </div>
         </div>
@@ -179,7 +179,7 @@ class EventDetailsPage extends React.Component {
         }
       }
     </ModalContextCreator.Consumer>
-  );  
+  );
 
   render() {
     const { updated } = this.state;
@@ -191,10 +191,10 @@ class EventDetailsPage extends React.Component {
       return <NotFound />;
     }
     return (
-      <React.Fragment>
+      <div className="event-details">
         {this.topSection()}
         {this.middleSection()}
-      </React.Fragment>
+      </div>
     );
   }
 }

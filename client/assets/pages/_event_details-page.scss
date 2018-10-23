@@ -1,74 +1,80 @@
+@import '../tools/functions.scss';
 .event-details{
-    &__top{
-    position: absolute;
-    width: 95vw;
-    height: 17vh;
-    left: 2.5vw;
-    top: 17vh;
+  position: absolute;
+  left: 2.5vw;
+  width: 95vw;
+  top: rem(150px);
+
+  &__top{
     background-color: #FFF;
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
   }
   &__section{
     width: 50%;
     max-height: 100%;
     float: left;
-    padding: 19px;
+    padding: rem(19px) rem(19px) rem(12px) rem(19px);
     background-color: #FFF;
+    @media screen and (max-width: rem(840px)) {
+      width: 100%;
+    }
   }
   
   &__middle{
-    position: absolute;
+    margin-top: rem(20px);
     width: 95vw;
     min-height: 50vh;
-    left: 2.5vw;
-    top: 36vh;
     background-color: #FFF;
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__img-container{
+    overflow: hidden;
   }
   &__picture{
-    height: 30vh;
-    max-width: 41vw;
-    margin: 28px 35px 48px 28px;
+    width: 90%;
+    margin: rem(28px) rem(35px) rem(48px) rem(28px);
   }
   &__gallery-picture{
-    width: 84px;
-    height: 89px;
-    margin-bottom: 39px;
-    margin-left: 20px;
+    width: rem(84px);
+    height: rem(89px);
+    margin-bottom: rem(39px);
+    margin-left: rem(20px);
   }
   &__mini-gallery{
-    margin-left: 28px;
+    margin-left: rem(28px);
     max-width: 41vw;
     display: inline-flex;
   }
   &__event_title{
     font-family: DIN Pro;
     font-weight: bold;
-    font-size: 40px;
-    padding: 0 0 0 26px;
+    font-size: rem(40px);
+    padding: 0 0 0 rem(26px);
   }
   &__social_event{
-    font-size: 20px;
+    font-size: rem(20px);
     font-style: normal;
     font-weight: lighter;
-    padding: 0 0 0 26px;
-    margin-top: -15px;
+    padding: 0 0 0 rem(26px);
+    margin-top: rem(-15px);
     color: #797979;
   }
   &__rsvp_button{
-    margin: 0 0 0 26px;
+    margin: 0 0 0 rem(26px);
     background-color: #3359DB;
     font-size: 1.25em;
     color: white;
-    width: 147px;
-    height: 41px;
+    width: rem(147px);
+    height: rem(41px);
   }
   &__location_time h5 {
     font-size: 1.25rem;
     font-style: normal;
     font-weight: lighter;
     text-decoration: underline;
-    line-height: 10px;
+    line-height: rem(10px);
   
   }
   &__location_time p {
@@ -81,15 +87,16 @@
     font-size: 1.25rem;
     font-style: normal;
     font-weight: bolder;
-    line-height: 7px;
-    padding-top: 19px;
+    line-height: rem(7px);
+    padding-top: rem(19px);
     margin-bottom: .5rem; 
   }
   &__description article, &__attending p, &__tags p{
     font-style: normal;
     font-size: 1.2rem;
+    word-break: break-all;
     font-weight: lighter;
-    padding: 19px 0 20px 0;
+    padding: rem(19px) 0 rem(20px) 0;
   }
   &__edit {
     color: #365edb;
@@ -97,6 +104,6 @@
     font-size: large;
     width: rem(49px);
     height: rem(42px);
-    margin: 0 0 0 26px;    
+    margin: 0 0 0 rem(26px);    
   }
 }
