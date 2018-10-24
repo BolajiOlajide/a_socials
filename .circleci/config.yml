@@ -31,7 +31,7 @@ jobs:
           path: test-reports
           destination: test-reports
 
-  deploy:
+  upgrade-database:
     docker:
         - image: circleci/python:3.6.1
           environment:
@@ -41,22 +41,61 @@ jobs:
     - checkout
     - setup_remote_docker
     - run:
-        name: Deploy application to staging
+        name: Upgrade database
+        command: |
+            bash scripts/upgrade.sh
+
+
+  deployBackend:
+    docker:
+        - image: circleci/python:3.6.1
+          environment:
+            TERM: xterm-256color
+    working_directory: ~/andela-socials-backend
+    steps:
+    - checkout
+    - setup_remote_docker
+    - run:
+        name: Deploy backend application
         command: |
           bash scripts/deployBackend.sh
 
-
+  deployFrontend:
+    docker:
+        - image: circleci/node:9.8.0
+          environment:
+            TERM: xterm-256color
+    working_directory: ~/andela-socials-frontend
+    steps:
+    - checkout
+    - setup_remote_docker
+    - run: cd client && yarn install --production=false
+    - run:
+        name: Deploy frontend application
+        command: |
+            bash scripts/deployFrontend.sh
 
 workflows:
     version: 2
     test_and_deploy:
         jobs:
             - test
-            - deploy:
+            - deployBackend:
                 requires:
                     - test
                 filters:
                     branches:
                         only:
                             - master
+                            - develop
+                            - /release\/v[0-9].[0-9].[0-9]/
+
+            - deployFrontend:
+                requires:
+                    - test
+                filters:
+                    branches:
+                        only:
+                            - master
+                            - develop
                             - /release\/v[0-9].[0-9].[0-9]/

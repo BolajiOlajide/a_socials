@@ -29,12 +29,18 @@ authorize_docker() {
 }
 
 deploy_image() {
-    make build_backend
+    export BASE_URL=${BASE_URL}
+    export SERVER_API_BASE_URL=${SERVER_API_BASE_URL}
+    export G_SUITE_DOMAIN=${G_SUITE_DOMAIN}
+    export ANDELA_API_BASE_URL=${ANDELA_API_BASE_URL}
+    export CLIENT_ID=${CLIENT_ID}
+    cd client && npm run build && cd ..
+    make build_frontend
 
-    make tag $IMAGE_TAG
+    make tagFrontend $IMAGE_TAG
     echo "$IMAGE_TAG ==>>>>>>>"
 
-    make publish
+    make publishFrontend
 }
 
 install_google_cloud_sdk(){
@@ -55,13 +61,15 @@ configure_google_cloud_sdk() {
 deploy_to_kubernetes(){
      echo "====> Prepare image for deployement"
 
-    IMAGE="${DOCKER_REGISTRY}/${GOOGLE_PROJECT_ID}/${BACKEND_REPO_NAME}:${IMAGE_TAG}"
-    echo ${BACKEND_REPO_NAME}
-    DEPLOYMENT_NAME="${ENVIRONMENT}-${BACKEND_PROJECT_NAME}"
+    IMAGE="${DOCKER_REGISTRY}/${GOOGLE_PROJECT_ID}/${FRONTEND_REPO_NAME}:${IMAGE_TAG}"
+    echo ${FRONTEND_REPO_NAME}
+    DEPLOYMENT_NAME="${ENVIRONMENT}-${FRONTEND_PROJECT_NAME}"
     echo "====> Deploying ${IMAGE} to ${DEPLOYMENT_NAME} in ${ENVIRONMENT} environment"
 
 
-    kubectl set image deployment/${DEPLOYMENT_NAME} backend=${IMAGE} -n "${ENVIRONMENT}"
+    kubectl set image deployment/${DEPLOYMENT_NAME} frontend=${IMAGE} -n "${ENVIRONMENT}"
+
+
 
     if [ "$?" == "0" ]; then
         echo "Deployment completed successfully"
