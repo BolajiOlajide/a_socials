@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ModalContextCreator } from './ModalContext';
 import EventForm from '../Forms/EventForm';
+import DeleteForm from '../Forms/DeleteForm';
 
 /*
   maps a string to a modal child, used to determine
@@ -14,11 +15,13 @@ import EventForm from '../Forms/EventForm';
 const MODAL_COMPONENTS = {
   CREATE_EVENT: EventForm,
   UPDATE_EVENT: EventForm,
+  DELETE_EVENT: DeleteForm,
 };
 
 const ModalContent = (props) => {
   const { modalProps, closeModal, activeModal } = props;
   const SpecificModal = MODAL_COMPONENTS[activeModal];
+  const submitText = activeModal === 'DELETE_EVENT' ? 'CONFIRM' : 'Submit';
   return (
     <div className="modal__content">
       <header className="modal__header">
@@ -37,7 +40,7 @@ const ModalContent = (props) => {
           className="modal__btn modal__btn-submit"
           form={modalProps.formId}
           type="submit"
-        >Submit</button>
+        >{submitText}</button>
       </footer>
     </div>
   );

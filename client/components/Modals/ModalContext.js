@@ -7,6 +7,7 @@ class ModalContext extends Component {
   modalTypes = [
     'CREATE_EVENT',
     'UPDATE_EVENT',
+    'DELETE_EVENT',
   ];
 
   defaultModalProps = { modalHeadline: 'default modal headline' };

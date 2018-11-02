@@ -77,6 +77,7 @@ class EventDetailsPage extends React.Component {
           {creator
             ? <div>
               {this.renderCreateEventButton(eventData)}
+              {this.renderDeleteEventButton()}
             </div>
             : <button type="submit" className="event-details__rsvp_button">
               {' '}
@@ -175,6 +176,39 @@ class EventDetailsPage extends React.Component {
               className="event-details__edit">
               {' '}
               &#9998;
+            </button>);
+        }
+      }
+    </ModalContextCreator.Consumer>
+  );
+
+  renderDeleteEventButton = () => (
+    <ModalContextCreator.Consumer>
+      {
+        ({
+          activeModal,
+          openModal,
+        }) => {
+          const {
+            event: {
+              title,
+              id,
+            },
+          } = this.props;
+          if (activeModal) return null;
+          return (
+            <button type="button"
+              onClick={() => openModal(
+                'DELETE_EVENT', {
+                  modalHeadline: 'Delete event',
+                  formText: `Are you sure you want to delete the Event '${title}' ?`,
+                  eventId: id,
+                  formId: 'delete-event-form',
+                }
+              )}
+              className="event-details__delete">
+              {' '}
+              &#10005;
             </button>);
         }
       }
