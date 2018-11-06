@@ -51,10 +51,31 @@
   background-color: $white;
   margin: 0;
   border: 0;
+  @include mobile(rem(766px)) {
+    display: flex;
+  }
   .navbar-brand {
     height: rem(70px);
     width: rem(70px);
-    @include centered-flex
+    @include centered-flex;
+    @include mobile(rem(600px)) {
+      display: none;
+    }
+  }
+  .navbar-brand-mobile {
+    display: none;
+    border: none;
+    @include mobile(rem(600px)) {
+      display: block;
+      height: rem(70px);
+      width: rem(70px);
+    }
+  }
+}
+
+.navbar-header {
+  @include mobile(rem(766px)) {
+    width: 100%;
   }
 }
 
@@ -64,9 +85,25 @@
   justify-content: flex-end;
   padding: 0;
   height: rem(70px);
+  @include mobile(rem(600px)) {
+    width: 100%;
+  }
+  &__item {
+    padding-left: 3%;
+    @include mobile(rem(600px)) {
+      display: none;
+    }
+  }
+  &__search {
+    z-index: 1;
+    @include mobile(rem(600px)) {
+      padding-right: 5%;
+    }
+  }
   .nav-profile {
     min-width: rem(183.5px);
     margin: 0;
+    padding-right: 12%;
     &__list-menus {
       @include column-flex;
       align-items: center;
@@ -115,11 +152,9 @@
     }
     &__button {
       box-shadow: none;
-      margin-right: rem(26px);
     }
   }
   .notification-container {
-    padding: 0 2.375rem 0 3rem;
     &__button {
       margin: 0;
       padding: 0;
@@ -191,15 +226,24 @@
     padding: 0;
     margin: 0;
     justify-content: center;
+    @include mobile(rem(640px)) {
+      width: 14rem;
+    }
     .form-group {
       @include flex;
       align-items: center;
+      @include mobile(rem(640px)) {
+        width: 100%;
+      }
     }
     &__input {
       border: 0;
       width: 15rem;
       box-shadow: none;
       background: transparent;
+      @include mobile(rem(640px)) {
+        width: 85%;
+      }
     }
   }
 }

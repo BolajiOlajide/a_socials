@@ -6,10 +6,16 @@ import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
 import NotificationCenter from './NotificationCenter';
 import UserProfile from './UserProfile';
+import SideNav from './SideNav';
 import LogoReplacement from '../../assets/icons/LogoReplacement';
 
 // assets
 import '../../assets/components/navbar.scss';
+
+
+const openNav = () => {
+  document.getElementById('mySidenav').style.width = '15.6rem';
+};
 
 const NavMenu = ({
   to,
@@ -19,8 +25,7 @@ const NavMenu = ({
       <NavLink to={to} activeClassName="link__container--active">
         <span>{children}</span>
       </NavLink>
-    </div>
-);
+    </div>);
 
 NavMenu.propTypes = {
   to: PropTypes.string.isRequired,
@@ -38,32 +43,37 @@ const NavBar = (props) => {
     <Fragment>
       <nav className="top-navbar">
         <div className="navbar-header">
-          <button
-            type="button"
-            className="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#nav-bar"
-            aria-expanded="false"
-            aria-controls="navbar"
-          >
-            <span className="sr-only">Toggle navigation</span>
-            <span className="icon-bar" />
-            <span className="icon-bar" />
-            <span className="icon-bar" />
-          </button>
+          <div>
+            <button type="button" onClick={openNav} className="navbar-brand-mobile">
+              {LogoReplacement}
+            </button>
+          </div>
           <Link to="/home" className="navbar-brand">
             {LogoReplacement}
           </Link>
         </div>
+        <SideNav
+          signOut={signOut}
+        />
         <div className="top-navbar__right-container">
-          <SearchBar searchText={searchText} events={events} onSearchInputChange={onSearchInputChange} />
-          <NotificationCenter />
-          <UserProfile
-            firstName={firstName}
-            lastName={lastName}
-            imageUrl={imageUrl}
-            signOut={signOut}
-          />
+          <div className="top-navbar__right-container__search">
+            <SearchBar
+              searchText={searchText}
+              events={events}
+              onSearchInputChange={onSearchInputChange}
+            />
+          </div>
+          <div className="top-navbar__right-container__item">
+            <NotificationCenter />
+          </div>
+          <div className="top-navbar__right-container__item">
+            <UserProfile
+              firstName={firstName}
+              lastName={lastName}
+              imageUrl={imageUrl}
+              signOut={signOut}
+            />
+          </div>
         </div>
       </nav>
       <div className="navbar">
