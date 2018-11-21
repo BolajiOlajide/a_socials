@@ -114,7 +114,18 @@ export const subscribedEvents = (state = initialState.subscribedEvents, action) 
       return Object.assign({}, state, { subscribedEvents: action.payload.subscribedEvents });
 
     case ATTEND_EVENT:
-      return Object.assign({}, state, { subscribedEvents: state.subscribedEvents.concat(action.payload.attendEvent.newAttendance) });
+      if (state.subscribedEvents !== undefined) {
+        const { subscribedEvents } = state;
+        const { payload } = action;
+        const eventCount =  subscribedEvents.filter(event => (event.id === payload.attendEvent.newAttendance.id)).length;
+        if (eventCount < 1) {
+          subscribedEvents.push(action.payload.attendEvent.newAttendance);
+          return { ...state, subscribedEvents };
+        }
+        return state;
+      }
+      return { ...state, subscribedEvents: [action.payload.attendEvent.newAttendance] };
+      
 
     case UNATTEND_EVENT:
       return Object.assign({}, state, {
