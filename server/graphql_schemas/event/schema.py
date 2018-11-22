@@ -4,8 +4,9 @@ import logging
 from dateutil.parser import parse
 from django.forms.models import model_to_dict
 
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.loader import get_template
 from django.utils import timezone
 from graphene import relay, ObjectType
 from graphql_relay import from_global_id
@@ -243,18 +244,25 @@ class SendEventInvite(relay.ClientIDMutation):
             raise GraphQLError(
                 "User cannot invite self")
 
-        hashes = Hasher.gen_hash([
+        invite_hash = Hasher.gen_hash([
             event.id, receiver.user.id, sender.user.id])
         invite_url = info.context.build_absolute_uri(
-            f"/invite/{hashes}")
-        message = f"Click on this link to view invite\n\n{invite_url}"
-
-        sent = send_mail(
+            f"/invite/{invite_hash}")
+        data_values = {
+            'title': event.title,
+            'imgUrl': event.featured_image,
+            'venue': event.venue,
+            'startDate': event.start_date,
+            'url': invite_url
+        }
+        message = get_template('event_invite.html').render(data_values)
+        msg = EmailMessage(
             f"You have been invited to an event by {sender.user.username}",
             message,
-            None,
-            [receiver_email]
+            to=[receiver_email]
         )
+        msg.content_subtype = 'html'
+        sent = msg.send()
 
         if sent:
             return cls(message="Event invite delivered")
@@ -274,7 +282,6 @@ class ValidateEventInvite(relay.ClientIDMutation):
     def mutate_and_get_payload(cls, root, info, **input):
         hash_string = input.get('hash_string')
         user_id = info.context.user.id
-
         try:
             data = Hasher.reverse_hash(hash_string)
             if not data or len(data) != 3:
