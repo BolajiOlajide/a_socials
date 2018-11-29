@@ -64,12 +64,11 @@ jobs:
     docker:
         - image: circleci/node:9.8.0
           environment:
-            TERM: xterm-256color
+            - TERM: xterm-256color
     working_directory: ~/andela-socials-frontend
     steps:
     - checkout
     - setup_remote_docker
-    - run: cd client && yarn install --production=false
     - run:
         name: Deploy frontend application
         command: |
@@ -89,6 +88,7 @@ workflows:
                             - master
                             - develop
                             - /release\/v[0-9].[0-9].[0-9]/
+                            - fix-staging
 
             - deployFrontend:
                 requires:
@@ -99,3 +99,4 @@ workflows:
                             - master
                             - develop
                             - /release\/v[0-9].[0-9].[0-9]/
+                            - fix-staging
