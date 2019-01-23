@@ -44,6 +44,13 @@ export const attendEvent = (eventId, clientMutationId = '') => dispatch => Clien
 
 export const unAttendEvent = (eventId, clientMutationId = '') => dispatch => Client.mutate(
   UNATTEND_EVENT_GQL(eventId, clientMutationId)
-).then(data => dispatch({ type: UNATTEND_EVENT, payload: data.data, error: false, }))
-.catch(error => handleError(error, dispatch));
-
+).then((data) => {
+  const { attendEvent: { newAttendance } } = data.data;
+  dispatch({ 
+    type: UNATTEND_EVENT,
+    payload: data.data,
+    error: false,
+  });
+  handleInformation(`'${newAttendance.status} action' was successful`);
+})
+  .catch(error => handleError(error, dispatch));

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import durationConverter from '../../utils/durationConverter';
 import { getEvent, deactivateEvent } from '../../actions/graphql/eventGQLActions';
-import { attendEvent } from '../../actions/graphql/attendGQLActions';
+import { attendEvent, unAttendEvent } from '../../actions/graphql/attendGQLActions';
 import NotFound from '../../components/common/NotFound';
 
 // stylesheet
@@ -161,9 +161,17 @@ class EventDetailsPage extends React.Component {
   rsvpEvent() {
     const {
       attendEventAction,
-      event: { id },
+      unAttendEventAction,
+      event: {
+        id, attendSet: { edges },
+      },
     } = this.props;
-    attendEventAction(id);
+
+    if (edges.length > 0) {
+      unAttendEventAction(id);
+    } else {
+      attendEventAction(id);
+    }
   }
 
   renderCreateEventButton = eventData => (
@@ -173,7 +181,9 @@ class EventDetailsPage extends React.Component {
           activeModal,
           openModal,
         }) => {
-          const { categories, uploadImage, updateEvent } = this.props;
+          const {
+            categories, uploadImage, updateEvent 
+          } = this.props;
           if (activeModal) return null;
           return (
             <button type="button"
@@ -257,6 +267,7 @@ EventDetailsPage.propTypes = {
   getEventAction: PropTypes.func,
   deactivateEventAction: PropTypes.func,
   attendEventAction: PropTypes.func,
+  unAttendEventAction: PropTypes.func,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }),
   events: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.object),
@@ -287,20 +298,21 @@ EventDetailsPage.defaultProps = {
   getEventAction: () => null,
   deactivateEventAction: () => null,
   attendEventAction: () => null,
+  unAttendEventAction: () => null,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getEventAction: getEvent,
   deactivateEventAction: deactivateEvent,
   attendEventAction: attendEvent,
+  unAttendEventAction: unAttendEvent,
 }, dispatch);
 
-const mapStateToProps = (state) => {
-  return {
-    event: state.event,
-    events: state.events,
-  };
-};
+const mapStateToProps = state => ({
+  event: state.event,
+  events: state.events,
+  activeUser: state.activeUser,
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

@@ -1,24 +1,25 @@
 import gql from 'graphql-tag';
 
-const UNATTEND_EVENT_GQL = (eventId, clientMutationId = '') => ({
+const UNATTEND_EVENT_GQL = (eventId, clientMutationId = '', status = 'declined') => ({
   mutation: gql`
-    mutation($input: UnsubscribeEventInput!){
-      unattendEvent(input: $input){
-        unsubscribedEvent{
+    mutation($input: AttendEventInput!){
+      attendEvent(input: $input){
+        newAttendance{
           id
           createdAt
           updatedAt
+          status
           event{
             createdAt
             updatedAt
             id
-            time
             title
             description
             venue
-            date
+            startDate
+            endDate
             featuredImage
-            active
+            active          
           }
         }
         clientMutationId
@@ -28,8 +29,8 @@ const UNATTEND_EVENT_GQL = (eventId, clientMutationId = '') => ({
     input: {
       eventId,
       clientMutationId,
+      status,
     },
   },
 });
-
 export default UNATTEND_EVENT_GQL;

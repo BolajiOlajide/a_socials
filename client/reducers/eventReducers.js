@@ -130,7 +130,7 @@ export const subscribedEvents = (state = initialState.subscribedEvents, action) 
     case UNATTEND_EVENT:
       return Object.assign({}, state, {
         subscribedEvents: state.subscribedEvents.filter(
-          item => item.event.id !== action.payload.unattendEvent.unsubscribedEvent.event.id
+          item => item.event.id !== action.payload.attendEvent.newAttendance.id
         ),
       });
 
