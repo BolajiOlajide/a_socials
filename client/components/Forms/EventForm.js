@@ -50,7 +50,7 @@ class EventForm extends Component {
     errors: this.errors,
     category: '',
     categoryIsValid: true,
-    timezone: '',
+    timezone: moment.tz.guess(),
     timezoneIsValid: true,
   };
 
