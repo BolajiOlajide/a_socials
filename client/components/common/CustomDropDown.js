@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import onClickOutside from 'react-onclickoutside';
 import FontAwesome from 'react-fontawesome';
 
 /**
@@ -80,4 +81,4 @@ CustomDropDown.propTypes = {
 
 CustomDropDown.defaultProps = { title: 'Please select' };
 
-export default CustomDropDown;
+export default onClickOutside(CustomDropDown);
