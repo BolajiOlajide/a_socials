@@ -14,7 +14,7 @@ import External from '../../components/External';
 import EventsPage from '../Event/EventsPage';
 import EventDetailsPage from '../Event/EventDetailsPage';
 import Invite from '../Invite';
-import ModalContextProvider, { ModalContextCreator } from '../../components/Modals/ModalContext';
+import ModalContextProvider from '../../components/Modals/ModalContext';
 import Modal from '../../components/Modals/ModalContainer';
 import LoadComponent from '../../utils/loadComponent';
 import { createEvent, updateEvent } from '../../actions/graphql/eventGQLActions';
@@ -110,40 +110,6 @@ class Dashboard extends Component {
     }
   };
 
-  renderCreateEventButton = categories => (
-    <ModalContextCreator.Consumer>
-      {
-        ({
-          activeModal,
-          openModal,
-        }) => {
-          // TODO: This should be removed, duplicate naming
-          const {
-            createEvent, uploadImage,
-          } = this.props;
-          if (activeModal) return null;
-          return (
-            <button
-              type="button"
-              onClick={() => openModal('CREATE_EVENT', {
-                modalHeadline: 'create event',
-                formMode: 'create',
-                formId: 'event-form',
-                categories,
-                createEvent,
-                uploadImage,
-                updateEvent: () => '',
-              })}
-              className="create-event-btn"
-            >
-              <span className="create-event-btn__icon">+</span>
-            </button>
-          );
-        }
-      }
-    </ModalContextCreator.Consumer>
-  );
-
   /**
    * Renders Dashboard component
    *
@@ -213,10 +179,9 @@ class Dashboard extends Component {
           />
           <Route path="/invite/:inviteHash" component={Invite} />
           <Route path="/events" render={() => <EventsPage />} />
-          <Route path="/dashboard" render={() => <EventsPage />} />
+          <Route path="/dashboard" render={() => <EventsPage createEvent={createEvent} categories={categories} uploadImage={uploadImage} />} />
           <Route path="*" component={NotFound} />
         </Switch>
-        {this.renderCreateEventButton(categories)}
         <Modal {...this.props} />
       </ModalContextProvider>
     );
