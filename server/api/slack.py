@@ -43,7 +43,7 @@ def notify_channel(message):
     )
 
 
-def notify_user(message, slack_id):
+def notify_user(message, slack_id, blocks = []):
     """
     Notify the user with the given id with the message
         :param message:
@@ -53,6 +53,7 @@ def notify_user(message, slack_id):
         "chat.postMessage",
         channel=slack_id,
         text=message,
+        blocks=blocks,
         as_user=True,
         reply_broadcast=True,
     )
@@ -68,3 +69,33 @@ def get_slack_user_timezone(email):
         if member.get('profile').get('email') == email:
             return member.get('tz')
     return ''
+
+def slack_image(text, url):
+    return {
+        "type": "image",
+        "title": {
+            "type": "plain_text",
+            "text": text
+        },
+        "image_url": url,
+        "alt_text": text
+    }
+
+def slack_actions(block_id, elements):
+    return {
+        "type": "actions",
+        "block_id": block_id,
+        "elements": elements
+    }
+
+def create_button(text, url=False):
+    button = {
+        "type": "button",
+        "text": {
+            "type": "plain_text",
+            "text": text
+        }
+    }
+    if url: 
+        button.update({"url": url})
+    return button

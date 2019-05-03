@@ -24,7 +24,8 @@ from graphql_schemas.scalars import NonEmptyString
 from graphql_schemas.utils.hasher import Hasher
 from api.models import Event, Category, AndelaUserProfile, \
     Interest, Attend
-from api.slack import get_slack_id, notify_user
+from api.slack import get_slack_id, notify_user, slack_actions,\
+    create_button, slack_image
 
 from api.utils.backgroundTaskWorker import BackgroundTaskWorker
 
@@ -118,6 +119,9 @@ class CreateEvent(relay.ClientIDMutation):
                        f"Venue: {input.get('venue')} \n"
                        f"Date: {input.get('start_date').date()} \n"
                        f"Time: {input.get('start_date').time()}")
+            buttons = [create_button("View Details", input.get('url'))]
+            blocks = [slack_image(input.get('featured_image')), 
+                slack_actions("view_details_button", buttons)]
             slack_id_not_in_db = []
             all_users_attendance = []
             for instance in category_followers:
@@ -126,7 +130,7 @@ class CreateEvent(relay.ClientIDMutation):
                 all_users_attendance.append(new_attendance)
                 if instance.follower.slack_id:
                     slack_response = notify_user(
-                        message, instance.follower.slack_id)
+                        message, instance.follower.slack_id, blocks)
                     if not slack_response['ok']:
                         logging.warn(slack_response)
                 else:
@@ -141,7 +145,7 @@ class CreateEvent(relay.ClientIDMutation):
                         instance.follower.slack_id = retrieved_slack_id
                         instance.follower.save()
                         slack_response = notify_user(
-                            message, retrieved_slack_id)
+                            message, retrieved_slack_id, blocks)
                         if not slack_response['ok']:
                             logging.warn(slack_response)
                     else:
