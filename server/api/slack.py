@@ -52,7 +52,7 @@ def notify_user(message, slack_id):
     return slack_client.api_call(
         "chat.postMessage",
         channel=slack_id,
-        text=message,
+        blocks=message,
         as_user=True,
         reply_broadcast=True,
     )
@@ -68,3 +68,29 @@ def get_slack_user_timezone(email):
         if member.get('profile').get('email') == email:
             return member.get('tz')
     return ''
+
+
+def new_event_message(message, event_url):
+    """
+    Return slack message to send when new event is created
+    """
+    return [{
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": message
+            }
+    }, {
+        "type": "actions",
+        "elements": [
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": "View Details",
+                    "emoji": True
+                },
+                "url": event_url
+            }
+        ]
+    }]

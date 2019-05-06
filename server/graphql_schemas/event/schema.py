@@ -1,5 +1,6 @@
 import graphene
 import logging
+import dotenv
 
 from dateutil.parser import parse
 from django.forms.models import model_to_dict
@@ -9,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import get_template
 from django.utils import timezone
 from graphene import relay, ObjectType
-from graphql_relay import from_global_id
+from graphql_relay import from_global_id, to_global_id
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
 from graphql import GraphQLError
@@ -24,7 +25,7 @@ from graphql_schemas.scalars import NonEmptyString
 from graphql_schemas.utils.hasher import Hasher
 from api.models import Event, Category, AndelaUserProfile, \
     Interest, Attend
-from api.slack import get_slack_id, notify_user
+from api.slack import get_slack_id, notify_user, new_event_message
 
 from api.utils.backgroundTaskWorker import BackgroundTaskWorker
 
@@ -112,12 +113,15 @@ class CreateEvent(relay.ClientIDMutation):
         try:
             category_followers = Interest.objects.filter(
                 follower_category_id=category.id)
-            message = (f"A new event has been created in {category.name} "
-                       f"group \n Title: {input.get('title')} \n"
-                       f"Description: {input.get('description')} \n "
-                       f"Venue: {input.get('venue')} \n"
-                       f"Date: {input.get('start_date').date()} \n"
-                       f"Time: {input.get('start_date').time()}")
+            event_id = to_global_id(EventNode._meta.name, new_event.id)
+            event_url = f"{dotenv.get('FRONTEND_BASE_URL')}/{event_id}"
+            message = (f"*A new event has been created in {category.name} "
+                       f"group* \n *Title:* {input.get('title')} \n"
+                       f"*Description:* {input.get('description')} \n "
+                       f"*Venue:* {input.get('venue')} \n"
+                       f"*Date:* {input.get('start_date').date()} \n"
+                       f"*Time:* {input.get('start_date').time()}")
+            blocks = new_event_message(message, event_url)
             slack_id_not_in_db = []
             all_users_attendance = []
             for instance in category_followers:
@@ -126,7 +130,7 @@ class CreateEvent(relay.ClientIDMutation):
                 all_users_attendance.append(new_attendance)
                 if instance.follower.slack_id:
                     slack_response = notify_user(
-                        message, instance.follower.slack_id)
+                        blocks, instance.follower.slack_id)
                     if not slack_response['ok']:
                         logging.warn(slack_response)
                 else:
@@ -141,7 +145,7 @@ class CreateEvent(relay.ClientIDMutation):
                         instance.follower.slack_id = retrieved_slack_id
                         instance.follower.save()
                         slack_response = notify_user(
-                            message, retrieved_slack_id)
+                            blocks, retrieved_slack_id)
                         if not slack_response['ok']:
                             logging.warn(slack_response)
                     else:
