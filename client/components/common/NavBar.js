@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 // components
 import SearchBar from './SearchBar';
-import NotificationCenter from './NotificationCenter';
 import UserProfile from './UserProfile';
 import SideNav from './SideNav';
 import LogoReplacement from '../../assets/icons/LogoReplacement';
@@ -64,9 +63,6 @@ const NavBar = (props) => {
             />
           </div>
           <div className="top-navbar__right-container__item">
-            <NotificationCenter />
-          </div>
-          <div className="top-navbar__right-container__item">
             <UserProfile
               firstName={firstName}
               lastName={lastName}
@@ -79,7 +75,6 @@ const NavBar = (props) => {
       <div className="navbar">
         <div className="navbar__bottom-section">
           <NavMenu to="/dashboard">Dashboard</NavMenu>
-          <NavMenu to="/groups">Groups</NavMenu>
         </div>
       </div>
     </Fragment>

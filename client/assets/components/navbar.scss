@@ -110,7 +110,7 @@
       box-shadow: rem(-1px) rem(6px) rem(6px) $grey;
       border: 0;
       border-radius: 0;
-      height: 13.187rem;
+      height: auto;
       width: 10.5rem;
 
       li {
@@ -118,20 +118,6 @@
         height: 2.5rem;
         width: 70%;
         margin: 1em 0 1em 0;
-        &:first-child:after {
-          content: '';
-          position: absolute;
-          bottom: 33%;
-          width: 80%;
-          border-bottom: rem(1px) solid $grey;
-        }
-        &:last-child:before {
-          content: '';
-          position: absolute;
-          bottom: 66%;
-          width: 80%;
-          border-bottom: rem(1px) solid $grey;
-        }
         a {
           color: #ccc;
           font-weight: 300;
