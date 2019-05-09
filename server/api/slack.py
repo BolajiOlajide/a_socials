@@ -149,3 +149,18 @@ def get_slack_user_token(code):
 
     return response
 
+    
+
+def get_slack_channels_list(limit=100):
+    """
+    Helper Function to get list of all slcak conversations
+    """
+    channels_list = slack_client.api_call(
+        "conversations.list",
+        exclude_archived=True,
+        limit=limit
+    )
+    if channels_list.get('ok'):
+        # retrieve all slack channels
+        return channels_list
+    return ''
