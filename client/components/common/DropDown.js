@@ -21,12 +21,11 @@ class DropDown extends Component {
       children,
       className,
     } = this.props;
-    const classNames = `dropdown ${className && className}`;
+    const classNames = `dropdown ${className}`;
 
     return (
       <div className={classNames}>
         {React.cloneElement(children[0], { onClick: this.toggleDropDown })}
-        {showDropDown && children[1]}
         {showDropDown && React.cloneElement(children[1],
           { onMouseLeave: this.toggleDropDown })}
       </div>

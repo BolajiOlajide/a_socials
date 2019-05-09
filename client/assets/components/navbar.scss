@@ -112,7 +112,6 @@
       box-shadow: rem(-1px) rem(6px) rem(6px) $grey;
       border: 0;
       border-radius: 0;
-      height: auto;
       width: 10.5rem;
 
       li {
@@ -148,6 +147,9 @@
     }
     &__button {
       box-shadow: none;
+      &:active, &:focus {
+        outline: none;
+      }
     }
   }
   .notification-container {
