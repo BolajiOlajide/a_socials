@@ -14,6 +14,7 @@ import External from '../../components/External';
 import EventsPage from '../Event/EventsPage';
 import EventDetailsPage from '../Event/EventDetailsPage';
 import Invite from '../Invite';
+import Interests from '../Interests';
 import ModalContextProvider from '../../components/Modals/ModalContext';
 import Modal from '../../components/Modals/ModalContainer';
 import LoadComponent from '../../utils/loadComponent';
@@ -180,6 +181,7 @@ class Dashboard extends Component {
           <Route path="/invite/:inviteHash" component={Invite} />
           <Route path="/events" render={() => <EventsPage />} />
           <Route path="/dashboard" render={() => <EventsPage createEvent={createEvent} categories={categories} uploadImage={uploadImage} />} />
+          <Route path="/interests" render={() => <Interests />} />
           <Route path="*" component={NotFound} />
         </Switch>
         <Modal {...this.props} />
