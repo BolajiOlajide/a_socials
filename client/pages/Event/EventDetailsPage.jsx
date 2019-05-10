@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,6 +7,8 @@ import moment from 'moment-timezone';
 import { getEvent, deactivateEvent } from '../../actions/graphql/eventGQLActions';
 import { attendEvent } from '../../actions/graphql/attendGQLActions';
 import NotFound from '../../components/common/NotFound';
+import slackChannels from '../../fixtures/slackChannels';
+import SlackIcon from '../../assets/icons/SlackIcon';
 
 // stylesheet
 import '../../assets/pages/_event_details-page.scss';
@@ -25,6 +27,7 @@ class EventDetailsPage extends React.Component {
     this.state = {
       events,
       updated: false,
+      showSlackChannels: false
     };
     this.handleBack = this.handleBack.bind(this);
     this.rsvpEvent = this.rsvpEvent.bind(this);
@@ -42,8 +45,8 @@ class EventDetailsPage extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (
-      nextProps.events.status
-      && (nextProps.events !== prevState.events && prevState.updated === false)
+      nextProps.events.status &&
+      (nextProps.events !== prevState.events && prevState.updated === false)
     ) {
       return { updated: true };
     }
@@ -68,9 +71,9 @@ class EventDetailsPage extends React.Component {
         description,
         featuredImage,
         attendSet: { edges },
-        newAttendance,
+        newAttendance
       },
-      activeUser: { id },
+      activeUser: { id }
     } = this.props;
     const eventData = {
       id: event.id,
@@ -81,7 +84,7 @@ class EventDetailsPage extends React.Component {
       timezone,
       socialEvent,
       description,
-      featuredImage,
+      featuredImage
     };
     let message;
     const creator = id === googleId;
@@ -90,8 +93,9 @@ class EventDetailsPage extends React.Component {
     const startDateInCurrentTimezone = moment.tz(startDate, currentTimezone);
     const endDateInCurrentTimezone = moment.tz(endDate, currentTimezone);
     const isPastEvent = currentDate.isAfter(endDateInCurrentTimezone);
-    const hasCommenced = endDateInCurrentTimezone.isAfter(startDateInCurrentTimezone)
-      && startDateInCurrentTimezone.isBefore(currentDate);
+    const hasCommenced =
+      endDateInCurrentTimezone.isAfter(startDateInCurrentTimezone) &&
+      startDateInCurrentTimezone.isBefore(currentDate);
 
     const activeUserIsAttending = edges.find(edge => edge.node.user.googleId === id);
 
@@ -100,7 +104,7 @@ class EventDetailsPage extends React.Component {
     } else if (hasCommenced) {
       message = 'This event has already started';
     } else if (activeUserIsAttending || (newAttendance && newAttendance.status === 'ATTENDING')) {
-      message = 'You\'re attending this event';
+      message = "You're attending this event";
     }
 
     return (
@@ -114,6 +118,7 @@ class EventDetailsPage extends React.Component {
               {this.renderDeleteEventButton()}
             </div>
           ) : (
+            <Fragment>
               <button
                 type="button"
                 onClick={this.rsvpEvent}
@@ -123,7 +128,21 @@ class EventDetailsPage extends React.Component {
               >
                 {' '}
                 Attend &#10004;
-            </button>
+              </button>
+              <button
+                type="button"
+                onClick={this.showSlackChannels}
+                className="event-details__slack_button"
+              >
+                {' '}
+                Share on Slack {SlackIcon}
+              </button>
+              {this.state.showSlackChannels && (
+                <div className="menu">
+                    {this.renderSlackChannels()}
+                </div>
+              )}
+            </Fragment>
           )}
         </div>
         <div className="event-details__section">
@@ -147,15 +166,16 @@ class EventDetailsPage extends React.Component {
         description,
         socialEvent,
         featuredImage,
-        attendSet: { edges },
+        attendSet: { edges }
       },
-      activeUser: { id },
+      activeUser: { id }
     } = this.props;
-    const users = edges.length > 0
-      ? edges.map(
-        object => (object.node.user.googleId === id ? 'You,' : `@${object.node.user.slackId}, `)
-      )
-      : 'No one';
+    const users =
+      edges.length > 0
+        ? edges.map(object =>
+            object.node.user.googleId === id ? 'You,' : `@${object.node.user.slackId}, `
+          )
+        : 'No one';
     return (
       <div className="event-details__middle">
         <div className="event-details__section">
@@ -185,47 +205,70 @@ class EventDetailsPage extends React.Component {
     );
   };
 
+  renderSlackChannels = () => {
+    return slackChannels.channels.map(channel => <a key={channel.id}>{channel.name}</a> )
+  }
   handleBack() {
-    const { history: { push } } = this.props;
+    const {
+      history: { push }
+    } = this.props;
     push('/dashboard');
   }
 
   loadEvent() {
-    const { match: { params: { eventId } } } = this.props;
+    const {
+      match: {
+        params: { eventId }
+      }
+    } = this.props;
     const { getEventAction } = this.props;
     getEventAction(eventId);
   }
 
+  showSlackChannels = evt => {
+    evt.preventDefault();
+    this.setState(
+      {
+        showSlackChannels: true
+      },
+      () => {
+        document.addEventListener('click', this.closeChannelsMenu);
+      }
+    );
+  };
+
+  closeChannelsMenu = () => {
+    this.setState({ showSlackChannels: false }, () => {
+      document.removeEventListener('click', this.closeChannelsMenu);
+    });
+  };
   rsvpEvent() {
     const {
       attendEventAction,
-      event: { id },
+      event: { id }
     } = this.props;
     attendEventAction(id);
   }
 
   renderCreateEventButton = eventData => (
     <ModalContextCreator.Consumer>
-      {({
-        activeModal, openModal,
-      }) => {
-        const {
-          categories, uploadImage, updateEvent,
-        } = this.props;
+      {({ activeModal, openModal }) => {
+        const { categories, uploadImage, updateEvent } = this.props;
         if (activeModal) return null;
         return (
           <button
             type="button"
-            onClick={() => openModal('UPDATE_EVENT', {
-              modalHeadline: 'Update event',
-              formMode: 'update',
-              formId: 'event-form',
-              eventData,
-              categories,
-              createEvent: () => '',
-              updateEvent,
-              uploadImage,
-            })
+            onClick={() =>
+              openModal('UPDATE_EVENT', {
+                modalHeadline: 'Update event',
+                formMode: 'update',
+                formId: 'event-form',
+                eventData,
+                categories,
+                createEvent: () => '',
+                updateEvent,
+                uploadImage
+              })
             }
             className="event-details__edit"
           >
@@ -239,27 +282,24 @@ class EventDetailsPage extends React.Component {
 
   renderDeleteEventButton = () => (
     <ModalContextCreator.Consumer>
-      {({
-        activeModal, openModal,
-      }) => {
+      {({ activeModal, openModal }) => {
         const {
-          event: {
-            title, id,
-          },
-          deactivateEventAction,
+          event: { title, id },
+          deactivateEventAction
         } = this.props;
         if (activeModal) return null;
         return (
           <button
             type="button"
-            onClick={() => openModal('DELETE_EVENT', {
-              modalHeadline: 'Delete event',
-              formText: `Are you sure you want to delete the Event '${title}' ?`,
-              eventId: id,
-              formId: 'delete-event-form',
-              deleteEvent: deactivateEventAction,
-              back: this.handleBack,
-            })
+            onClick={() =>
+              openModal('DELETE_EVENT', {
+                modalHeadline: 'Delete event',
+                formText: `Are you sure you want to delete the Event '${title}' ?`,
+                eventId: id,
+                formId: 'delete-event-form',
+                deleteEvent: deactivateEventAction,
+                back: this.handleBack
+              })
             }
             className="event-details__delete"
           >
@@ -307,9 +347,9 @@ EventDetailsPage.propTypes = {
     featuredImage: PropTypes.string,
     socialEvent: PropTypes.shape({ name: PropTypes.string }),
     attendSet: PropTypes.shape({ edges: PropTypes.arrayOf(PropTypes.shape({})) }),
-    categories: PropTypes.arrayOf(PropTypes.shape({})),
+    categories: PropTypes.arrayOf(PropTypes.shape({}))
   }),
-  activeUser: PropTypes.shape({ id: PropTypes.string }),
+  activeUser: PropTypes.shape({ id: PropTypes.string })
 };
 
 EventDetailsPage.defaultProps = {
@@ -320,21 +360,22 @@ EventDetailsPage.defaultProps = {
   history: { push: () => null },
   getEventAction: () => null,
   deactivateEventAction: () => null,
-  attendEventAction: () => null,
+  attendEventAction: () => null
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    getEventAction: getEvent,
-    deactivateEventAction: deactivateEvent,
-    attendEventAction: attendEvent,
-  },
-  dispatch
-);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getEventAction: getEvent,
+      deactivateEventAction: deactivateEvent,
+      attendEventAction: attendEvent
+    },
+    dispatch
+  );
 
 const mapStateToProps = state => ({
-  event: state.event,
-  events: state.events,
+  event: state.event.event,
+  events: state.events
 });
 export default connect(
   mapStateToProps,
