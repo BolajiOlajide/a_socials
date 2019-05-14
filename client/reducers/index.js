@@ -8,6 +8,7 @@ import {
   uploadImage,
 } from './eventReducers';
 import interests from './interestReducers';
+import slackChannels from './slackChannelsReducers';
 import url from './urlReducers';
 import userReducers from './userReducers';
 import { inviteValidation } from './inviteReducers';
@@ -27,6 +28,7 @@ const rootReducer = {
   url,
   oauth,
   invite: inviteValidation,
+  slackChannels
 };
 
 export default rootReducer;

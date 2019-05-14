@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 
 import { getEvent, deactivateEvent } from '../../actions/graphql/eventGQLActions';
 import { attendEvent } from '../../actions/graphql/attendGQLActions';
+import { getSlackChannelsList } from '../../actions/graphql/slackChannelsGQLActions';
 import NotFound from '../../components/common/NotFound';
 import slackChannels from '../../fixtures/slackChannels';
 import SlackIcon from '../../assets/icons/SlackIcon';
@@ -41,6 +42,7 @@ class EventDetailsPage extends React.Component {
    */
   componentDidMount() {
     this.loadEvent();
+    this.loadSlackChannels();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -205,7 +207,7 @@ class EventDetailsPage extends React.Component {
     );
   };
 
-  renderSlackChannels = () => slackChannels.channels.map(channel => (
+  renderSlackChannels = () => this.props.slackChannels.map(channel => (
             <a
              href
              key={channel.id}>
@@ -222,6 +224,11 @@ class EventDetailsPage extends React.Component {
     const { match: { params: { eventId } } } = this.props;
     const { getEventAction } = this.props;
     getEventAction(eventId);
+  }
+
+  loadSlackChannels() {
+    const { getSlackChannelsList } = this.props;
+    getSlackChannelsList();
   }
 
   showSlackChannels = (evt) => {
@@ -336,6 +343,7 @@ class EventDetailsPage extends React.Component {
 EventDetailsPage.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ eventId: PropTypes.string }) }),
   getEventAction: PropTypes.func,
+  getSlackChannelsList: PropTypes.func,
   deactivateEventAction: PropTypes.func,
   attendEventAction: PropTypes.func,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }),
@@ -371,6 +379,7 @@ EventDetailsPage.defaultProps = {
   attendEventAction: () => null,
   updateEvent: () => null,
   uploadImage: () => null,
+  getSlackChannelsList: () => null
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators(
@@ -378,6 +387,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     getEventAction: getEvent,
     deactivateEventAction: deactivateEvent,
     attendEventAction: attendEvent,
+    getSlackChannelsList
   },
   dispatch
 );
@@ -385,6 +395,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 const mapStateToProps = state => ({
   event: state.event.event,
   events: state.events,
+  slackChannels: state.slackChannels.channels
 });
 export default connect(
   mapStateToProps,

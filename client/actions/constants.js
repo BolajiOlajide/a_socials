@@ -39,6 +39,9 @@ export const GET_EVENT_ATTENDENCE = 'GET_EVENT_ATTENDENCE';
 export const INTERESTS = 'INTERESTS';
 export const INTEREST = 'INTEREST';
 
+// Constants specific to slack channels
+export const CHANNELS = 'CHANNELS';
+
 // Constants OAUTH
 export const OAUTH = 'OAUTH';
 
