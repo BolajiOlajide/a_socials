@@ -110,7 +110,7 @@ class Dashboard extends Component {
   redirectUser = () => {
     const { location: { pathname } } = this.props;
     if (pathname === '/') {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/events" />;
     }
   };
 
@@ -184,7 +184,6 @@ class Dashboard extends Component {
             />
             <Route path="/invite/:inviteHash" component={Invite} />
             <Route path="/events" render={() => <EventsPage createEvent={createEvent} categories={categories} uploadImage={uploadImage} />} />
-            <Route path="/dashboard" render={() => <EventsPage createEvent={createEvent} categories={categories} uploadImage={uploadImage} />} />
             <Route path="/interests" render={() => <Interests />} />
             <Route path="*" component={NotFound} />
           </Switch>

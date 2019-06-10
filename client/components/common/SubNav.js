@@ -41,7 +41,7 @@ class SubNav extends Component {
     return (
       <div className={`navbar ${hideSubNav ? 'navbar-hide' : ''}`}>
         <div className="navbar__bottom-section">
-          <NavMenu to="/dashboard">Dashboard</NavMenu>
+          <NavMenu to="/events">Events</NavMenu>
         </div>
       </div>
     );
