@@ -90,6 +90,7 @@ class AndelaUserProfile(models.Model):
     credential = CredentialsField()
     state = models.CharField(max_length=80, blank=True)
     slack_id = models.CharField(max_length=80, blank=True)
+    slack_token = models.CharField(max_length=200, blank=True)
     timezone = models.CharField(max_length=80, blank=True)
 
     def __str__(self):
@@ -205,6 +206,7 @@ class Event(BaseInfo):
     featured_image = models.URLField()
     active = models.BooleanField(default=1)
     timezone = models.CharField(max_length=80, blank=True)
+    slack_channel = models.CharField(max_length=80, blank=True)
 
     @property
     def attendees(self):

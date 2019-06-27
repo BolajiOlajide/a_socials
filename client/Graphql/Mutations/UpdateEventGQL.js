@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const UPDATE_EVENT_GQL = (eventId, title, description, featuredImage, venue, startDate, endDate, timezone, categoryId) => ({
+const UPDATE_EVENT_GQL = (eventId, title, description, featuredImage, venue, startDate, endDate, timezone, categoryId, slackChannel) => ({
   mutation: gql`
     mutation($input: UpdateEventInput!){
       updateEvent(input: $input){
@@ -14,6 +14,7 @@ const UPDATE_EVENT_GQL = (eventId, title, description, featuredImage, venue, sta
           venue
           featuredImage
           timezone
+          slackChannel
           creator {
             id
             googleId
@@ -26,6 +27,7 @@ const UPDATE_EVENT_GQL = (eventId, title, description, featuredImage, venue, sta
             edges {
               node {
                 user {
+                  id
                   slackId
                   googleId
                 }
@@ -48,6 +50,7 @@ const UPDATE_EVENT_GQL = (eventId, title, description, featuredImage, venue, sta
       endDate,
       timezone,
       categoryId,
+      slackChannel
     },
   },
 });

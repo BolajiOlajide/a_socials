@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import onClickOutside from 'react-onclickoutside';
 import FontAwesome from 'react-fontawesome';
 
 /**
@@ -14,19 +15,16 @@ class CustomDropDown extends Component {
     this.state = {
       listOpen: false,
       headerTitle: this.props.title,
-      updated: false,
     };
     this.selectedItem = this.selectedItem.bind(this);
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.updated === false && prevState.headerTitle !== nextProps.title) {
-      return {
-        headerTitle: nextProps.title,
-        updated: true,
-      };
+  componentDidUpdate(prevProps) {
+    if (prevProps.title !== this.props.title) {
+      this.setState({
+        headerTitle: this.props.title
+      })
     }
-    return null;
   }
 
   handleClickOutside() {
@@ -37,7 +35,8 @@ class CustomDropDown extends Component {
     this.setState(prevState => ({ listOpen: !prevState.listOpen }));
   }
 
-  selectedItem(item) {
+  selectedItem(event, item) {
+    event.preventDefault();
     this.setState({
       headerTitle: item.title,
       listOpen: false,
@@ -54,22 +53,28 @@ class CustomDropDown extends Component {
 
     return (
       <div className="cd-wrapper">
-      <div className="cd-header" onClick={() => this.toggleList()}>
-        <div className="cd-title">
-          <span className="cd-header-title">{headerTitle}</span>
-        </div>
-        <div className="cd-icon">
-        {listOpen
-          ? <FontAwesome name="angle-up" size="2x"/>
-          : <FontAwesome name="angle-down" size="2x"/>
-        }
-        </div>
+        <div className="cd-header" onClick={() => this.toggleList()}>
+          <div className="cd-title">
+            <span className="cd-header-title">{headerTitle}</span>
+          </div>
+          <div className="cd-icon">
+            {listOpen
+              ? <FontAwesome name="angle-up" size="2x" />
+              : <FontAwesome name="angle-down" size="2x" />
+            }
+          </div>
 
-      </div>
-       {listOpen && <ul className="cd-list">
-         {list.map(item => (
-           <li className="dd-list-item" onClick={() => this.selectedItem(item)} key={item.id} >{item.title}</li>
-         ))}
+        </div>
+        {listOpen && <ul className="cd-list">
+          {list.map(item => (
+            <li
+              className="cd-list__item"
+              onClick={(event) => this.selectedItem(event, item)}
+              key={item.id}
+            >
+              {item.title}
+            </li>
+          ))}
         </ul>}
       </div>
     );
@@ -84,4 +89,4 @@ CustomDropDown.propTypes = {
 
 CustomDropDown.defaultProps = { title: 'Please select' };
 
-export default CustomDropDown;
+export default onClickOutside(CustomDropDown);
