@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 
-import durationConverter from '../../utils/durationConverter';
-import { getEvent, deactivateEvent } from '../../actions/graphql/eventGQLActions';
+import { getEvent, deactivateEvent, shareEvent } from '../../actions/graphql/eventGQLActions';
 import { attendEvent } from '../../actions/graphql/attendGQLActions';
+import { getSlackChannelsList } from '../../actions/graphql/slackChannelsGQLActions';
 import NotFound from '../../components/common/NotFound';
+import slackChannels from '../../fixtures/slackChannels';
+import SlackIcon from '../../assets/icons/SlackIcon';
 
 // stylesheet
 import '../../assets/pages/_event_details-page.scss';
 
 import { ModalContextCreator } from '../../components/Modals/ModalContext';
+import DropDownList from '../../components/common/DropDownList';
 /**
  * @description Currently contains an event details page layout
  *
@@ -26,6 +29,7 @@ class EventDetailsPage extends React.Component {
     this.state = {
       events,
       updated: false,
+      showSlackChannels: false,
     };
     this.handleBack = this.handleBack.bind(this);
     this.rsvpEvent = this.rsvpEvent.bind(this);
@@ -39,6 +43,7 @@ class EventDetailsPage extends React.Component {
    */
   componentDidMount() {
     this.loadEvent();
+    this.loadSlackChannels();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -64,6 +69,7 @@ class EventDetailsPage extends React.Component {
         endDate,
         venue,
         timezone,
+        slackChannel,
         socialEvent,
         creator: { googleId },
         description,
@@ -73,6 +79,8 @@ class EventDetailsPage extends React.Component {
       },
       activeUser: { id },
     } = this.props;
+
+    const { showSlackChannels } = this.state;
     const eventData = {
       id: event.id,
       title,
@@ -83,6 +91,7 @@ class EventDetailsPage extends React.Component {
       socialEvent,
       description,
       featuredImage,
+      slackChannel
     };
     let message;
     const creator = id === googleId;
@@ -95,13 +104,15 @@ class EventDetailsPage extends React.Component {
       && startDateInCurrentTimezone.isBefore(currentDate);
 
     const activeUserIsAttending = edges.find(edge => edge.node.user.googleId === id);
-    
+
     if (isPastEvent) {
       message = 'This is a past event';
     } else if (hasCommenced) {
       message = 'This event has already started';
-    } else if (activeUserIsAttending || (newAttendance && newAttendance.status === 'ATTENDING')) {
-      message = 'You\'re attending this event';
+    } else if (activeUserIsAttending
+      || (newAttendance && newAttendance.status === 'ATTENDING'
+        && newAttendance.event.id === event.id)) {
+      message = "You're attending this event";
     }
 
     return (
@@ -115,17 +126,35 @@ class EventDetailsPage extends React.Component {
               {this.renderDeleteEventButton()}
             </div>
           ) : (
-            <button
-              type="button"
-              onClick={this.rsvpEvent}
-              className="event-details__rsvp_button"
-              tooltip={message}
-              disabled={ message ? ' disabled' : null}
-            >
-              {' '}
-              Attend &#10004;
-            </button>
-          )}
+              <Fragment>
+                <button
+                  type="button"
+                  onClick={this.rsvpEvent}
+                  className="event-details__rsvp_button"
+                  tooltip={message}
+                  disabled={message ? ' disabled' : null}
+                >
+                  {' '}
+                  Attend &#10004;
+              </button>
+                <button
+                  type="button"
+                  onClick={this.showSlackChannels}
+                  className="event-details__slack_button"
+                >
+                  {' '}
+                  Share on Slack {<SlackIcon color="white" width="7%" />}
+                </button>
+                {showSlackChannels && (
+                  <div className="menu">
+                    <DropDownList
+                      lists={this.props.slackChannels}
+                      onClick={this.shareOnChannel}
+                    />
+                  </div>
+                )}
+              </Fragment>
+            )}
         </div>
         <div className="event-details__section">
           <div className="event-details__location_time event-details__section">
@@ -134,12 +163,25 @@ class EventDetailsPage extends React.Component {
           </div>
           <div className="event-details__location_time event-details__section">
             <h5>DATE AND TIME</h5> <br />
-            <p>{durationConverter(startDate, endDate, timezone)}</p>
+            <p>{moment(startDate).format('ddd D MMM YYYY')}</p> <br />
+            <p>{moment(startDate).format('LT')} - {moment.tz(endDate, moment.tz.guess()).format('LT  z')}</p>
           </div>
         </div>
       </div>
     );
   };
+
+  shareOnChannel = (event) => {
+    const eventToShare = {
+      eventId: this.props.event.id,
+      channelId: event.target.id,
+    }
+
+    this.props.shareEvent(eventToShare);
+    this.setState(prevState => ({
+      showSlackChannels: !prevState.showSlackChannels
+    }));
+  }
 
   middleSection = () => {
     const {
@@ -152,9 +194,7 @@ class EventDetailsPage extends React.Component {
       activeUser: { id },
     } = this.props;
     const users = edges.length > 0
-      ? edges.map(
-        object => (object.node.user.googleId === id ? 'You,' : `@${object.node.user.slackId}, `)
-      )
+      ? edges.map(object => (object.node.user.googleId === id ? 'You,' : `@${object.node.user.slackId}, `))
       : 'No one';
     return (
       <div className="event-details__middle">
@@ -164,11 +204,11 @@ class EventDetailsPage extends React.Component {
             <article>{description}</article>
           </div>
           <div className="event-details__attending">
-            <h5>Attending:</h5>
+            <h5>ATTENDING:</h5>
             <p>{users}</p>
           </div>
           <div className="event-details__tags">
-            <h5>Tags:</h5>
+            <h5>TAGS:</h5>
             <p>#{socialEvent.name}</p>
           </div>
         </div>
@@ -185,9 +225,10 @@ class EventDetailsPage extends React.Component {
     );
   };
 
+  // eslint-disable-next-line react/sort-comp
   handleBack() {
     const { history: { push } } = this.props;
-    push('/dashboard');
+    push('/events');
   }
 
   loadEvent() {
@@ -195,6 +236,17 @@ class EventDetailsPage extends React.Component {
     const { getEventAction } = this.props;
     getEventAction(eventId);
   }
+
+  loadSlackChannels() {
+    const { getSlackChannelsList } = this.props;
+    getSlackChannelsList();
+  }
+
+  showSlackChannels = () => {
+    this.setState(prevState => ({
+      showSlackChannels: !prevState.showSlackChannels
+    }));
+  };
 
   rsvpEvent() {
     const {
@@ -292,6 +344,7 @@ class EventDetailsPage extends React.Component {
 EventDetailsPage.propTypes = {
   match: PropTypes.shape({ params: PropTypes.shape({ eventId: PropTypes.string }) }),
   getEventAction: PropTypes.func,
+  getSlackChannelsList: PropTypes.func,
   deactivateEventAction: PropTypes.func,
   attendEventAction: PropTypes.func,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }),
@@ -305,11 +358,15 @@ EventDetailsPage.propTypes = {
     endDate: PropTypes.string,
     venue: PropTypes.string,
     featuredImage: PropTypes.string,
+    slackChannel: PropTypes.string,
     socialEvent: PropTypes.shape({ name: PropTypes.string }),
     attendSet: PropTypes.shape({ edges: PropTypes.arrayOf(PropTypes.shape({})) }),
     categories: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   activeUser: PropTypes.shape({ id: PropTypes.string }),
+  updateEvent: PropTypes.func,
+  uploadImage: PropTypes.func,
+  categories: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 EventDetailsPage.defaultProps = {
@@ -318,9 +375,13 @@ EventDetailsPage.defaultProps = {
   events: [],
   activeUser: { id: '' },
   history: { push: () => null },
+  categories: [],
   getEventAction: () => null,
   deactivateEventAction: () => null,
   attendEventAction: () => null,
+  updateEvent: () => null,
+  uploadImage: () => null,
+  getSlackChannelsList: () => null
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators(
@@ -328,6 +389,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     getEventAction: getEvent,
     deactivateEventAction: deactivateEvent,
     attendEventAction: attendEvent,
+    getSlackChannelsList,
+    shareEvent
   },
   dispatch
 );
@@ -335,6 +398,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 const mapStateToProps = state => ({
   event: state.event,
   events: state.events,
+  slackChannels: state.slackChannels.channels
 });
 export default connect(
   mapStateToProps,

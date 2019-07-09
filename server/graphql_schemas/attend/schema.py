@@ -4,13 +4,13 @@ from graphene import relay, ObjectType
 from graphql_relay import from_global_id
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
-from django.core.exceptions import ObjectDoesNotExist
-from dateutil.parser import parse
 from graphql import GraphQLError
-from datetime import datetime
-from pytz import timezone
 
 from api.models import Attend, Event, AndelaUserProfile
+from api.slack import invite_to_event_channel
+from api.utils.backgroundTaskWorker import BackgroundTaskWorker
+from api.utils.event_helpers import is_not_past_event, save_user_attendance
+from graphql_schemas.utils.helpers import update_event_status_on_calendar
 
 
 class AttendNode(DjangoObjectType):
@@ -33,29 +33,20 @@ class AttendEvent(relay.ClientIDMutation):
         status = input.get('status')
         db_event_id = from_global_id(event_id)[1]
         event = Event.objects.get(id=db_event_id)
-        event_start_date = parse(event.start_date)
-        event_tz = timezone(event.timezone)
-        if (event_start_date.tzinfo is None):
-            event_start_date = event_start_date.replace(tzinfo=event_tz)
-        today = datetime.now(event_tz)
         user = info.context.user
         andela_user_profile = AndelaUserProfile.objects.get(
             user_id=user.id)
-        try:
-            if today < event_start_date:
-                user_attendance = Attend.objects.get(
-                    user=andela_user_profile, event=event)
-                user_attendance.status = status
-                user_attendance.save()
-            else:
-                raise GraphQLError(
-                    "The event is no longer available")
+        BackgroundTaskWorker.start_work(update_event_status_on_calendar,
+            (andela_user_profile, event))
+        if is_not_past_event(event):
+            user_attendance, created = save_user_attendance(event, andela_user_profile, status)
+            if event.slack_channel and andela_user_profile.slack_id and event.creator.slack_token:
+                BackgroundTaskWorker.start_work(invite_to_event_channel,
+                                                (andela_user_profile.slack_id, event.slack_channel, event.creator.slack_token))
 
-        except ObjectDoesNotExist:
-            user_attendance = Attend.objects.create(
-                user=andela_user_profile,
-                status=status,
-                event=event)
+        else:
+            raise GraphQLError(
+                "The event is no longer available")
 
         return cls(new_attendance=user_attendance)
 
@@ -64,6 +55,7 @@ class AttendQuery(object):
     event_attendance = relay.Node.Field(AttendNode)
     attenders_list = DjangoFilterConnectionField(AttendNode)
     subscribed_events = graphene.List(AttendNode)
+    attending_list = DjangoFilterConnectionField(AttendNode)
 
     def resolve_subscribed_events(self, info, **kwargs):
         user = info.context.user
@@ -75,6 +67,10 @@ class AttendQuery(object):
             Q(user__user=info.context.user) |
             Q(event__creator__user=info.context.user)
         )
+
+    def resolve_attending_list(self, info, **kwargs):
+        return Attend.objects.filter(user__user=info.context.user,
+                                     status="attending")
 
 
 class AttendMutation(ObjectType):
