@@ -80,7 +80,7 @@ async def send_calendar_invites(andela_user, event):
                                  body=payload).execute()
 
 
-def build_event(event, invitees):
+def build_event(event, invitees, recurring=False):
     """
         Build event payload
          :param event:
@@ -88,7 +88,7 @@ def build_event(event, invitees):
     """
     start_date = parser.parse(str(event.start_date)).isoformat()
     end_date = parser.parse(str(event.end_date)).isoformat()
-    event = {
+    calendar_event = {
         'summary': event.title,
         'location': event.venue,
         'description': event.description,
@@ -102,19 +102,26 @@ def build_event(event, invitees):
         },
         'attendees': invitees,
     }
-    return event
+    if recurring:
+        recurrence_end_date = parser.parse(str(event.recurrence.end_date)).strftime("%Y%m%dT%H%M%SZ")
+        frequency = event.recurrence.frequency
+        calendar_event['recurrence'] = [
+            f'RRULE:FREQ={frequency};UNTIL={recurrence_end_date}'
+        ]
+    return calendar_event
 
-def validate_event_dates(input):
+def validate_event_dates(input, date_to_validate):
     """
         Validate date fields
          :param input:
     """
-    
     event_tz = input.get('start_date').tzinfo
-    today_date = datetime.datetime.now(event_tz)
     start_date = input.get('start_date')
-    end_date = input.get('end_date')
-
+    if date_to_validate == 'recurrent_date' and input.get('recurring'):
+        end_date = input.get('recurrence_end_date')
+    else:
+        end_date = input.get('end_date')
+    today_date = datetime.datetime.now(event_tz)
     if start_date < today_date or end_date < today_date:
         return {'status': False, 'message': 'Sorry, you cannot enter a past date'}
     elif end_date < start_date:
@@ -198,14 +205,14 @@ async def send_bulk_update_message(event_instance, message, notification_text):
                 logging.warning(slack_response)
 
 
-def add_event_to_calendar(andela_user, event):
+def add_event_to_calendar(andela_user, event, recurring=False):
     """
         Adds an event to a user's calendar
          :param andela_user:
          :param event:
     """
     calendar = build('calendar', 'v3', credentials=andela_user.credential)
-    event_details = build_event(event, [])
+    event_details = build_event(event, [], recurring)
     created_event = calendar.events().insert(
             calendarId='primary', body=event_details).execute()
     event.event_id_in_calendar = created_event['id']
@@ -259,3 +266,18 @@ def remove_event_from_all_calendars(andela_user, event):
     eventId = event.event_id_in_calendar
     calendar = build('calendar', 'v3', credentials=andela_user.credential)
     calendar.events().delete(calendarId='primary', eventId=eventId).execute()
+
+    
+def generate_recurrent_event(input, creator, social_event, recurrence):
+    input.pop('recurring', None)
+    input.pop('frequency', None)
+    event_data = {
+        **input,
+        "creator": creator,
+        "social_event": social_event,
+        "recurrence": recurrence
+    }
+    event = Event()
+    for (key, value) in event_data.items():
+        setattr(event, key, value)
+    return event
