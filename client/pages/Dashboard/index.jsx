@@ -14,7 +14,8 @@ import External from '../../components/External';
 import EventsPage from '../Event/EventsPage';
 import EventDetailsPage from '../Event/EventDetailsPage';
 import Invite from '../Invite';
-import ModalContextProvider, { ModalContextCreator } from '../../components/Modals/ModalContext';
+import Interests from '../Interests';
+import ModalContextProvider from '../../components/Modals/ModalContext';
 import Modal from '../../components/Modals/ModalContainer';
 import LoadComponent from '../../utils/loadComponent';
 import { createEvent, updateEvent } from '../../actions/graphql/eventGQLActions';
@@ -61,13 +62,16 @@ class Dashboard extends Component {
   componentDidMount() {
     this.setState({ oauthCounter: 1 });
     const {
-      loadActiveUser, getCategoryList,
+      loadActiveUser: loadActiveUserAction,
+      getCategoryList: getCategoryListAction,
     } = this.props;
-    loadActiveUser();
-    getCategoryList({
-      first: 20,
-      last: 20,
-    });
+    if (isLoggedIn()) {
+      loadActiveUserAction();
+      getCategoryListAction({
+        first: 20,
+        last: 20,
+      });
+    }
   }
 
   /**
@@ -98,6 +102,34 @@ class Dashboard extends Component {
   }
 
   /**
+   * Method to handle oauth permission
+   *
+   * @param url urlparams
+   * @memberof Dashboard
+   * @returns {Function} savePermission
+   */
+
+  handleAuthPermission = (urlParams) => {
+    const { savePermission: saveAuthPermissionReq } = this.props;
+    const url = `/api/v1/oauthcallback${urlParams}`;
+    return saveAuthPermissionReq(url);
+  }
+
+  /**
+   * Method to handle slack permission
+   *
+   * @param url urlparams
+   * @memberof Dashboard
+   * @returns {Function} savePermission
+   */
+
+  handleSlackPermission = (urlParams) => {
+    const { savePermission: saveSlackPermissionReq } = this.props;
+    const url = `/api/v1/slack/code${urlParams}`;
+    return saveSlackPermissionReq(url);
+  }
+
+  /**
    * Method to render user dashboard
    *
    * @memberof Dashboard
@@ -106,43 +138,16 @@ class Dashboard extends Component {
   redirectUser = () => {
     const { location: { pathname } } = this.props;
     if (pathname === '/') {
-      return <Redirect to="/dashboard" />;
+      const isFirstLogin = localStorage.getItem('checkFirstLogin');
+      
+      if (isFirstLogin === 'No') {
+        return (<Redirect to="/events" />);
+      } else {
+        localStorage.setItem('checkFirstLogin', 'No')
+        return <Redirect to="/interests" />;
+      }
     }
   };
-
-  renderCreateEventButton = categories => (
-    <ModalContextCreator.Consumer>
-      {
-        ({
-          activeModal,
-          openModal,
-        }) => {
-          // TODO: This should be removed, duplicate naming
-          const {
-            createEvent, uploadImage,
-          } = this.props;
-          if (activeModal) return null;
-          return (
-            <button
-              type="button"
-              onClick={() => openModal('CREATE_EVENT', {
-                modalHeadline: 'create event',
-                formMode: 'create',
-                formId: 'event-form',
-                categories,
-                createEvent,
-                uploadImage,
-                updateEvent: () => '',
-              })}
-              className="create-event-btn"
-            >
-              <span className="create-event-btn__icon">+</span>
-            </button>
-          );
-        }
-      }
-    </ModalContextCreator.Consumer>
-  );
 
   /**
    * Renders Dashboard component
@@ -172,7 +177,7 @@ class Dashboard extends Component {
 
     if (!localStorage.getItem('token')) {
       const token = Cookies.get('jwt-token');
-      if (token) {
+      if (isLoggedIn() && token) {
         localStorage.setItem('token', token);
       }
     }
@@ -180,7 +185,7 @@ class Dashboard extends Component {
     if (isTokenExpired() || !isLoggedIn()) {
       return <Redirect to={{
         pathname: '/login',
-        state: {"previousLocation": window.location.href}
+        state: { "previousLocation": window.location.href }
       }} />;
     }
 
@@ -189,34 +194,46 @@ class Dashboard extends Component {
     }
     return (
       <ModalContextProvider>
-        <Header
-          firstName={activeUser.firstName || ''}
-          lastName={activeUser.lastName || ''}
-          imageUrl={activeUser.picture || ''}
-        />
-        <Switch>
-          {this.redirectUser()}
-          <Route
-            path="/oauthcallback"
-            render={props => (
-              <External
-                location={props.location}
-                oauth={this.props.oauth}
-                counter={oauthCounter}
-                savePermission={this.props.savePermission}
-              />
-            )}
+        <div className="dash-container">
+          <Header
+            firstName={activeUser.firstName || ''}
+            lastName={activeUser.lastName || ''}
+            imageUrl={activeUser.picture || ''}
           />
-          <Route
-            path="/events/:eventId"
-            render={props => <EventDetailsPage {...props} activeUser={activeUser} categories={categories} updateEvent={updateEvent} uploadImage={uploadImage} />}
-          />
-          <Route path="/invite/:inviteHash" component={Invite} />
-          <Route path="/events" render={() => <EventsPage />} />
-          <Route path="/dashboard" render={() => <EventsPage />} />
-          <Route path="*" component={NotFound} />
-        </Switch>
-        {this.renderCreateEventButton(categories)}
+          <Switch>
+            {this.redirectUser()}
+            <Route
+              path="/oauthcallback"
+              render={props => (
+                <External
+                  location={props.location}
+                  oauth={this.props.oauth}
+                  counter={oauthCounter}
+                  savePermission={this.handleAuthPermission}
+                />
+              )}
+            />
+            <Route
+              path="/slacktokencallback"
+              render={props => (
+                <External
+                  location={props.location}
+                  oauth={this.props.oauth}
+                  counter={oauthCounter}
+                  savePermission={this.handleSlackPermission}
+                />
+              )}
+            />
+            <Route
+              path="/events/:eventId"
+              render={props => <EventDetailsPage {...props} activeUser={activeUser} categories={categories} updateEvent={updateEvent} uploadImage={uploadImage} />}
+            />
+            <Route path="/invite/:inviteHash" component={Invite} />
+            <Route path="/events" render={() => <EventsPage createEvent={createEvent} categories={categories} uploadImage={uploadImage} />} />
+            <Route path="/interests" render={() => <Interests />} />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </div>
         <Modal {...this.props} />
       </ModalContextProvider>
     );
@@ -229,6 +246,7 @@ Dashboard.propTypes = {
   createEvent: PropTypes.func.isRequired,
   uploadImage: PropTypes.func.isRequired,
   getCategoryList: PropTypes.func.isRequired,
+  savePermission: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators(

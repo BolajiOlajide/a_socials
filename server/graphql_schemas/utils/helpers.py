@@ -1,12 +1,16 @@
 import os
 import datetime
+import logging
 import pytz
+import dotenv
 import dateutil.parser as parser
+from time import sleep
 from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 
+from api.slack import generate_simple_message, notify_user
 from api.utils.oauth_helper import get_auth_url
-from api.models import Interest
+from api.models import Interest, Attend, Event
 from googleapiclient.discovery import build
 from google.cloud import storage
 
@@ -100,10 +104,26 @@ def build_event(event, invitees):
     }
     return event
 
+def validate_event_dates(input):
+    """
+        Validate date fields
+         :param input:
+    """
+    
+    event_tz = input.get('start_date').tzinfo
+    today_date = datetime.datetime.now(event_tz)
+    start_date = input.get('start_date')
+    end_date = input.get('end_date')
 
+    if start_date < today_date or end_date < today_date:
+        return {'status': False, 'message': 'Sorry, you cannot enter a past date'}
+    elif end_date < start_date:
+        return {'status': False, 'message': 'Sorry, end date must be after start date'}
+    else:
+        return {'status': True, 'message': 'Validation successful'}
+    
 def not_valid_timezone(timezone):
     return timezone not in pytz.all_timezones
-
 
 def _safe_filename(filename):
     """
@@ -154,6 +174,88 @@ def upload_image_file(uploaded_file):
         fs = FileSystemStorage()
         safe_filename = _safe_filename(uploaded_file.name)
         filename = fs.save(safe_filename, uploaded_file)
-        url = "http://localhost:8000/static{}".format(
-            fs.url(filename))
+        url = f"{dotenv.get('IMAGE_BASE_URL')}/static{fs.url(filename)}"
         return url
+
+
+async def send_bulk_update_message(event_instance, message, notification_text):
+    attendees = Attend.objects.filter(
+        event=event_instance, status="attending")
+    for attendee in attendees:
+        slack_id = attendee.user.slack_id
+        if slack_id:
+            message = generate_simple_message(message)
+            slack_response = notify_user(
+                message, slack_id, text=notification_text)
+
+            if slack_response["ok"] is False and slack_response["headers"]["Retry-After"]:
+                delay = int(slack_response["headers"]["Retry-After"])
+                logging.info("Rate limited. Retrying in " + str(delay) + " seconds")
+                sleep(delay)
+                notify_user(
+                    message, slack_id, text=notification_text)
+            elif not slack_response['ok']:
+                logging.warning(slack_response)
+
+
+def add_event_to_calendar(andela_user, event):
+    """
+        Adds an event to a user's calendar
+         :param andela_user:
+         :param event:
+    """
+    calendar = build('calendar', 'v3', credentials=andela_user.credential)
+    event_details = build_event(event, [])
+    created_event = calendar.events().insert(
+            calendarId='primary', body=event_details).execute()
+    event.event_id_in_calendar = created_event['id']
+    event.save()
+
+
+def update_event_status_on_calendar(andela_user, event):
+    try:
+        event_id = event.event_id_in_calendar
+        host_calendar = build('calendar', 'v3', credentials=event.creator.credential)
+        attendee_calendar = build('calendar', 'v3', credentials=andela_user.credential)
+        event_in_calendar = host_calendar.events().get(calendarId='primary', eventId=event_id).execute()
+        attendees = event_in_calendar['attendees']
+        attendees.append({'email': andela_user.user.email})
+        host_calendar.events().patch(
+            calendarId='primary',
+            eventId=event_id,
+            body=event_in_calendar
+        ).execute()
+        last_attendee = event_in_calendar['attendees'][-1]
+        last_attendee['responseStatus'] = 'accepted'
+        attendee_calendar.events().patch(
+            calendarId='primary',
+            eventId=event_id,
+            body=event_in_calendar
+        ).execute()
+    except KeyError:
+        event_in_calendar['attendees'] = [{'email': andela_user.user.email}]
+        host_calendar.events().patch(
+            calendarId='primary',
+            eventId=event_id,
+            body=event_in_calendar
+        ).execute()
+        last_attendee = event_in_calendar['attendees'][-1]
+        last_attendee['responseStatus'] = 'accepted'
+        attendee_calendar.events().patch(
+            calendarId='primary',
+            eventId=event_id,
+            body=event_in_calendar
+        ).execute()
+
+
+def remove_event_from_all_calendars(andela_user, event):
+    """
+    Remove an event from all calendars
+    Args:
+        andela_user(list): The user data of the person removing the event
+        event(list): The event to be removed from the calendar
+    Returns: None
+    """
+    eventId = event.event_id_in_calendar
+    calendar = build('calendar', 'v3', credentials=andela_user.credential)
+    calendar.events().delete(calendarId='primary', eventId=eventId).execute()

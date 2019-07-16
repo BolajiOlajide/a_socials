@@ -60,49 +60,64 @@ snapshots['InterestTestCase::test_user_cannot_unjoin_social_club_they_do_not_bel
 snapshots['InterestTestCase::test_user_can_join_and_unjoin_category 1'] = {
     'data': {
         'joinCategory': {
-            'joinedCategory': {
-                'followerCategory': {
-                    'description': 'For people who want to be happy.',
-                    'id': 'Q2F0ZWdvcnlOb2RlOjI=',
-                    'name': 'Python Meetup'
-                },
-                'id': 'SW50ZXJlc3ROb2RlOjI4'
-            }
+            'joinedCategoryList': [
+                {
+                    'followerCategory': {
+                        'description': 'For people who want to be happy.',
+                        'id': 'Q2F0ZWdvcnlOb2RlOjI=',
+                        'name': 'Python Meetup'
+                    },
+                    'id': 'SW50ZXJlc3ROb2RlOjI4'
+                }
+            ]
         }
     }
 }
 
 snapshots['InterestTestCase::test_user_can_join_and_unjoin_category 2'] = {
-    'data': {
-        'unjoinCategory': {
-            'unjoinedCategory': {
-                'followerCategory': {
-                    'description': 'For people who want to be happy.',
-                    'id': 'Q2F0ZWdvcnlOb2RlOjI=',
-                    'name': 'Python Meetup'
-                },
-                'id': 'SW50ZXJlc3ROb2RlOk5vbmU='
-            }
-        }
-    }
-}
-
-snapshots['InterestTestCase::test_user_cannot_unjoin_category_they_do_not_belong_to 1'] = {
-    'data': {
-        'unjoinCategory': None
-    },
     'errors': [
         {
             'locations': [
                 {
-                    'column': 13,
+                    'column': 34,
                     'line': 3
                 }
             ],
-            'message': 'The User @testuser2, has not joined Category : Python Meetup. ',
-            'path': [
-                'unjoinCategory'
-            ]
+            'message': '''Argument "input" has invalid value {categoryId: "Q2F0ZWdvcnlOb2RlOjI="}.
+In field "categoryId": Unknown field.'''
+        },
+        {
+            'locations': [
+                {
+                    'column': 17,
+                    'line': 6
+                }
+            ],
+            'message': 'Cannot query field "unjoinedCategory" on type "UnJoinCategoryPayload". Did you mean "unjoinedCategories"?'
+        }
+    ]
+}
+
+snapshots['InterestTestCase::test_user_cannot_unjoin_category_they_do_not_belong_to 1'] = {
+    'errors': [
+        {
+            'locations': [
+                {
+                    'column': 34,
+                    'line': 3
+                }
+            ],
+            'message': '''Argument "input" has invalid value {categoryId: "Q2F0ZWdvcnlOb2RlOjI="}.
+In field "categoryId": Unknown field.'''
+        },
+        {
+            'locations': [
+                {
+                    'column': 17,
+                    'line': 6
+                }
+            ],
+            'message': 'Cannot query field "unjoinedCategory" on type "UnJoinCategoryPayload". Did you mean "unjoinedCategories"?'
         }
     ]
 }
@@ -119,7 +134,7 @@ snapshots['InterestTestCase::test_user_cannot_join_same_category_twice 1'] = {
                     'line': 3
                 }
             ],
-            'message': 'User has already shown interest in this category',
+            'message': 'You have previously added an interest. Please try again',
             'path': [
                 'joinCategory'
             ]

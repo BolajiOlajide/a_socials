@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { SLACK_TOKEN } from '../../actions/constants';
 
 export const ModalContextCreator = React.createContext();
 
@@ -8,6 +10,8 @@ class ModalContext extends Component {
     'CREATE_EVENT',
     'UPDATE_EVENT',
     'DELETE_EVENT',
+    'SUBMIT_INVITE',
+    'SLACK_MODAL',
   ];
 
   defaultModalProps = { modalHeadline: 'default modal headline' };
@@ -31,7 +35,17 @@ class ModalContext extends Component {
     });
   };
 
+  closeSlackModal = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: SLACK_TOKEN,
+      payload: { slackToken: true },
+    });
+  }
+
   closeModal = () => {
+    const { activeModal } = this.state;
+    if (activeModal === 'SLACK_MODAL') this.closeSlackModal();
     document.getElementsByTagName('body')[0].classList.remove('no-scroll');
     this.setState({ activeModal: null });
   };
@@ -58,4 +72,4 @@ class ModalContext extends Component {
 
 ModalContext.propTypes = { children: PropTypes.node.isRequired };
 
-export default ModalContext;
+export default connect()(ModalContext);

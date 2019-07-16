@@ -8,7 +8,8 @@ const CREATE_EVENT_GQL = (
   startDate,
   endDate,
   timezone,
-  categoryId
+  categoryId,
+  slackChannel
 ) => ({
   mutation: gql`
     mutation($input: CreateEventInput!){
@@ -24,11 +25,13 @@ const CREATE_EVENT_GQL = (
           startDate
           endDate
           featuredImage
+          slackChannel
           socialEvent{
             name
           }
           active
         }
+        slackToken
         clientMutationId
       }
     }`,
@@ -41,9 +44,9 @@ const CREATE_EVENT_GQL = (
       startDate,
       endDate,
       timezone,
+      slackChannel,
       categoryId,
     },
-  },
+    },
 });
-
 export default CREATE_EVENT_GQL;
