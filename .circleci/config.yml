@@ -79,21 +79,21 @@ workflows:
         jobs:
             - test
             - deployBackend:
-                  requires:
-                      - test
-                  filters:
-                      branches:
-                          only:
-                              - master
-                              - /release\/v[0-9].[0-9].[0-9]/
-                              - staging
+                requires:
+                    - test
+                filters:
+                    branches:
+                        only:
+                            - master
+                            - /release\/v[0-9].[0-9].[0-9]/
+                            - staging
 
             - deployFrontend:
-                  requires:
-                      - test
-                  filters:
-                      branches:
-                          only:
-                              - master
-                              - /release\/v[0-9].[0-9].[0-9]/
-                              - staging
+                requires:
+                    - test
+                filters:
+                    branches:
+                        only:
+                            - master
+                            - /release\/v[0-9].[0-9].[0-9]/
+                            - staging

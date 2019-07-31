@@ -1,7 +1,6 @@
 """Module that tests helper methods"""
 from unittest.mock import patch
 from graphql_schemas.utils.helpers import update_event_status_on_calendar, remove_event_from_all_calendars
-from api.models import AndelaUserProfile
 from api.tests.base_test_setup import BaseSetup
 
 class HelperTests(BaseSetup):
