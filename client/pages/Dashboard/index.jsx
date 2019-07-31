@@ -185,7 +185,7 @@ class Dashboard extends Component {
     if (isTokenExpired() || !isLoggedIn()) {
       return <Redirect to={{
         pathname: '/login',
-        state: { "previousLocation": window.location.href }
+        state: { previousLocation: window.location.href },
       }} />;
     }
 
