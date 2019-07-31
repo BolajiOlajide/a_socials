@@ -177,7 +177,7 @@ class Dashboard extends Component {
 
     if (!localStorage.getItem('token')) {
       const token = Cookies.get('jwt-token');
-      if (token) {
+      if (isLoggedIn() && token) {
         localStorage.setItem('token', token);
       }
     }
